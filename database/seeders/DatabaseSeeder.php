@@ -3,11 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Alumno;
-use App\Models\Profesor;
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,23 +26,11 @@ class DatabaseSeeder extends Seeder
 
         foreach ($tramosHorarios as $tramoHorario) \App\Models\Tramohorario::create($tramoHorario);
 
+         \App\Models\User::factory(10)->create();
 
-
-
-
-        User::factory()->create([
-            'name' => 'jefatura',
-            'email' => 'jefatura',
-            'password' => Hash::make('je21700010'),
-        ]);
-
-        User::factory()->create([
-            'name' => 'profesor',
-            'email' => 'profesor',
-            'password' => Hash::make('21700010'),
-        ]);
-
-        Alumno::factory(20)->create();
-        Profesor::factory(20)->create();
+         \App\Models\User::factory()->create([
+             'name' => 'alejandro',
+             'email' => 'alejandro@hotmail.com',
+         ]);
     }
 }
