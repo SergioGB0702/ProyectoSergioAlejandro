@@ -26,11 +26,41 @@ class DatabaseSeeder extends Seeder
 
         foreach ($tramosHorarios as $tramoHorario) \App\Models\Tramohorario::create($tramoHorario);
 
+        $incidentes = [
+            ["descripcion" => "Jugar en clase"],
+            ["descripcion" => "Pelea con un compañero"],
+            ["descripcion" => "Malos modos"],
+            ["descripcion" => "Jugar en clase"],
+            ["descripcion" => "Uso del móvil sin permiso"],
+            ["descripcion" => "Uso indebido del PC"],
+        ];
+
+        foreach ($incidentes as $incidente) \App\Models\Incidencia::create($incidente);
+
+        $conductasNegativas = [
+            ["descripcion" => "Perturbación del normal desarrollo de las actividades de la clase", "tipo" => "Contraria"],
+            ["descripcion" => "Agresión física a un miembro de la comunidad educativa.", "tipo" => "Grave"],
+            ["descripcion" => "Falta de colaboración sistemática en la realización de las actividades.", "tipo" => "Contraria"],
+            ["descripcion" => "Impedir o dificultar el estudio a sus compañeros.", "tipo" => "Contraria"],
+            ["descripcion" => "Actuaciones incorrectas hacia algún miembro de la comunidad educativa.", "tipo" => "Contraria"],
+            ["descripcion" => "Reiteración en un mismo curso de conductas contrarias a las normas de convivencia.", "tipo" => "Grave"],
+        ];
+        foreach ($conductasNegativas as $conductaNegativa) \App\Models\Conductanegativa::create($conductaNegativa);
+
+        $correcionesAplicadas = [
+            ["descripcion" => "Suspender el derecho de asistencia al centro entre 1 y 3 días."],
+            ["descripcion" => "Suspender el derecho de asistencia al centro entre 4 y 30 días."],
+            ["descripcion" => "Realizar tareas fuera del horario lectivo del Centro."],
+        ];
+        foreach ($correcionesAplicadas as $correcionAplicada) \App\Models\Correccionaplicada::create($correcionAplicada);
+
+        
+
          \App\Models\User::factory(10)->create();
 
-         \App\Models\User::factory()->create([
-             'name' => 'alejandro',
-             'email' => 'alejandro@hotmail.com',
-         ]);
+        //  \App\Models\User::factory()->create([
+        //      'name' => 'alejandro',
+        //      'email' => 'alejandro@hotmail.com',
+        //  ]);
     }
 }
