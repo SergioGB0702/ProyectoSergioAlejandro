@@ -16,15 +16,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Auth::routes();
 
-Route::get('/users', [UsersController::class, 'index'])->name('users.index');
-Route::get('/correo', [UsersController::class, 'correo'])->name('user.correo');
-Route::get('/correoenviar', [UsersController::class, 'pruebaCorreo'])->name('user.enviarcorreo');
-Route::get('/import', [UsersController::class, 'cargarImport'])->name('users.import');
-Route::post('/import', [UsersController::class, 'import'])->name('users.import');
+Route::middleware('auth')->group(function () {
+    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+    Route::get('/correo', [UsersController::class, 'correo'])->name('user.correo');
+    Route::get('/correoenviar', [UsersController::class, 'pruebaCorreo'])->name('user.enviarcorreo');
+    Route::get('/import', [UsersController::class, 'cargarImport'])->name('users.import');
+    Route::post('/import', [UsersController::class, 'import'])->name('users.import');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/prueba', [App\Http\Controllers\HomeController::class, 'prueba'])->name('prueba');
+    Route::get('/prueba2', [App\Http\Controllers\HomeController::class, 'prueba2'])->name('prueba2');
+});

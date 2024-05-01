@@ -30,7 +30,9 @@ class UsersController extends Controller
 //        ]);
 //
 //        User::create($request->all());
+        User::truncate();
         $file = $request->file('import_file');
+
         Excel::import(new UsersImport, $file);
 
         return redirect()->route('users.index')
