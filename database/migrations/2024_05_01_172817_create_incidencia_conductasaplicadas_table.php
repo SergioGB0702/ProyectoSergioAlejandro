@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('incidencia_conductasaplicadas', function (Blueprint $table) {
+        Schema::create('incidencia_correccionaplicadas', function (Blueprint $table) {
             $table->unsignedBigInteger('incidencia_id');
-            $table->unsignedBigInteger('conductaaplicadas_id');
+            $table->unsignedBigInteger('correccionaplicadas_id');
             $table->foreign('incidencia_id')->references('id')->on('incidencias');
-            $table->foreign('conductaaplicadas_id')->references('id')->on('conductaaplicadas');
-            $table->primary(['incidencia_id', 'conductaaplicadas_id']);
+            $table->foreign('correccionaplicadas_id')->references('id')->on('correccionaplicadas');
+            $table->primary(['incidencia_id', 'correccionaplicadas_id']);
             $table->timestamps();
         });
     }
