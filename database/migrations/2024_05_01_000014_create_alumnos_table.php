@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('alumnos', function (Blueprint $table) {
-            $table->string('dni')->primary();
+            $table->string('dni');
+            $table->primary('dni');
             $table->string('nombre');
             $table->string('puntos');
             $table->unsignedBigInteger('id_unidad')->nullable();
