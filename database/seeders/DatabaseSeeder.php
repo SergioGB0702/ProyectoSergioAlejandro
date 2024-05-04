@@ -34,7 +34,6 @@ class DatabaseSeeder extends Seeder
             ["descripcion" => "Jugar en clase"],
             ["descripcion" => "Pelea con un compañero"],
             ["descripcion" => "Malos modos"],
-            ["descripcion" => "Jugar en clase"],
             ["descripcion" => "Uso del móvil sin permiso"],
             ["descripcion" => "Uso indebido del PC"],
         ];
