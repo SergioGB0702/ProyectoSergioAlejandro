@@ -31,4 +31,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/prueba', [App\Http\Controllers\HomeController::class, 'prueba'])->name('prueba');
     Route::get('/prueba2', [App\Http\Controllers\HomeController::class, 'prueba2'])->name('prueba2');
+
+    Route::get('/gestion/incidencias', [App\Http\Controllers\IncidenciasController::class, 'index'])->name('gestion.incidencias');
+    Route::post('/gestion/incidencias', [App\Http\Controllers\IncidenciasController::class, 'crear'])->name('gestion.incidencias.crear');
+    Route::patch('/gestion/incidencias', [App\Http\Controllers\IncidenciasController::class, 'crear'])->name('gestion.incidencias.editar');
+
+    Route::get('/gestion/conductasnegativas', [App\Http\Controllers\HomeController::class, 'prueba2'])->name('gestion.negativas');
+    Route::get('/gestion/correccionesaplicadas', [App\Http\Controllers\HomeController::class, 'prueba2'])->name('gestion.correcciones');
 });
