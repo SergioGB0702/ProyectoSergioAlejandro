@@ -17,16 +17,22 @@
         </div>
     @endif
                     <div class="card">
-                        <div class="card-header">Gestión de Incidencias</div>
+                        <div class="card-header">Gestión de Conductas Negativas</div>
                         <div class="card-body">
 
-                                <h2 class="mt-3 mb-3">Añadir nueva Incidencia</h2>
+                                <h2 class="mt-3 mb-3">Añadir nueva Conducta Negativa</h2>
 
-                                <form class="row" method="post" action="{{route('gestion.incidencias.crear')}}">
+                                <form class="row" method="post" action="{{route('gestion.negativas.crear')}}">
                                     @csrf
                                     <div class="col-auto w-75">
-                                        <label for="nuevaIncidencia">Descripción de la incidencia a añadir:</label>
-                                        <input type="text" class="form-control mt-2" id="nuevaIncidencia" name="nuevaIncidencia" placeholder="Descripción incidencia">
+                                        <label for="nuevaConducta">Descripción de la conducta negativa a añadir:</label>
+                                        <div class="row">
+                                            <input type="text" class="form-control mt-2 col" id="nuevaConducta" name="nuevaConducta" placeholder="Descripción conducta negativa" style="margin-right: 2% !important; margin-left: 2% !important;">
+                                            <select class="form-select mt-2 col" id="nuevaConductaTipo" name="nuevaConductaTipo">
+                                                <option value="Contraria" selected>Contraria</option>
+                                                <option value="Grave">Grave</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-auto align-self-end">
                                         <button type="submit" class="btn btn-secondary" id="generate">Añadir</button>
@@ -36,33 +42,46 @@
 
                             <br>
 
-                            <h2 class="mt-2 mb-4">Listado de incidencias</h2>
+                            <h2 class="mt-2 mb-4">Listado de Conductas Negativas</h2>
                             <table class="table table-hover table-striped table-bordered">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th scope="col" style="width: 8%" class="text-center">#</th>
                                         <th scope="col" class="text-center">Descripción</th>
+                                        <th scope="col" class="text-center" style="width: 12%">Tipo</th>
                                         <th scope="col" style="width: 15%" class="text-center">Opciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($incidencias as $incidencia)
-                                <form class="row" method="patch" action="/gestion/incidencias/editar/{{$incidencia->id}}">
+                                @foreach ($conductas as $conducta)
+                                <form class="row" method="patch" action="/gestion/conductasnegativas/editar/{{$conducta->id}}">
                                     @csrf 
                                     <tr class="align-middle">
-                                        <th class="text-center">{{$incidencia->id}}</th>
-                                        <td><input type="text" class="form-control" id="cambioIncidencia" name="cambioIncidencia" value="{{$incidencia->descripcion}}"></td>
+                                        <th class="text-center">{{$conducta->id}}</th>
+                                        <td><input type="text" class="form-control" id="cambioConducta" name="cambioConducta" value="{{$conducta->descripcion}}"></td>
+                                        <td>
+                                            <select class="form-select col" id="cambioConductaTipo" name="cambioConductaTipo">
+                                                @if ($conducta->tipo == "Contraria")
+                                                    <option value="Contraria" selected>Contraria</option>
+                                                    <option value="Grave">Grave</option>
+                                                @else
+                                                    <option value="Contraria">Contraria</option>
+                                                    <option value="Grave" selected>Grave</option>
+                                                @endif
+
+                                            </select>
+                                        </td>
                                         <td class="text-center">
                                         <button type="submit" class="btn btn-primary" id="generate">Editar</button>
                                 </form>
-                                        <a class="btn btn-danger text-white sm-mt-2" href="/gestion/incidencias/eliminar/{{$incidencia->id}}">Eliminar</a>
+                                        <a class="btn btn-danger text-white sm-mt-2" href="/gestion/conductasnegativas/eliminar/{{$conducta->id}}">Eliminar</a>
                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
                             <div class="h-10 grid grid-cols-1 gap-4 content-between">
-                                {{ $incidencias->links('vendor.pagination.bootstrap-5') }}
+                                {{ $conductas->links('vendor.pagination.bootstrap-5') }}
                             </div>
                             <div class="">
                             

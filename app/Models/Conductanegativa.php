@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Conductanegativa extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'descripcion',
+        'tipo',
+    ];
+
 }

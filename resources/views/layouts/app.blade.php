@@ -71,26 +71,26 @@
         <li class="nav-title" data-coreui-i18n="theme">Alumnado</li>
         <li class="nav-item"><a class="nav-link" href="{{route('users.index')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-speedometer')}}"></use>
+                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-badge')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">General</span></a></li>
         <!-- Gestión para jefatura -->
         <li class="nav-title" data-coreui-i18n="theme">Gestión</li>
         <li class="nav-item"><a class="nav-link" href="{{route('gestion.incidencias')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-speedometer')}}"></use>
+                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-sad')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Incidencias</span></a></li>
         <li class="nav-item"><a class="nav-link" href="{{route('gestion.negativas')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-speedometer')}}"></use>
+                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-ban')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Conductas Negativas</span></a></li>
         <li class="nav-item"><a class="nav-link" href="{{route('gestion.correcciones')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-speedometer')}}"></use>
+                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-balance-scale')}}"></use>
                 </svg>
-                <span data-coreui-i18n="dashboard">Correcciones aplicadas</span></a></li>
+                <span data-coreui-i18n="dashboard">Correcciones Aplicadas</span></a></li>
     </ul>
     <div class="sidebar-footer border-top d-none d-md-flex">
         <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>

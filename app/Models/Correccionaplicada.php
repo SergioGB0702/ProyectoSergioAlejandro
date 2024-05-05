@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Correccionaplicada extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'descripcion',
+    ];
+
 }

@@ -17,16 +17,16 @@
         </div>
     @endif
                     <div class="card">
-                        <div class="card-header">Gestión de Incidencias</div>
+                        <div class="card-header">Gestión de Correcciones Aplicadas</div>
                         <div class="card-body">
 
-                                <h2 class="mt-3 mb-3">Añadir nueva Incidencia</h2>
+                                <h2 class="mt-3 mb-3">Añadir nueva Corrección</h2>
 
-                                <form class="row" method="post" action="{{route('gestion.incidencias.crear')}}">
+                                <form class="row" method="post" action="{{route('gestion.correcciones.crear')}}">
                                     @csrf
                                     <div class="col-auto w-75">
-                                        <label for="nuevaIncidencia">Descripción de la incidencia a añadir:</label>
-                                        <input type="text" class="form-control mt-2" id="nuevaIncidencia" name="nuevaIncidencia" placeholder="Descripción incidencia">
+                                        <label for="nuevaCorreccion">Descripción de la corrección aplicada a añadir:</label>
+                                        <input type="text" class="form-control mt-2" id="nuevaCorreccion" name="nuevaCorreccion" placeholder="Descripción correción aplicada">
                                     </div>
                                     <div class="col-auto align-self-end">
                                         <button type="submit" class="btn btn-secondary" id="generate">Añadir</button>
@@ -36,7 +36,7 @@
 
                             <br>
 
-                            <h2 class="mt-2 mb-4">Listado de incidencias</h2>
+                            <h2 class="mt-2 mb-4">Listado de Correcciones Aplicadas</h2>
                             <table class="table table-hover table-striped table-bordered">
                                 <thead class="thead-dark">
                                     <tr>
@@ -46,23 +46,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($incidencias as $incidencia)
-                                <form class="row" method="patch" action="/gestion/incidencias/editar/{{$incidencia->id}}">
+                                @foreach ($correcciones as $correccion)
+                                <form class="row" method="patch" action="/gestion/correccionesaplicadas/editar/{{$correccion->id}}">
                                     @csrf 
                                     <tr class="align-middle">
-                                        <th class="text-center">{{$incidencia->id}}</th>
-                                        <td><input type="text" class="form-control" id="cambioIncidencia" name="cambioIncidencia" value="{{$incidencia->descripcion}}"></td>
+                                        <th class="text-center">{{$correccion->id}}</th>
+                                        <td><input type="text" class="form-control" id="cambioCorreccion" name="cambioCorreccion" value="{{$correccion->descripcion}}"></td>
                                         <td class="text-center">
                                         <button type="submit" class="btn btn-primary" id="generate">Editar</button>
                                 </form>
-                                        <a class="btn btn-danger text-white sm-mt-2" href="/gestion/incidencias/eliminar/{{$incidencia->id}}">Eliminar</a>
+                                        <a class="btn btn-danger text-white sm-mt-2" href="/gestion/correccionesaplicadas/eliminar/{{$correccion->id}}">Eliminar</a>
                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
                             <div class="h-10 grid grid-cols-1 gap-4 content-between">
-                                {{ $incidencias->links('vendor.pagination.bootstrap-5') }}
+                                {{ $correcciones->links('vendor.pagination.bootstrap-5') }}
                             </div>
                             <div class="">
                             
