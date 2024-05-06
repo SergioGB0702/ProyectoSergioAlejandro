@@ -66,7 +66,7 @@
                     <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-spreadsheet')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">General</span></a></li>
-        <span data-coreui-i18n="dashboard">Consultar Incidencias</span></a></li>
+
         <li class="nav-item"><a class="nav-link" href="{{route('parte.index')}}">
                 <svg class="nav-icon">
                     <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-ban')}}"></use>
@@ -219,7 +219,44 @@
         }
     });
 </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.bootstrap-select').each(function () {
+            $(this).find('button:first').removeClass().addClass('form-select text-start').css('padding-left', '9px');
+        });
 
+        const observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (mutation.attributeName === 'data-coreui-theme') {
+                    if ($('html').attr('data-coreui-theme') === 'dark') {
+                        $('.bootstrap-select button:not(:first)').removeClass('btn-light').addClass('btn-dark');
+                    } else {
+                        $('.bootstrap-select button:not(:first)').removeClass('btn-dark').addClass('btn-light');
+                    }
+                }
+            });
+        });
+
+        observer.observe(document.documentElement, {attributes: true});
+
+        if ($('html').attr('data-coreui-theme') === 'dark') {
+            $('.bootstrap-select button:not(:first)').removeClass('btn-light').addClass('btn-dark');
+        } else {
+            $('.bootstrap-select button:not(:first)').removeClass('btn-dark').addClass('btn-light');
+        }
+    });
+    $('#buttone').on('click', function () {
+
+        if ($(window).width() >= 992) {
+            $('.dataTables_scrollHeadInner').attr('style', 'width: 100% !important;');
+        }
+
+    });
+
+
+
+
+</script>
 </body>
 </html>
 

@@ -9,7 +9,6 @@ class Conductanegativa extends Model
 {
     public $timestamps = false;
     protected $table = 'conductanegativas';
-    protected $fillable = ['descripcion', 'tipo'];
     use HasFactory;
 
     protected $fillable = [
