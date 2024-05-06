@@ -12,4 +12,9 @@ class Correccionaplicada extends Model
     protected $fillable = ['descripcion'];
     protected $table = 'correccionaplicadas';
     use HasFactory;
+
+    protected $fillable = [
+        'descripcion',
+    ];
+
 }

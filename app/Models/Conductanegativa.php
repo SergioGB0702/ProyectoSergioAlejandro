@@ -11,4 +11,10 @@ class Conductanegativa extends Model
     protected $table = 'conductanegativas';
     protected $fillable = ['descripcion', 'tipo'];
     use HasFactory;
+
+    protected $fillable = [
+        'descripcion',
+        'tipo',
+    ];
+
 }
