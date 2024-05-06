@@ -22,7 +22,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
+    Route::get('/resumen', [UsersController::class, 'resumen'])->name('parte.resumen');
+    Route::post('/upload', [UsersController::class, 'upload']);
+    Route::get('/cursos', [UsersController::class, 'getCursos']);
+    Route::get('/unidades', [UsersController::class, 'getUnidades']);
+    Route::get('/alumnos', [UsersController::class, 'getAlumnos']);
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+    Route::get('/indexParte', [UsersController::class, 'indexParte'])->name('parte.index');
+    Route::post('/createParte', [UsersController::class, 'crearParte'])->name('parte.create');
     Route::get('/correo', [UsersController::class, 'correo'])->name('user.correo');
     Route::get('/correoenviar', [UsersController::class, 'pruebaCorreo'])->name('user.enviarcorreo');
     Route::get('/import', [UsersController::class, 'cargarImport'])->name('users.import');

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('profesors', function (Blueprint $table) {
             $table->string("dni")->primary();
             $table->string("nombre");
-            $table->timestamps();
         });
     }
 

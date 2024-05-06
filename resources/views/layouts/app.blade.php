@@ -11,11 +11,6 @@
     <!-- Option 2: CoreUI PRO for Bootstrap CSS -->
 
 
-
-
-
-
-
     <link rel="stylesheet" href="css/coreuicss.css">
     <link rel="stylesheet" href="css/simplebar.css">
     <link rel="stylesheet" href="css/simplebar2.css">
@@ -25,13 +20,8 @@
     <script src="js/color-mode.js"></script>
 
 
-
-
-
-
-
-{{--        <script src="https://cdn.jsdelivr.net/npm/@coreui/icons@3.0.1/dist/cjs/index.min.js"></script>--}}
-{{--        <link href="https://cdn.jsdelivr.net/npm/@coreui/icons@3.0.1/css/all.min.css" rel="stylesheet">--}}
+    {{--        <script src="https://cdn.jsdelivr.net/npm/@coreui/icons@3.0.1/dist/cjs/index.min.js"></script>--}}
+    {{--        <link href="https://cdn.jsdelivr.net/npm/@coreui/icons@3.0.1/css/all.min.css" rel="stylesheet">--}}
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
 
@@ -47,9 +37,11 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@v1.14.0-beta3/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-select@v1.14.0-beta2/dist/css/bootstrap-select.min.css">
     <!-- Latest compiled and minified JavaScript -->
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap-select@v1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+    <script defer
+            src="https://cdn.jsdelivr.net/npm/bootstrap-select@v1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
 
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-es_ES.js"></script>
 
@@ -71,9 +63,20 @@
         <li class="nav-title" data-coreui-i18n="theme">Alumnado</li>
         <li class="nav-item"><a class="nav-link" href="{{route('users.index')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-speedometer')}}"></use>
+                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-spreadsheet')}}"></use>
                 </svg>
-                <span data-coreui-i18n="dashboard">General</span></a></li>
+                <span data-coreui-i18n="dashboard">Consultar Incidencias</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="{{route('parte.index')}}">
+                <svg class="nav-icon">
+                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-color-border')}}"></use>
+                </svg>
+                <span data-coreui-i18n="dashboard">Crear Parte</span></a></li>
+
+        <li class="nav-item"><a class="nav-link" href="{{route('parte.resumen')}}">
+                <svg class="nav-icon">
+                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-description')}}"></use>
+                </svg>
+                <span data-coreui-i18n="dashboard">Resumen Incidencias</span></a></li>
 
 
     </ul>
@@ -81,7 +84,6 @@
         <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
     </div>
 </div>
-
 
 
 <div class="wrapper d-flex flex-column min-vh-100">
@@ -96,7 +98,6 @@
             </button>
 
             <ul class="header-nav d-none d-md-flex ms-auto">
-
 
 
             </ul>
@@ -152,7 +153,8 @@
                         <div class="dropdown-header bg-body-tertiary text-body-secondary fw-semibold rounded-top mb-2"
                              data-coreui-i18n="account">Cuenta
                         </div>
-                        <a class="dropdown-item" href="{{ route('logout') }}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <svg class="icon me-2">
                                 <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-account-logout"></use>
                             </svg>
@@ -175,12 +177,11 @@
 </div>
 
 
-
 @stack('scripts')
 <script type="text/javascript">
-    $(document).ready(function() {
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
+    $(document).ready(function () {
+        const observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
                 if (mutation.attributeName === 'data-coreui-theme') {
                     if ($('html').attr('data-coreui-theme') === 'dark') {
                         $('.sidebar-brand-full').attr('src', '{{asset("img/logo_dark.png")}}');
@@ -191,7 +192,7 @@
             });
         });
 
-        observer.observe(document.documentElement, { attributes: true });
+        observer.observe(document.documentElement, {attributes: true});
 
         if ($('html').attr('data-coreui-theme') === 'dark') {
             $('.sidebar-brand-full').attr('src', '{{asset("img/logo_dark.png")}}');
@@ -200,7 +201,44 @@
         }
     });
 </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.bootstrap-select').each(function () {
+            $(this).find('button:first').removeClass().addClass('form-select text-start').css('padding-left', '9px');
+        });
 
+        const observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (mutation.attributeName === 'data-coreui-theme') {
+                    if ($('html').attr('data-coreui-theme') === 'dark') {
+                        $('.bootstrap-select button:not(:first)').removeClass('btn-light').addClass('btn-dark');
+                    } else {
+                        $('.bootstrap-select button:not(:first)').removeClass('btn-dark').addClass('btn-light');
+                    }
+                }
+            });
+        });
+
+        observer.observe(document.documentElement, {attributes: true});
+
+        if ($('html').attr('data-coreui-theme') === 'dark') {
+            $('.bootstrap-select button:not(:first)').removeClass('btn-light').addClass('btn-dark');
+        } else {
+            $('.bootstrap-select button:not(:first)').removeClass('btn-dark').addClass('btn-light');
+        }
+    });
+    $('#buttone').on('click', function () {
+
+        if ($(window).width() >= 992) {
+            $('.dataTables_scrollHeadInner').attr('style', 'width: 100% !important;');
+        }
+
+    });
+
+
+
+
+</script>
 </body>
 </html>
 

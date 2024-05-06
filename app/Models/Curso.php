@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Curso extends Model
 {
+    public $timestamps = false;
+    protected $table = 'cursos';
+
+    protected $fillable = ['nombre', 'id_anio_academico'];
     use HasFactory;
 }

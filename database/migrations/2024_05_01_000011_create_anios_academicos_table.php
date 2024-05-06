@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('anios_academicos', function (Blueprint $table) {
             $table->id();
             $table->string('anio_academico');
-            $table->timestamps();
+
         });
     }
 

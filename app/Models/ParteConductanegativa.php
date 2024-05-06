@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Correo extends Model
+class ParteConductanegativa extends Model
 {
     public $timestamps = false;
-    protected $table = 'correos';
-
-    protected $fillable = ['alumno_dni', 'correo'];
+    protected $table = 'parte_conductanegativas';
+    protected $fillable = ['parte_id', 'conductanegativas_id'];
     use HasFactory;
 }

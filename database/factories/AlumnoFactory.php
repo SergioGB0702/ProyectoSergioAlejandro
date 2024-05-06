@@ -13,7 +13,7 @@ class AlumnoFactory extends Factory
     public function definition(): array
     {
         return [
-//            'unidad_id' => Unidad::InRandomOrder()->first()->id,
+            'id_unidad' => Unidad::InRandomOrder()->first()->id,
             'dni' => strtoupper($this->faker->unique()->bothify('########?')),
             'nombre' => $this->faker->name(),
             'puntos' => $this->faker->numberBetween(0, 12),

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string("alumno_dni");
             $table->string("profesor_dni");
-            $table->boolean("colectivo");
+            $table->string("colectivo");
+            $table->longText("descripcion_detallada")->nullable();
             $table->foreignId("tramo_horario_id");
             $table->foreign('alumno_dni')->references('dni')->on('alumnos');
             $table->foreign('profesor_dni')->references('dni')->on('profesors');
