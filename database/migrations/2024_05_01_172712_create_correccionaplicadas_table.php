@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('correccionaplicadas', function (Blueprint $table) {
             $table->id();
             $table->string("descripcion");
-            $table->timestamps();
         });
     }
 
@@ -23,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('conductaaplicadas');
+        Schema::dropIfExists('correccionaplicadas');
     }
 };
