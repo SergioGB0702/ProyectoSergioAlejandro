@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreign('parte_id')->references('id')->on('partes');
             $table->foreign('correccionaplicadas_id')->references('id')->on('correccionaplicadas');
             $table->primary(['parte_id', 'correccionaplicadas_id']);
-            $table->timestamps();
         });
     }
 

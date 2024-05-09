@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Conductanegativa extends Model
 {
+    public $timestamps = false;
+    protected $table = 'conductanegativas';
     use HasFactory;
 
     protected $fillable = [

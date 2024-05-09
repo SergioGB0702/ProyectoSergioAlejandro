@@ -22,7 +22,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
+    Route::get('/resumen', [UsersController::class, 'resumen'])->name('parte.resumen');
+    Route::post('/upload', [UsersController::class, 'upload']);
+    Route::get('/cursos', [UsersController::class, 'getCursos']);
+    Route::get('/unidades', [UsersController::class, 'getUnidades']);
+    Route::get('/alumnos', [UsersController::class, 'getAlumnos']);
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+    Route::get('/indexParte', [UsersController::class, 'indexParte'])->name('parte.index');
+    Route::post('/createParte', [UsersController::class, 'crearParte'])->name('parte.create');
     Route::get('/correo', [UsersController::class, 'correo'])->name('user.correo');
     Route::get('/correoenviar', [UsersController::class, 'pruebaCorreo'])->name('user.enviarcorreo');
     Route::get('/import', [UsersController::class, 'cargarImport'])->name('users.import');
@@ -36,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/gestion/incidencias', [App\Http\Controllers\IncidenciasController::class, 'crear'])->name('gestion.incidencias.crear');
     Route::get('/gestion/incidencias/editar/{id}', [App\Http\Controllers\IncidenciasController::class, 'editar'])->name('gestion.incidencias.editar');
     Route::get('/gestion/incidencias/eliminar/{id}', [App\Http\Controllers\IncidenciasController::class, 'eliminar'])->name('gestion.incidencias.eliminar');
-    
+
     Route::get('/gestion/correccionesaplicadas', [App\Http\Controllers\CorreccionesAplicadasController::class, 'index'])->name('gestion.correcciones');
     Route::post('/gestion/correccionesaplicadas', [App\Http\Controllers\CorreccionesAplicadasController::class, 'crear'])->name('gestion.correcciones.crear');
     Route::get('/gestion/correccionesaplicadas/editar/{id}', [App\Http\Controllers\CorreccionesAplicadasController::class, 'editar'])->name('gestion.correcciones.editar');

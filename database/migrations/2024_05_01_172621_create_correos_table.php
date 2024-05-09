@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string("alumno_dni");
             $table->string("correo");
             $table->foreign('alumno_dni')->references('dni')->on('alumnos');
-            $table->timestamps();
         });
     }
 

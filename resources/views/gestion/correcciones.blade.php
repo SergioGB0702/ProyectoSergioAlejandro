@@ -48,7 +48,7 @@
                                 <tbody>
                                 @foreach ($correcciones as $correccion)
                                 <form class="row" method="patch" action="/gestion/correccionesaplicadas/editar/{{$correccion->id}}">
-                                    @csrf 
+                                    @csrf
                                     <tr class="align-middle">
                                         <th class="text-center">{{$correccion->id}}</th>
                                         <td><input type="text" class="form-control" id="cambioCorreccion" name="cambioCorreccion" value="{{$correccion->descripcion}}"></td>
@@ -65,13 +65,15 @@
                                 {{ $correcciones->links('vendor.pagination.bootstrap-5') }}
                             </div>
                             <div class="">
-                            
+
                             </div>
 
 
                         </div>
                     </div>
-                </div>
+
+
+
 @endsection
 @push('scripts')
 
@@ -81,7 +83,7 @@
 
     <script type="module">
 
-        
+
 
 
     </script>

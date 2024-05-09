@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('puntos');
             $table->unsignedBigInteger('id_unidad')->nullable();
             $table->foreign('id_unidad')->references('id')->on('unidades')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
