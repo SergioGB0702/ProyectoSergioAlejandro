@@ -14,6 +14,8 @@ class ProfesorFactory extends Factory
         return [
             'dni' => $this->faker->unique()->bothify('########?'),
             'nombre' => $this->faker->name(),
+            'telefono' => $this->faker->numerify('###-##-##-##'),
+            'correo' => $this->faker->email(),
         ];
     }
 }

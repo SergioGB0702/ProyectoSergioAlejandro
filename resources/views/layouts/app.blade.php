@@ -92,9 +92,14 @@
                 <span data-coreui-i18n="dashboard">Conductas Negativas</span></a></li>
         <li class="nav-item"><a class="nav-link" href="{{route('gestion.correcciones')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-balance-scale')}}"></use>
+                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-pin')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Correcciones Aplicadas</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('gestion.correcciones')}}">
+                <svg class="nav-icon">
+                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-school')}}"></use>
+                </svg>
+                <span data-coreui-i18n="dashboard">Alumnos / Profesores</span></a></li>
     </ul>
     <div class="sidebar-footer border-top d-none d-md-flex">
         <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
