@@ -51,11 +51,11 @@ class AlumnoDataTable extends DataTable
         ->leftJoin('anio_academico', 'cursos.id_anio_academico', '=', 'anio_academico.id')
         ->select('unidades.*', 'alumnos.*', DB::raw('CONCAT("<ul><li>", GROUP_CONCAT(correos.correo SEPARATOR "</li><li>"), "</li></ul>") as Correos'));
 
-        SELECT unidades.*, alumnos.*
-from alumnos
-LEFT JOIN unidades on unidades.id = alumnos.id_unidad
-LEFT JOIN cursos on cursos.id = unidades.id_curso
-LEFT JOIN anios_academicos on anios_academicos.id = cursos.id_anio_academico
+//         SELECT unidades.*, alumnos.*
+// from alumnos
+// LEFT JOIN unidades on unidades.id = alumnos.id_unidad
+// LEFT JOIN cursos on cursos.id = unidades.id_curso
+// LEFT JOIN anios_academicos on anios_academicos.id = cursos.id_anio_academico
 
         $prueba = DB::execute($query);
         echo $prueba;
