@@ -11,4 +11,9 @@ class AnioAcademico extends Model
     protected $table = 'anios_academicos';
     protected $fillable = ['anio_academico'];
     use HasFactory;
+
+    public function cursos () {
+        return $this->hasMany(Curso::class);
+    }
+
 }

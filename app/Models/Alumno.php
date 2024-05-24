@@ -16,8 +16,18 @@ class Alumno extends Model
         'dni', 'nombre', 'puntos', 'id_unidad'
     ];
 
-    public function partes(): HasMany
+    public function partes()
     {
-        return $this->hasMany(Parte::class, 'alumno_dni', 'dni');
+        return $this->belongsToMany(Parte::class, 
+        'alumno_partes', 'alumno_dni', 'dni');
     }
+
+    public function unidad () {
+        return $this->belongsTo(Unidad::class);
+    }
+
+    public function correos () {
+        return $this->hasMany(Correo::class);
+    }
+
 }

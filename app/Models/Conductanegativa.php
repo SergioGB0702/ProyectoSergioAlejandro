@@ -16,4 +16,10 @@ class Conductanegativa extends Model
         'tipo',
     ];
 
+    public function partes()
+    {
+        return $this->belongsToMany(Parte::class,
+         'parte_conductanegativas');
+    }
+
 }
