@@ -29,10 +29,9 @@ class ParteDataTable extends DataTable
             ->editColumn('created_at', function ($user) {
                 return $user->updated_at->format('d/m/Y');
             })
-            ->filterColumn('nombred', function($query, $keyword) {
+            ->filterColumn('nombred', function ($query, $keyword) {
                 $query->whereRaw("alumnos.nombre like ?", ["%{$keyword}%"]);
-            })
-            ;
+            });
 
 //          ->editColumn('created_at', function ($user) {
 //          return $user->updated_at->format('d/m/Y H:i:s');
@@ -62,15 +61,20 @@ class ParteDataTable extends DataTable
 
         $query = $model->newQuery()
 
-            ->leftJoin('alumno_partes', 'alumno_partes.parte_id', '=', 'partes.id')
-            ->leftJoin('alumnos', 'alumnos.dni', '=', 'alumno_partes.alumno_dni')
+            ->leftJoin('alumno_partes', 'partes.id', '=', 'alumno_partes.parte_id')
+            ->leftJoin('alumnos', 'alumno_partes.alumno_dni', '=', 'alumnos.dni')
             ->leftJoin('parte_incidencias', 'partes.id', '=', 'parte_incidencias.parte_id')
             ->leftJoin('incidencias', 'parte_incidencias.incidencia_id', '=', 'incidencias.id')
             ->leftJoin('parte_conductanegativas', 'partes.id', '=', 'parte_conductanegativas.parte_id')
             ->leftJoin('conductanegativas', 'parte_conductanegativas.conductanegativas_id', '=', 'conductanegativas.id')
-            ->select('partes.*', 'alumnos.*','incidencias.descripcion', DB::raw('CONCAT("<ul><li>", GROUP_CONCAT(conductanegativas.descripcion SEPARATOR "</li><li>"), "</li></ul>") as descripcion_conducta_negativa'))
-            ->groupBy('partes.id');
+            ->select(
 
+                'partes.*',
+                'alumnos.*',
+                'incidencias.descripcion',
+                DB::raw(' CONCAT("<ul><li>", GROUP_CONCAT(DISTINCT conductanegativas.descripcion SEPARATOR "</li><li>"), "</li></ul>") as descripcion_conducta_negativa')
+            )
+            ->groupBy('partes.id');
 
 
         if (!empty($unidad)) {
@@ -90,11 +94,9 @@ class ParteDataTable extends DataTable
             ->setTableId('users-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-
             ->orderBy(0)
             ->scrollX(true)
             ->language(['url' => 'js/spanish.json'])
-
             ->parameters([
 
             ])
@@ -108,10 +110,11 @@ class ParteDataTable extends DataTable
                 'searchable' => false,
 
             ])
+
             ->buttons([
+                Button::make('add')->text('<span> Crear</span>')->className('btn btn-primary')->titleAttr('Crear nuevo parte'),
                 Button::make('excel')->titleAttr('Exportar a Excel'),
                 Button::make('csv')->titleAttr('Exportar a CSV'),
-                Button::make('pdf')->titleAttr('Exportar a PDF'),
                 Button::make('print')->titleAttr('Imprimir'),
                 Button::make('reset')->titleAttr('Restablecer'),
                 Button::make('reload')->titleAttr('recargar'),
@@ -132,13 +135,13 @@ class ParteDataTable extends DataTable
 //            Column::make('descripcion')->title('descripcion')->data('descripcion_conducta')->className('align-middle'),
 
 //            Column::make('parte.colectivo')->title('Colectivo')->data('parte.colectivo')->className('align-middle'),
-           // Column::make('dni')->title('dni')->data('profesors.dni')->className('align-middle'),
+            // Column::make('dni')->title('dni')->data('profesors.dni')->className('align-middle'),
 
         ];
     }
 
     protected function filename(): string
     {
-        return 'Users_'.date('YmdHis');
+        return 'Users_' . date('YmdHis');
     }
 }

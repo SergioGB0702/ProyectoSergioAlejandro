@@ -51,12 +51,17 @@ class ResumenParteDataTable extends DataTable
 
 
         $query = $model->newQuery()
-            ->leftJoin('partes', 'alumnos.dni', '=', 'partes.alumno_dni')
+            ->leftJoin('alumno_partes', 'alumnos.dni', '=', 'alumno_partes.alumno_dni')
+            ->leftJoin('partes', 'alumno_partes.parte_id', '=', 'partes.id')
             ->leftJoin('parte_incidencias', 'partes.id', '=', 'parte_incidencias.parte_id')
             ->leftJoin('incidencias', 'parte_incidencias.incidencia_id', '=', 'incidencias.id')
             ->leftJoin('parte_conductanegativas', 'partes.id', '=', 'parte_conductanegativas.parte_id')
             ->leftJoin('conductanegativas', 'parte_conductanegativas.conductanegativas_id', '=', 'conductanegativas.id')
-            ->select('alumnos.*', DB::raw('COUNT(DISTINCT parte_incidencias.parte_id) as count_incidencia'), DB::raw('COUNT(parte_conductanegativas.parte_id) as count_conducta_negativa'))
+            ->select(
+                'alumnos.*',
+                DB::raw('COUNT(DISTINCT parte_incidencias.parte_id) as count_incidencia'),
+                DB::raw('COUNT(DISTINCT parte_conductanegativas.conductanegativas_id) as count_conducta_negativa')
+            )
             ->groupBy('alumnos.dni');
 
 

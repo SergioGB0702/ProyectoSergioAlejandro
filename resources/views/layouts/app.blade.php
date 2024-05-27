@@ -9,15 +9,13 @@
     {{--    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-KGkYqG3gD435LMZAC/8byquZiD5665LheNozmHAqp8vrOKBaBL/bFUO5Er5tMRNi" crossorigin="anonymous">--}}
     {{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />--}}
     <!-- Option 2: CoreUI PRO for Bootstrap CSS -->
+    <link rel="stylesheet" href="{{asset('css/coreuicss.css')}}">
+    <link rel="stylesheet" href="{{asset('css/simplebar.css')}}">
+    <link rel="stylesheet" href="{{asset('css/simplebar2.css')}}">
 
-
-    <link rel="stylesheet" href="/css/coreuicss.css">
-    <link rel="stylesheet" href="/css/simplebar.css">
-    <link rel="stylesheet" href="/css/simplebar2.css">
-
-    <script src="/js/simplebar2.js"></script>
-    <script src="/js/coreui.js"></script>
-    <script src="/js/color-mode.js"></script>
+    <script src="{{asset('js/simplebar2.js')}}"></script>
+    <script src="{{asset('js/coreui.js')}}"></script>
+    <script src="{{asset('js/color-mode.js')}}"></script>
 
 
     {{--        <script src="https://cdn.jsdelivr.net/npm/@coreui/icons@3.0.1/dist/cjs/index.min.js"></script>--}}
@@ -121,7 +119,7 @@
                     onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()"
                     style="margin-inline-start: -14px">
                 <svg class="icon icon-lg">
-                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
+                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-menu')}} "></use>
                 </svg>
             </button>
             <img width="52" height="52" alt="Logotipo App" src="{{asset('img/LogotipoApp.png')}}">
@@ -137,7 +135,7 @@
                     <button class="btn btn-link nav-link" type="button" aria-expanded="false"
                             data-coreui-toggle="dropdown">
                         <svg class="icon icon-lg theme-icon-active">
-                            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-contrast"></use>
+                            <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-contrast')}} "></use>
                         </svg>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" style="--cui-dropdown-min-width: 8rem;">
@@ -145,7 +143,7 @@
                             <button class="dropdown-item d-flex align-items-center" type="button"
                                     data-coreui-theme-value="light">
                                 <svg class="icon icon-lg me-3">
-                                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-sun"></use>
+                                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-sun')}}"></use>
                                 </svg>
                                 <span data-coreui-i18n="light">Claro</span>
                             </button>
@@ -154,7 +152,7 @@
                             <button class="dropdown-item d-flex align-items-center" type="button"
                                     data-coreui-theme-value="dark">
                                 <svg class="icon icon-lg me-3">
-                                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-moon"></use>
+                                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-moon')}}"></use>
                                 </svg>
                                 <span data-coreui-i18n="dark">Oscuro</span>
                             </button>
@@ -163,7 +161,7 @@
                             <button class="dropdown-item d-flex align-items-center active" type="button"
                                     data-coreui-theme-value="auto">
                                 <svg class="icon icon-lg me-3">
-                                    <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-contrast"></use>
+                                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-contrast')}} "></use>
                                 </svg>
                                 Automatico
                             </button>
@@ -184,7 +182,7 @@
                         </div>
                         <a class="dropdown-item" href="{{ route('logout') }}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <svg class="icon me-2">
-                                <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-account-logout"></use>
+                                <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-account-logout')}}"></use>
                             </svg>
                             <span data-coreui-i18n="logout">Cerrar Session</span>
                         </a>

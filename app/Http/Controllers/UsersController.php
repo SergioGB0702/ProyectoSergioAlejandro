@@ -177,19 +177,14 @@ class UsersController extends Controller
 
     public function import(Request $request)
     {
-//        $request->validate([
-//            'name' => 'required',
-//            'email' => 'required',
-//        ]);
-//
-//        User::create($request->all());
+
         User::truncate();
         $file = $request->file('import_file');
 
         Excel::import(new UsersImport, $file);
 
         return redirect()->route('users.index')
-            ->with('success', 'User created successfully.');
+            ->with('Satisfactorio', 'Usuario Creado correctamente.');
     }
 
     public function cargarImport()
