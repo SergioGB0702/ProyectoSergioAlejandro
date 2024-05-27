@@ -33,9 +33,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
-    <title>Gestión de Partes IES SS</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset('/img/LogotipoApp.png') }}">
-    <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/LogotipoApp.png') }}">
+    
 </head>
 <body>
 
@@ -91,8 +89,9 @@ or
 
 {{--    <!-- CSRF Token -->--}}
 {{--    <meta name="csrf-token" content="{{ csrf_token() }}">--}}
-
-{{--    <title>{{ config('app.name', 'Laravel') }}</title>--}}
+        <title>Gestión de Partes IES SS</title>
+        <link rel="shortcut icon" type="image/png" href="{{ asset('/img/LogotipoApp.png') }}">
+        <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/LogotipoApp.png') }}">
 
 {{--    <!-- Fonts -->--}}
 
