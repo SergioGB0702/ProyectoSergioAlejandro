@@ -22,12 +22,15 @@ class AlumnoDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->setRowId('dni')
-            ->rawColumns(['nombre'])
-            ->editColumn('created_at', function ($user) {
-                return $user->updated_at->format('d/m/Y');
-            })
+            ->rawColumns(['Correos'])
             ->filterColumn('nombred', function($query, $keyword) {
                 $query->whereRaw("alumnos.nombre like ?", ["%{$keyword}%"]);
+            })
+            //Para que pueda buscar por los correos también
+            ->filterColumn('Correos', function($query, $keyword) {
+                $query->where(function($query) use ($keyword) {
+                    $query->where('correos.correo', 'like', "%{$keyword}%");
+                });
             });
     }
 
@@ -36,36 +39,25 @@ class AlumnoDataTable extends DataTable
         $unidad = $this->request()->get('unidad');
         $searchTerm = $this->request()->get('search')['value'] ?? null;
 
-        if (empty($unidad)) {
-            return $model->query()->whereRaw('1 = 0');
-        }
-        if (!empty($searchTerm)) {
-            // Aquí puedes ajustar tu consulta para la búsqueda global
-        }
-
-
         $query = $model->newQuery()
 
-        ->leftJoin('unidades', 'unidades.id', '=', 'alumnos.id_unidad')
-        ->leftJoin('cursos', 'unidades.id_curso', '=', 'cursos.id') 
-        ->leftJoin('anio_academico', 'cursos.id_anio_academico', '=', 'anio_academico.id')
-        ->select('unidades.*', 'alumnos.*', DB::raw('CONCAT("<ul><li>", GROUP_CONCAT(correos.correo SEPARATOR "</li><li>"), "</li></ul>") as Correos'));
+        ->leftJoin('correos', 'correos.alumno_dni', '=', 'alumnos.dni')
+        ->select('alumnos.*', DB::raw("CONCAT('<ul><li>', GROUP_CONCAT(CONCAT(correos.correo, ' (', correos.tipo, ')') SEPARATOR '</li><li>'), '</li></ul>') as Correos"))
+        ->groupBy('alumnos.dni');
 
-//         SELECT unidades.*, alumnos.*
-// from alumnos
-// LEFT JOIN unidades on unidades.id = alumnos.id_unidad
-// LEFT JOIN cursos on cursos.id = unidades.id_curso
-// LEFT JOIN anios_academicos on anios_academicos.id = cursos.id_anio_academico
 
-        $prueba = DB::execute($query);
-        echo $prueba;
         if (!empty($unidad)) {
 
             $query->where('alumnos.id_unidad', '=', $unidad);
         }
 
-        return $query;
+        if (!empty($searchTerm)) {
+            $model->query()->where('alumnos.dni', 'like', "%{$searchTerm}%")
+                  ->orWhere('alumnos.nombre', 'like', "%{$searchTerm}%")
+                  ->orWhere('alumnos.dni', 'like', "%{$searchTerm}%");
+        }
 
+        return $query;
 
     }
 
@@ -81,17 +73,8 @@ class AlumnoDataTable extends DataTable
             ->language(['url' => '/js/spanish.json'])
 
             ->parameters([
-
-            ])
-            ->addColumn([
-                'defaultContent' => view('action_menu')->render(),
-                'data' => 'action',
-                'name' => 'action',
-                'className' => 'align-middle', // 'align-middle
-                'title' => 'Acciones',
-                'orderable' => false,
-                'searchable' => false,
-
+                'pageLength' => 5, // Limitar los registros a 5 por página
+                'lengthMenu' => [[5, 10, 25, 50], [5, 10, 25, 50]],
             ])
             ->buttons([
                 Button::make('excel')->titleAttr('Exportar a Excel'),
@@ -107,10 +90,10 @@ class AlumnoDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('dni')->title('DNI')->data('alumnos.dni')->className('align-middle'),
-            Column::make('nombre')->name('alumnos.nombre')->title('Nombre')->data('alumnos.nombre')->className('align-middle'),
-            Column::make('puntos')->title('Puntos')->data('puntos')->data('alumnos.puntos')->className('align-middle')->searchable(false),
-            Column::make('correo')->title('Correos')->className('align-middle')->searchable(false),
+            Column::make('dni')->title('DNI')->data('dni')->className('align-middle text-center'),
+            Column::make('nombre')->name('alumnos.nombre')->title('Nombre')->data('nombre')->className('align-middle text-center'),
+            Column::make('Correos')->name('Correos')->title('Correos')->data('Correos')->className('align-middle text-center lista-datatable'),
+            Column::make('puntos')->title('Puntos')->data('puntos')->data('puntos')->className('align-middle text-center')->searchable(false),
         ];
     }
 

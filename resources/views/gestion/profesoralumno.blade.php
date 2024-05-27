@@ -17,9 +17,12 @@
         </div>
     @endif
                     
-    <div class="card">
-            <div class="card-header">Gestión de Profesores y Alumnos</div>
-                <div class="card-body">                    
+    <div class="card mb-4">
+        <div class="card-header">Gestión de Profesores y Alumnos</div>
+            <!-- Card body alumnos -->
+            <div class="card-body">        
+                <input id="switchProfeAlumno" onchange="cambiarDiv();" type="checkbox" data-on="Alumnos" data-off="Profesores" checked data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary">            
+                <div id="divAlumno">
                     <h2 class="mt-2 mb-4">Introduzca los datos generales</h2>
                     <form class="row">
                         <div class="col-12 mb-1">
@@ -63,13 +66,68 @@
                 <br>
                 <h2 class="mt-2 mb-4">Listado de Alumnos</h2>
                 <div class="">
-                    {{$dataTable->table(['class'=>'w-100 ' ])}}
+                    {{$dataTable->table(['class'=>'w-100 mb-2' ])}}
                 </div>
             </div>
+            <div id="divProfesor">
+                <h2 class="mt-3 mb-3">Añadir nuevo profesor/a</h2>
 
-
+                <form class="row" method="post" action="{{route('gestion.negativas.crear')}}">
+                    @csrf
+                    <div class="col-auto w-75">
+                        <label for="nuevaProfesor">Campos del nuevo profesor/a:</label>
+                        <div class="row">
+                            <input type="text" class="form-control mt-2 col" id="dniProfesor" name="dniProfesor" placeholder="DNI" style="margin-right: 2% !important; margin-left: 2% !important;">
+                            <input type="text" class="form-control mt-2 col" id="nombreProfesor" name="nombreProfesor" placeholder="Nombre" style="margin-right: 2% !important; margin-left: 2% !important;">
+                            <input type="text" class="form-control mt-2 col" id="telefonoProfesor" name="telefonoProfesor" placeholder="Teléfono" style="margin-right: 2% !important; margin-left: 2% !important;">
+                            <input type="email" class="form-control mt-2 col" id="emailProfesor" name="emailProfesor" placeholder="Correo" style="margin-right: 2% !important; margin-left: 2% !important;">
                         </div>
                     </div>
+                    <div class="col-auto align-self-end">
+                        <button type="submit" class="btn btn-secondary" id="generate">Añadir</button>
+                        <button type="reset" class="btn btn-danger text-white" id="reset">Limpiar</button>
+                    </div>
+                </form>
+
+                <br>
+
+                <h2 class="mt-2 mb-4">Listado de Profesores/as</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" style="width: 12%" class="text-center">DNI</th>
+                            <th scope="col" class="text-center" style="width: 16%">Nombre</th>
+                            <th scope="col" class="text-center" style="width: 10%">Teléfono</th>
+                            <th scope="col" class="text-center" style="width: 10%">Correo</th>
+                            <th scope="col" style="width: 10%" class="text-center">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($profesores as $profesor)
+                    <form class="row" method="patch" action="/gestion/conductasnegativas/editar/{{$profesor->id}}">
+                        @csrf 
+                        <tr class="align-middle">
+                            <td><input type="text" class="form-control" id="cambioConducta" name="cambioConducta" value="{{$profesor->dni}}"></td>
+                            <td><input type="text" class="form-control" id="cambioConducta" name="cambioConducta" value="{{$profesor->nombre}}"></td>
+                            <td><input type="text" class="form-control" id="cambioConducta" name="cambioConducta" value="{{$profesor->telefono}}"></td>
+                            <td><input type="text" class="form-control" id="cambioConducta" name="cambioConducta" value="{{$profesor->correo}}"></td>
+                            <td class="text-center">
+                            <button type="submit" class="btn btn-primary" id="generate">Editar</button>
+                    </form>
+                            <a class="btn btn-danger text-white sm-mt-2" href="/gestion/conductasnegativas/eliminar/{{$profesor->id}}">Eliminar</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                    </table>
+                </div>
+                
+                <div class="h-10 grid grid-cols-1 gap-4 content-between">
+                {{ $profesores->links('vendor.pagination.bootstrap-5') }}
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -77,82 +135,111 @@
 @push('scripts')
 
 {{ $dataTable->scripts() }}
-
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function() {
         // Deshabilita el campo de búsqueda global de DataTables
-        $('div.dataTables_filter input').prop('disabled', true);
+        //$('div.dataTables_filter input').prop('disabled', true);
+        const divProfesor = document.getElementById('divProfesor');
+        divProfesor.style.display = 'none';
     });
+
+    function cambiarDiv() {
+        const divProfesor = document.getElementById('divProfesor');
+        const divAlumno = document.getElementById('divAlumno');
+        const checked = document.getElementById('switchProfeAlumno').checked;
+
+        if (checked) {
+            divAlumno.style.display = 'block';
+            divProfesor.style.display = 'none';
+        } else {
+            divAlumno.style.display = 'none';
+            divProfesor.style.display = 'block';
+        }
+    }
+
+
+</script>
+
+    <script type="module">
 
     const table = $('#alumnos-table');
 
+    $(document).ready(function() {
+        // Deshabilita el campo de búsqueda global de DataTables
+        //$('div.dataTables_filter input').prop('disabled', true);
+        const divProfesor = document.getElementById('divProfesor');
+        divProfesor.style.display = 'none';
+    });
 
+    function cambiarDiv() {
+        const divProfesor = document.getElementById('divProfesor');
+        const divAlumno = document.getElementById('divAlumno');
+        const checked = document.getElementById('switchProfeAlumno').checked;
 
-            function handleSelectChange(inputSelect, outputSelect, url) {
-                let selectedId = inputSelect.val();
-                let options = '';
+        if (checked) {
+            divAlumno.style.display = 'block';
+            divProfesor.style.display = 'none';
+        } else {
+            divAlumno.style.display = 'none';
+            divProfesor.style.display = 'block';
+        }
+    }
 
-                $.ajax({
-                    url: url, // Reemplaza esto con la URL de tu servidor
-                    method: 'GET',
-                    data: {selectedId: selectedId},
-                    success: function (data) {
+            
+    function handleSelectChange(inputSelect, outputSelect, url) {                
+        let selectedId = inputSelect.val();               
+        let options = '';
+            $.ajax({
+                url: url,
+                method: 'GET',
+                data: {selectedId: selectedId},
+                success: function (data) {
 
-                        if (!$.isEmptyObject(data)) {
-                            options = '<option value="">Seleccione una opcion</option>';
-                        }
-
-                        $.each(data, function (key, value) {
-                            options += '<option value="' + key + '">' + value + '</option>';
-
-                        });
-                        outputSelect.empty().append(options).selectpicker('refresh');
+                    if (!$.isEmptyObject(data)) {
+                        options = '<option value="">Seleccione una opcion</option>';
                     }
-                });
+
+                    $.each(data, function (key, value) {
+                        options += '<option value="' + key + '">' + value + '</option>';
+                    });
+                    outputSelect.empty().append(options).selectpicker('refresh');
+                }
+            });
+        }
+
+        $('#inputAnoAcademico').change(function () {
+            if ($(this).val() === 'Seleccione una opcion') {
+                $('#inputCurso').empty().selectpicker('refresh');
+                $('#inputUnidad').empty().selectpicker('refresh');
+
+            //$('div.dataTables_filter input').prop('disabled', true);
+            } else {
+                 handleSelectChange($(this), $('#inputCurso'), "/cursos");
             }
 
-            $('#inputAnoAcademico').change(function () {
+        });
 
-                if ($(this).val() === 'Seleccione una opcion') {
-                    $('#inputCurso').empty().selectpicker('refresh');
-                    $('#inputUnidad').empty().selectpicker('refresh');
+        $('#inputCurso').change(function () {
+            console.log($(this).val());
+            if ($(this).val() === '0' || $(this).val() === '') {
 
-                    $('div.dataTables_filter input').prop('disabled', true);
+                $('#inputUnidad').empty().selectpicker('refresh');
 
-                } else {
-                    handleSelectChange($(this), $('#inputCurso'), "/cursos");
-                }
+                //$('div.dataTables_filter input').prop('disabled', true);
 
-            });
+            } else {
 
-            $('#inputCurso').change(function () {
-                console.log($(this).val());
-                if ($(this).val() === '0' || $(this).val() === '') {
+                $('#inputUnidad').empty().selectpicker('refresh');
 
-                    $('#inputUnidad').empty().selectpicker('refresh');
+                //$('div.dataTables_filter input').prop('disabled', true);
 
-                    $('div.dataTables_filter input').prop('disabled', true);
+                handleSelectChange($(this), $('#inputUnidad'), "/unidades");
+            }
 
-                } else {
-
-                    $('#inputUnidad').empty().selectpicker('refresh');
-
-                    $('div.dataTables_filter input').prop('disabled', true);
-
-                    handleSelectChange($(this), $('#inputUnidad'), "/unidades");
-                }
-
-            });
-
-            // Añade aquí más eventos change para otros elementos select
-            // Por ejemplo:
-            // $('#otroInputSelect').change(function() {
-            //     handleSelectChange($(this), $('#otroOutputSelect'));
-            // });
-
-
-
+        });
 
         table.on('preXhr.dt', function (e, settings, data) {
 
@@ -164,7 +251,7 @@
 
         table.on('init.dt', function (e, settings, data) {
 
-            $('div.dataTables_filter input').prop('disabled', true);
+            ///$('div.dataTables_filter input').prop('disabled', true);
             // console.log(data.clase);
 
 
@@ -182,25 +269,16 @@
         });
         $('#inputUnidad').change(function () {
             if ($(this).val() === 1 || $(this).val() === '') {
-                $('div.dataTables_filter input').prop('disabled', true);
+                //$('div.dataTables_filter input').prop('disabled', true);
             } else {
-                $('div.dataTables_filter input').prop('disabled', false);
+                //$('div.dataTables_filter input').prop('disabled', false);
             }
-
-
             table.DataTable().ajax.reload();
             return false;
         });
 
         $('#reset').on('click', function () {
 
-            // table.on('preXhr.dt', function (e, settings, data) {
-            //     // data.start_date = '';
-            //     // data.end_date = '';
-            //     // data.clase = '';
-            //
-            //
-            // });
             $('#start_date').val('')
             $('#end_date').val('')
             $('.selectpicker').selectpicker('deselectAll');
@@ -208,18 +286,20 @@
             return false;
         });
 
-
-
-</script>
-
-    <script type="module">
-
-
-
+        $('#alumnos-table').on('click', 'td', function() {
+            let data = $('#alumnos-table').DataTable().row(this).data();
+            let dni = data.dni;
+            let nombre = data.nombre;
+            let puntos = data.puntos;
+            let correos = data.Correos;
+            if (correos == null) {
+                alert('DNI: ' + data.dni + '\nNombre: ' + data.nombre + '\nPuntos: ' + data.puntos);
+            } else {
+                alert('DNI: ' + data.dni + '\nNombre: ' + data.nombre + '\nCorreos: ' + data.Correos + '\nPuntos: ' + data.puntos);
+            }
+    });
 
     </script>
-
-    <!-- Bootstrap Select CSS -->
 
 
 @endpush

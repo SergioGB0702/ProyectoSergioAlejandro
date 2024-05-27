@@ -88,7 +88,7 @@
                 <span data-coreui-i18n="dashboard">Incidencias</span></a></li>
         <li class="nav-item"><a class="nav-link" href="{{route('gestion.negativas')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-ban')}}"></use>
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-book')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Conductas Negativas</span></a></li>
         <li class="nav-item"><a class="nav-link" href="{{route('gestion.correcciones')}}">
@@ -101,6 +101,11 @@
                     <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-school')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Alumnos / Profesores</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('gestion.puntos')}}">
+                <svg class="nav-icon">
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-bell-exclamation')}}"></use>
+                </svg>
+                <span data-coreui-i18n="dashboard">Reiniciar puntos</span></a></li>
     </ul>
     <div class="sidebar-footer border-top d-none d-md-flex">
         <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>

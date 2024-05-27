@@ -9,7 +9,7 @@
 <div class="align-middle" >
     <button class="btn " type="button" data-bs-toggle="dropdown" aria-expanded="false">
         <svg class="icon " style="width: 20px; height: 20px;">
-            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-options"></use>
+            <use xlink:href="/vendors/@coreui/icons/svg/free.svg#cil-options"></use>
         </svg>
     </button>
     <div  class="dropdown dropbone" id="actionMenu">
