@@ -15,10 +15,10 @@ class ParteFactory extends Factory
     public function definition(): array
     {
         return [
-            'alumno_dni' => Alumno::InRandomOrder()->first()->dni,
             'colectivo' => $this->faker->randomElement(['Si', 'No']),
             'profesor_dni' => Profesor::InRandomOrder()->first()->dni,
             'tramo_horario_id' => Tramohorario::InRandomOrder()->first()->id,
+            'puntos_penalizados' => $this->faker->numberBetween(0, 3),
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Alumno;
+use App\Models\AlumnoParte;
 use App\Models\AnioAcademico;
 use App\Models\Correo;
 use App\Models\Parte;
@@ -128,9 +129,10 @@ class DatabaseSeeder extends Seeder
                 ParteCorreccionsaplicada::factory()->create();
                 ParteIncidencia::factory()->create();
             }
+        }
 
-
-
+        foreach (range(0, 20) as $i) {
+            AlumnoParte::factory()->create();
         }
     }
 }

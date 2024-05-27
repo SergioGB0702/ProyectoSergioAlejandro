@@ -16,6 +16,7 @@ class CorreoFactory extends Factory
         return [
             'correo' => $this->faker->unique()->safeEmail,
             'alumno_dni' => Alumno::inRandomOrder()->first()->dni,
+            'tipo' => $this->faker->randomElement(['personal', 'tutor']),
         ];
     }
 }

@@ -12,8 +12,10 @@ class ProfesorFactory extends Factory
     public function definition(): array
     {
         return [
-            'dni' => $this->faker->unique()->bothify('########?'),
+            'dni' => strtoupper($this->faker->unique()->bothify('########?')),
             'nombre' => $this->faker->name(),
+            'telefono' => $this->faker->numerify('###-##-##-##'),
+            'correo' => $this->faker->email(),
         ];
     }
 }
