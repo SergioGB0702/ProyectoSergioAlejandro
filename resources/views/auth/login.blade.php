@@ -1,7 +1,21 @@
 @extends('layouts.auth')
 
 @section('content')
-    <h1 class="mb-4">Login</h1>
+    <div class="row mb-2" style="height: 150px; justify-content: center;">
+
+        <div class="col-3 text-start">
+            <img src="{{ asset('/img/LogotipoApp.png') }}" width="130" height="130" />
+        </div>
+        <div class="col-6 text-center">
+            <h1>Sistema de Gestión de Partes</h1>
+            <h2>IES San Sebastián</h2>
+        </div>
+        <div class="col-3 text-end">
+            <img src="{{ asset('/img/LogoSanSebastian.png') }}" height="60%" style="margin-top: 20px;"/>
+        </div>
+
+    </div>
+    <h1 class="mb-4">Login de usuario</h1>
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
@@ -49,7 +63,7 @@
                            id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                     <label class="form-check-label" for="remember">
-                        {{ __('Remember Me') }}
+                        {{ __('Recuérdame') }}
                     </label>
                 </div>
             </div>
@@ -57,16 +71,14 @@
 
         <div class="row">
 
-
-
                 <div class="col-6">
                     <button class="btn btn-primary px-4" type="submit">{{ __('Login') }}</button>
                 </div>
 
-            <div class="col-6 text-end">
+            <div class="col-6 text-end d-none">
                 @if (Route::has('password.request'))
                     <a class="btn btn-link" href="{{ route('password.request') }}">
-                        {{ __('Forgot Your Password?') }}
+                        {{ __('¿Has olvidado la contraseña?') }}
                     </a>
                 @endif
             </div>

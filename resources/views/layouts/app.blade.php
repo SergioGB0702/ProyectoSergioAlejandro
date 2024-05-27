@@ -9,8 +9,6 @@
     {{--    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-KGkYqG3gD435LMZAC/8byquZiD5665LheNozmHAqp8vrOKBaBL/bFUO5Er5tMRNi" crossorigin="anonymous">--}}
     {{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />--}}
     <!-- Option 2: CoreUI PRO for Bootstrap CSS -->
-
-
     <link rel="stylesheet" href="{{asset('css/coreuicss.css')}}">
     <link rel="stylesheet" href="{{asset('css/simplebar.css')}}">
     <link rel="stylesheet" href="{{asset('css/simplebar2.css')}}">
@@ -45,8 +43,9 @@
 
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-es_ES.js"></script>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
+    <title>Gestión de Partes IES SS</title>
+    <link rel="shortcut icon" type="image/png" href="{{ asset('/img/LogotipoApp.png') }}">
+    <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/LogotipoApp.png') }}">
 </head>
 <body>
 
@@ -63,38 +62,48 @@
         <li class="nav-title" data-coreui-i18n="theme">Alumnado</li>
         <li class="nav-item"><a class="nav-link" href="{{route('users.index')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-spreadsheet')}}"></use>
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-spreadsheet')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">General</span></a></li>
 
         <li class="nav-item"><a class="nav-link" href="{{route('parte.index')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-ban')}}"></use>
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-ban')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Crear Parte</span></a></li>
 
         <li class="nav-item"><a class="nav-link" href="{{route('parte.resumen')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-balance-scale')}}"></use>
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-balance-scale')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Resumen Incidencias</span></a></li>
         <!-- Gestión para jefatura -->
         <li class="nav-title" data-coreui-i18n="theme">Gestión</li>
         <li class="nav-item"><a class="nav-link" href="{{route('gestion.incidencias')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-sad')}}"></use>
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-sad')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Incidencias</span></a></li>
         <li class="nav-item"><a class="nav-link" href="{{route('gestion.negativas')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-ban')}}"></use>
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-book')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Conductas Negativas</span></a></li>
         <li class="nav-item"><a class="nav-link" href="{{route('gestion.correcciones')}}">
                 <svg class="nav-icon">
-                    <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-balance-scale')}}"></use>
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-pin')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Correcciones Aplicadas</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('gestion.profesoralumno')}}">
+                <svg class="nav-icon">
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-school')}}"></use>
+                </svg>
+                <span data-coreui-i18n="dashboard">Alumnos / Profesores</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('gestion.puntos')}}">
+                <svg class="nav-icon">
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-bell-exclamation')}}"></use>
+                </svg>
+                <span data-coreui-i18n="dashboard">Reiniciar puntos</span></a></li>
     </ul>
     <div class="sidebar-footer border-top d-none d-md-flex">
         <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
@@ -113,7 +122,7 @@
                     <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-menu')}} "></use>
                 </svg>
             </button>
-
+            <img width="52" height="52" alt="Logotipo App" src="{{asset('img/LogotipoApp.png')}}">
             <ul class="header-nav d-none d-md-flex ms-auto">
 
 

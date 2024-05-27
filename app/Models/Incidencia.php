@@ -13,5 +13,10 @@ class Incidencia extends Model
     protected $fillable = ['descripcion'];
     use HasFactory;
 
+    public function partes()
+    {
+        return $this->belongsToMany(Parte::class, 
+        'parte_incidencias');
+    }
 
 }

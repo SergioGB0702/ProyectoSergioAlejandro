@@ -75,9 +75,6 @@ class DatabaseSeeder extends Seeder
             ['nombre' => '4º de ESO','id_anio_academico' => 1],
             ['nombre' => '1º de Bachillerato','id_anio_academico' => 1],
             ['nombre' => '2º de Bachillerato','id_anio_academico' => 1],
-
-
-
         ];
 
         foreach ($cursos as $curso) \App\Models\Curso::factory()->create($curso);
@@ -134,5 +131,6 @@ class DatabaseSeeder extends Seeder
         foreach (range(0, 20) as $i) {
             AlumnoParte::factory()->create();
         }
+
     }
 }

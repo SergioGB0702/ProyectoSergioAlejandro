@@ -12,4 +12,9 @@ class Correo extends Model
 
     protected $fillable = ['alumno_dni', 'correo'];
     use HasFactory;
+
+    public function alumno () {
+        return $this->belongsTo(Alumno::class);
+    }
+
 }

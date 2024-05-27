@@ -9,13 +9,13 @@
     {{--    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-KGkYqG3gD435LMZAC/8byquZiD5665LheNozmHAqp8vrOKBaBL/bFUO5Er5tMRNi" crossorigin="anonymous">--}}
     {{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />--}}
     <!-- Option 2: CoreUI PRO for Bootstrap CSS -->
-    <link rel="stylesheet" href="css/coreuicss.css">
-    <link rel="stylesheet" href="css/simplebar.css">
-    <link rel="stylesheet" href="css/simplebar2.css">
+    <link rel="stylesheet" href="/css/coreuicss.css">
+    <link rel="stylesheet" href="/css/simplebar.css">
+    <link rel="stylesheet" href="/css/simplebar2.css">
 
-    <script src="js/simplebar2.js"></script>
-    <script src="js/coreui.js"></script>
-    <script src="js/color-mode.js"></script>
+    <script src="/js/simplebar2.js"></script>
+    <script src="/js/coreui.js"></script>
+    <script src="/js/color-mode.js"></script>
     {{--    <script src="https://cdn.jsdelivr.net/npm/@coreui/icons@3.0.1/dist/cjs/index.min.js"></script>--}}
     {{--    <link href="https://cdn.jsdelivr.net/npm/@coreui/icons@3.0.1/css/all.min.css" rel="stylesheet">--}}
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
@@ -33,7 +33,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    
 </head>
 <body>
 
@@ -89,8 +89,9 @@ or
 
 {{--    <!-- CSRF Token -->--}}
 {{--    <meta name="csrf-token" content="{{ csrf_token() }}">--}}
-
-{{--    <title>{{ config('app.name', 'Laravel') }}</title>--}}
+        <title>Gestión de Partes IES SS</title>
+        <link rel="shortcut icon" type="image/png" href="{{ asset('/img/LogotipoApp.png') }}">
+        <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/LogotipoApp.png') }}">
 
 {{--    <!-- Fonts -->--}}
 
