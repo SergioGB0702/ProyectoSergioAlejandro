@@ -53,8 +53,7 @@ class AlumnoDataTable extends DataTable
 
         if (!empty($searchTerm)) {
             $model->query()->where('alumnos.dni', 'like', "%{$searchTerm}%")
-                  ->orWhere('alumnos.nombre', 'like', "%{$searchTerm}%")
-                  ->orWhere('alumnos.dni', 'like', "%{$searchTerm}%");
+                  ->orWhere('alumnos.nombre', 'like', "%{$searchTerm}%");
         }
 
         return $query;
