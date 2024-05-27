@@ -55,7 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/gestion/conductasnegativas/eliminar/{id}', [App\Http\Controllers\ConductasNegativasController::class, 'eliminar'])->name('gestion.negativas.eliminar');
 
     Route::get('/gestion/profesoralumno', [App\Http\Controllers\ProfesorAlumnoController::class, 'index'])->name('gestion.profesoralumno');
-
+    Route::get('/gestion/obtenerCorreos', [App\Http\Controllers\ProfesorAlumnoController::class, 'obtenerCorreos'])->name('gestion.obtenerCorreos');
+    
     // Rutas para la gestión de los puntos
     Route::get('/gestion/puntos', function () {
         return view("gestion.puntos");

@@ -129,8 +129,54 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalAlumno" tabindex="-1" aria-labelledby="modalAlumnoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAlumnoLabel">Formulario</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarAlumno">
+                        <div class="form-group">
+                            <label for="text">DNI</label>
+                            <input type="text" class="form-control" id="dni" name="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="text">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="number">Número</label>
+                            <input type="number" class="form-control" id="number" name="number">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo Electrónico</label>
+                            <div id="email-fields">
+                                <div class="input-group mb-3 email-group">
+                                    <input type="email" class="form-control" name="email">
+                                    <div class="input-group-append">
+                                        <select class="form-control" name="email_type">
+                                            <option value="personal">Personal</option>
+                                            <option value="tutor">Tutor</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" form="form">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-
+    @if (isset($paginaProfesor))
+    <div id="divPagina" display="none"></div>
+    @endif
 @endsection
 @push('scripts')
 
@@ -140,10 +186,22 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
-        // Deshabilita el campo de búsqueda global de DataTables
-        //$('div.dataTables_filter input').prop('disabled', true);
+        // Para controlar si existe página, se crea o no un div oculto con un condicional de su valor
+        const divPagina = document.getElementById('divPagina');
         const divProfesor = document.getElementById('divProfesor');
-        divProfesor.style.display = 'none';
+        const divAlumno = document.getElementById('divAlumno');
+        const switchProfeAlumno = document.getElementById('switchProfeAlumno');
+        if (divPagina != null) {
+            divAlumno.style.display = 'none';
+            divProfesor.style.display = 'block';
+            switchProfeAlumno.checked = true;
+
+        } else {
+            divAlumno.style.display = 'block';
+            divProfesor.style.display = 'none';
+        }
+        
+        
     });
 
     function cambiarDiv() {
@@ -168,10 +226,21 @@
     const table = $('#alumnos-table');
 
     $(document).ready(function() {
-        // Deshabilita el campo de búsqueda global de DataTables
-        //$('div.dataTables_filter input').prop('disabled', true);
+        // Para controlar si existe página, se crea o no un div oculto con un condicional de su valor
+        const divPagina = document.getElementById('divPagina');
         const divProfesor = document.getElementById('divProfesor');
-        divProfesor.style.display = 'none';
+        const divAlumno = document.getElementById('divAlumno');
+        const switchProfeAlumno = document.getElementById('switchProfeAlumno');
+        const switchToggleProfeAlumno = document.getElementsByClassName('toggle')[0];
+        if (divPagina != null) {
+            divAlumno.style.display = 'none';
+            divProfesor.style.display = 'block';
+            switchToggleProfeAlumno.classList.add("off");
+            switchProfeAlumno.checked = false;
+        } else {
+            divAlumno.style.display = 'block';
+            divProfesor.style.display = 'none';
+        }        
     });
 
     function cambiarDiv() {
@@ -295,9 +364,35 @@
             if (correos == null) {
                 alert('DNI: ' + data.dni + '\nNombre: ' + data.nombre + '\nPuntos: ' + data.puntos);
             } else {
-                alert('DNI: ' + data.dni + '\nNombre: ' + data.nombre + '\nCorreos: ' + data.Correos + '\nPuntos: ' + data.puntos);
+                let correosBienFormato = [];
+                let datosForm = {
+                    "dni" : dni
+                }
+                $.ajax({
+                    url: '/gestion/obtenerCorreos',
+                    type: 'GET',
+                    data: datosForm,
+                    dataType: 'json',
+                    success: function(datos) {
+                        for (let i = 0; i < datos.length; i++) {
+                            correosBienFormato[i] = datos[i];
+                        }
+                        var emailGroup = $('.email-group').first().clone();
+                        emailGroup.find('input').val('');
+                        emailGroup.find('.add-email').removeClass('add-email').addClass('remove-email').text('Eliminar');
+                        $('#email-fields').append(emailGroup);
+                        $("#modalAlumno").modal("show");
+                    },
+                    error: function( error) {
+                        
+                    }
+                });
             }
     });
+
+    $(document).on('click', '.remove-email', function() {
+            $(this).closest('.email-group').remove();
+        });
 
     </script>
 
