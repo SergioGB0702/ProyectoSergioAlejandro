@@ -41,30 +41,33 @@ class DatabaseSeeder extends Seeder
         foreach ($tramosHorarios as $tramoHorario) \App\Models\Tramohorario::factory()->create($tramoHorario);
 
         $incidentes = [
-            ["descripcion" => "Jugar en clase"],
-            ["descripcion" => "Pelea con un compañero"],
-            ["descripcion" => "Malos modos"],
-            ["descripcion" => "Jugar en clase"],
-            ["descripcion" => "Uso del móvil sin permiso"],
-            ["descripcion" => "Uso indebido del PC"],
+            ["descripcion" => "Jugar en clase", 'habilitado' => true],
+            ["descripcion" => "Pelea con un compañero", 'habilitado' => true],
+            ["descripcion" => "Malos modos", 'habilitado' => true],
+            ["descripcion" => "Jugar en clase", 'habilitado' => true],
+            ["descripcion" => "Uso del móvil sin permiso", 'habilitado' => true],
+            ["descripcion" => "Uso indebido del PC", 'habilitado' => true],
+            ["descripcion" => "Uso del PC", 'habilitado' => false],
         ];
 
         foreach ($incidentes as $incidente) \App\Models\Incidencia::factory()->create($incidente);
 
         $conductasNegativas = [
-            ["descripcion" => "Perturbación del normal desarrollo de las actividades de la clase", "tipo" => "Contraria"],
-            ["descripcion" => "Agresión física a un miembro de la comunidad educativa.", "tipo" => "Grave"],
-            ["descripcion" => "Falta de colaboración sistemática en la realización de las actividades.", "tipo" => "Contraria"],
-            ["descripcion" => "Impedir o dificultar el estudio a sus compañeros.", "tipo" => "Contraria"],
-            ["descripcion" => "Actuaciones incorrectas hacia algún miembro de la comunidad educativa.", "tipo" => "Contraria"],
-            ["descripcion" => "Reiteración en un mismo curso de conductas contrarias a las normas de convivencia.", "tipo" => "Grave"],
+            ["descripcion" => "Perturbación del normal desarrollo de las actividades de la clase", "tipo" => "Contraria", 'habilitado' => true],
+            ["descripcion" => "Agresión física a un miembro de la comunidad educativa.", "tipo" => "Grave", 'habilitado' => true],
+            ["descripcion" => "Falta de colaboración sistemática en la realización de las actividades.", "tipo" => "Contraria", 'habilitado' => true],
+            ["descripcion" => "Impedir o dificultar el estudio a sus compañeros.", "tipo" => "Contraria", 'habilitado' => true],
+            ["descripcion" => "Actuaciones incorrectas hacia algún miembro de la comunidad educativa.", "tipo" => "Contraria", 'habilitado' => true],
+            ["descripcion" => "Reiteración en un mismo curso de conductas contrarias a las normas de convivencia.", "tipo" => "Grave", 'habilitado' => true],
+            ["descripcion" => "No asistencia a una actividad en la que se había comprometido.", "tipo" => "Grave", 'habilitado' => false],
         ];
         foreach ($conductasNegativas as $conductaNegativa) \App\Models\Conductanegativa::factory()->create($conductaNegativa);
 
         $correcionesAplicadas = [
-            ["descripcion" => "Suspender el derecho de asistencia al centro entre 1 y 3 días."],
-            ["descripcion" => "Suspender el derecho de asistencia al centro entre 4 y 30 días."],
-            ["descripcion" => "Realizar tareas fuera del horario lectivo del Centro."],
+            ["descripcion" => "Suspender el derecho de asistencia al centro entre 1 y 3 días.", 'habilitado' => true],
+            ["descripcion" => "Suspender el derecho de asistencia al centro entre 4 y 30 días.", 'habilitado' => true],
+            ["descripcion" => "Realizar tareas fuera del horario lectivo del Centro.", 'habilitado' => true],
+            ["descripcion" => "Permanecimiento en clase durante el tiempo de recreo", 'habilitado' => false],
         ];
         foreach ($correcionesAplicadas as $correcionAplicada) \App\Models\Correccionaplicada::factory()->create($correcionAplicada);
 

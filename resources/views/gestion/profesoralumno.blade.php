@@ -105,7 +105,7 @@
                     </thead>
                     <tbody>
                     @foreach ($profesores as $profesor)
-                    <form class="row" method="patch" action="/gestion/conductasnegativas/editar/{{$profesor->id}}">
+                    <form class="row" method="patch" action="/gestion/conductasnegativas/editar/{{$profesor->dni}}">
                         @csrf 
                         <tr class="align-middle">
                             <td><input type="text" class="form-control" id="cambioConducta" name="cambioConducta" value="{{$profesor->dni}}"></td>
@@ -115,7 +115,7 @@
                             <td class="text-center">
                             <button type="submit" class="btn btn-primary" id="generate">Editar</button>
                     </form>
-                            <a class="btn btn-danger text-white sm-mt-2" href="/gestion/conductasnegativas/eliminar/{{$profesor->id}}">Eliminar</a>
+                            <a class="btn btn-warning text-black sm-mt-2" href="/gestion/profesoralumno/habilitar/{{$profesor->dni}}">Deshabilitar</a>
                             </td>
                         </tr>
                     @endforeach
@@ -129,6 +129,7 @@
             </div>
         </div>
     </div>
+    <!-- Modal para editar el alumno -->
     <div class="modal fade" id="modalAlumno" tabindex="-1" aria-labelledby="modalAlumnoLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -138,16 +139,16 @@
                 <div class="modal-body">
                     <form id="formEditarAlumno">
                         <div class="form-group">
-                            <label for="text">DNI</label>
-                            <input type="text" class="form-control" id="dni" name="text">
+                            <label for="dniEditar">DNI</label>
+                            <input type="text" class="form-control" id="dniEditar" name="dniEditar">
                         </div>
                         <div class="form-group">
-                            <label for="text">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" name="text">
+                            <label for="nombreEditar">Nombre</label>
+                            <input type="text" class="form-control" id="nombreEditar" name="nombreEditar">
                         </div>
                         <div class="form-group">
-                            <label for="number">Número</label>
-                            <input type="number" class="form-control" id="number" name="number">
+                            <label for="puntosEditar">Puntos</label>
+                            <input type="number" class="form-control" id="puntosEditar" name="puntosEditar">
                         </div>
                         <div class="form-group">
                             <label for="email">Correo Electrónico</label>
@@ -166,8 +167,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary" form="form">Guardar</button>
+                    <button type="button" class="btn btn-danger text-white" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-secondary" form="form">Guardar</button>
                 </div>
             </div>
         </div>
@@ -381,6 +382,10 @@
                         emailGroup.find('input').val('');
                         emailGroup.find('.add-email').removeClass('add-email').addClass('remove-email').text('Eliminar');
                         $('#email-fields').append(emailGroup);
+                        // Asignación de valores a los input
+                        $("#dniEditar").val(dni);
+                        $("#nombreEditar").val(nombre);
+                        $("#puntosEditar").val(puntos);
                         $("#modalAlumno").modal("show");
                     },
                     error: function( error) {

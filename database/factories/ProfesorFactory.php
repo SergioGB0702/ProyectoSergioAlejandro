@@ -16,6 +16,7 @@ class ProfesorFactory extends Factory
             'nombre' => $this->faker->name(),
             'telefono' => $this->faker->numerify('###-##-##-##'),
             'correo' => $this->faker->email(),
+            'habilitado' => $this->faker->boolean(),
         ];
     }
 }

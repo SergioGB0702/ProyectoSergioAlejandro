@@ -42,19 +42,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/gestion/incidencias', [App\Http\Controllers\IncidenciasController::class, 'index'])->name('gestion.incidencias');
     Route::post('/gestion/incidencias', [App\Http\Controllers\IncidenciasController::class, 'crear'])->name('gestion.incidencias.crear');
     Route::get('/gestion/incidencias/editar/{id}', [App\Http\Controllers\IncidenciasController::class, 'editar'])->name('gestion.incidencias.editar');
+    Route::get('/gestion/incidencias/habilitar/{id}', [App\Http\Controllers\IncidenciasController::class, 'habilitar'])->name('gestion.incidencias.habilitar');
     Route::get('/gestion/incidencias/eliminar/{id}', [App\Http\Controllers\IncidenciasController::class, 'eliminar'])->name('gestion.incidencias.eliminar');
 
     Route::get('/gestion/correccionesaplicadas', [App\Http\Controllers\CorreccionesAplicadasController::class, 'index'])->name('gestion.correcciones');
     Route::post('/gestion/correccionesaplicadas', [App\Http\Controllers\CorreccionesAplicadasController::class, 'crear'])->name('gestion.correcciones.crear');
     Route::get('/gestion/correccionesaplicadas/editar/{id}', [App\Http\Controllers\CorreccionesAplicadasController::class, 'editar'])->name('gestion.correcciones.editar');
+    Route::post('/gestion/correccionesaplicadas/habilitar/{id}', [App\Http\Controllers\CorreccionesAplicadasController::class, 'habilitar'])->name('gestion.correcciones.habilitar');
     Route::get('/gestion/correccionesaplicadas/eliminar/{id}', [App\Http\Controllers\CorreccionesAplicadasController::class, 'eliminar'])->name('gestion.correcciones.eliminar');
 
     Route::get('/gestion/conductasnegativas', [App\Http\Controllers\ConductasNegativasController::class, 'index'])->name('gestion.negativas');
     Route::post('/gestion/conductasnegativas', [App\Http\Controllers\ConductasNegativasController::class, 'crear'])->name('gestion.negativas.crear');
     Route::get('/gestion/conductasnegativas/editar/{id}', [App\Http\Controllers\ConductasNegativasController::class, 'editar'])->name('gestion.negativas.editar');
+    Route::post('/gestion/conductasnegativas/habilitar/{id}', [App\Http\Controllers\ConductasNegativasController::class, 'habilitar'])->name('gestion.negativas.habilitar');
     Route::get('/gestion/conductasnegativas/eliminar/{id}', [App\Http\Controllers\ConductasNegativasController::class, 'eliminar'])->name('gestion.negativas.eliminar');
 
     Route::get('/gestion/profesoralumno', [App\Http\Controllers\ProfesorAlumnoController::class, 'index'])->name('gestion.profesoralumno');
+    Route::get('/gestion/profesoralumno/habilitar/{dni}', [App\Http\Controllers\ProfesorAlumnoController::class, 'habilitar'])->name('gestion.profesoralumno.habilitar');
     Route::get('/gestion/obtenerCorreos', [App\Http\Controllers\ProfesorAlumnoController::class, 'obtenerCorreos'])->name('gestion.obtenerCorreos');
     
     // Rutas para la gestión de los puntos

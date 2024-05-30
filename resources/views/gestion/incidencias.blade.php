@@ -42,7 +42,7 @@
                                     <tr>
                                         <th scope="col" style="width: 8%" class="text-center">#</th>
                                         <th scope="col" class="text-center">Descripción</th>
-                                        <th scope="col" style="width: 15%" class="text-center">Opciones</th>
+                                        <th scope="col" style="width: 17%" class="text-center">Opciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,7 +55,7 @@
                                         <td class="text-center">
                                         <button type="submit" class="btn btn-primary" id="generate">Editar</button>
                                 </form>
-                                        <a class="btn btn-danger text-white sm-mt-2" href="/gestion/incidencias/eliminar/{{$incidencia->id}}">Eliminar</a>
+                                <a class="btn btn-warning text-black sm-mt-2" href="/gestion/incidencias/habilitar/{{$incidencia->id}}">Deshabilitar</a>
                                         </td>
                                     </tr>
                                 @endforeach
