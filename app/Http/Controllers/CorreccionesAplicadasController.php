@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class CorreccionesAplicadasController extends Controller
 {
     public function index() {
-        $correcciones = Correccionaplicada::select("*");
+        $correcciones = Correccionaplicada::select("*")->where('habilitado','=',true);
         $tandaCorrecciones = $correcciones->paginate(5);
         return view('gestion.correcciones', ["correcciones" => $tandaCorrecciones]);
     }
@@ -49,5 +49,12 @@ class CorreccionesAplicadasController extends Controller
             return redirect('/gestion/correccionesaplicadas')->with('success', 'La correción a eliminar no existe');
         }
         return redirect('/gestion/correccionesaplicadas')->with('success', 'Error al eliminar la correción');
+    }
+
+    public function habilitar(Request $request) {
+        $id = $request->id;
+        $correccion = Correccionaplicada::select('*')->where('id','=',$id)->get()[0];
+        Correccionaplicada::where('id','=',$id)->update(['habilitado' =>  !($correccion->habilitado)]);
+        return back()->with('success', 'Incidencia deshabilitada');
     }
 }

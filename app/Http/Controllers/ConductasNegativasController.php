@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ConductasNegativasController extends Controller
 {
     public function index() {
-        $conductas = Conductanegativa::select("*");
+        $conductas = Conductanegativa::select("*")->where('habilitado','=',true);
         $tandaConductas = $conductas->paginate(5);
         return view('gestion.negativas', ["conductas" => $tandaConductas]);
     }
@@ -55,4 +55,12 @@ class ConductasNegativasController extends Controller
         }
         return redirect('/gestion/conductasnegativas')->with('success', 'Error al eliminar la conducta negativa');
     }
+
+    public function habilitar(Request $request) {
+        $id = $request->id;
+        $conducta = Conductanegativa::select('*')->where('id','=',$id)->get()[0];
+        Conductanegativa::where('id','=',$id)->update(['habilitado' =>  !($conducta->habilitado)]);
+        return back()->with('success', 'Incidencia deshabilitada');
+    }
+
 }

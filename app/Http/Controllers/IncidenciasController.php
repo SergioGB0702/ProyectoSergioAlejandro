@@ -13,7 +13,7 @@ use function PHPUnit\Framework\assertIsNumeric;
 class IncidenciasController extends Controller
 {
     public function index() {
-        $incidencias = Incidencia::select("*");
+        $incidencias = Incidencia::select("*")->where('habilitado','=',true);
         $tandaIncidencias = $incidencias->paginate(5);
         return view('gestion.incidencias', ["incidencias" => $tandaIncidencias]);
     }
@@ -53,6 +53,13 @@ class IncidenciasController extends Controller
             return redirect('/gestion/incidencias')->with('success', 'La incidencia a eliminar no existe');
         }
         return redirect('/gestion/incidencias')->with('success', 'Error al eliminar la incidencia');
+    }
+
+    public function habilitar(Request $request) {
+        $id = $request->id;
+        $incidencia = Incidencia::select('*')->where('id','=',$id)->get()[0];
+        Incidencia::where('id','=',$id)->update(['habilitado' =>  !($incidencia->habilitado)]);
+        return back()->with('success', 'Incidencia deshabilitada');
     }
 
 }

@@ -13,7 +13,7 @@ class ProfesorAlumnoController extends Controller
 {
     public function index(AlumnoDataTable $dataTable, Request $request) {
         $anoAcademico = AnioAcademico::all();
-        $profesores = Profesor::select("*");
+        $profesores = Profesor::select("*")->where('habilitado','=',true);
         $tandaProfesores = $profesores->paginate(5);
         $paginaActual = $request->page;
         if ($paginaActual != null) {
@@ -33,6 +33,13 @@ class ProfesorAlumnoController extends Controller
         $dniAlumno = $request->dni;
         $listaCorreos = Correo::select("correo","tipo")->where("alumno_dni","=",$dniAlumno)->get();
         return $listaCorreos;
+    }
+
+    public function habilitar(Request $request) {
+        $dniProfesor = $request->dni;
+        $profesor = Profesor::select('*')->where('dni','=',$dniProfesor)->get()[0];
+        Profesor::where('dni','=',$dniProfesor)->update(['habilitado' =>  !($profesor->habilitado)]);
+        return back()->with('success', 'Profesor deshabilitado');
     }
 
 }
