@@ -19,7 +19,9 @@
 //    left: calc(100% - 20px) !important;
 //}
 
-
+body .ck-content {
+    color: black; /* Cambia esto al color que desees para el texto en modo oscuro */
+}
 
 //.dataTables_scroll{
 //    overflow-x: auto;

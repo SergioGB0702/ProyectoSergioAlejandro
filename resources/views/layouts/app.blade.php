@@ -16,13 +16,19 @@
     <script src="{{asset('js/simplebar2.js')}}"></script>
     <script src="{{asset('js/coreui.js')}}"></script>
     <script src="{{asset('js/color-mode.js')}}"></script>
+    <script src="{{asset('js/ckeditor.js')}}"></script>
+
+
 
 
     {{--        <script src="https://cdn.jsdelivr.net/npm/@coreui/icons@3.0.1/dist/cjs/index.min.js"></script>--}}
     {{--        <link href="https://cdn.jsdelivr.net/npm/@coreui/icons@3.0.1/css/all.min.css" rel="stylesheet">--}}
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Icons"
+        rel="stylesheet"
+    />
     {{--    <!-- Latest compiled and minified CSS -->--}}
     {{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">--}}
 

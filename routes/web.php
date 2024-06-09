@@ -30,6 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
     Route::get('/indexParte', [UsersController::class, 'indexParte'])->name('parte.index');
     Route::post('/createParte', [UsersController::class, 'crearParte'])->name('parte.create');
+    Route::get('/descargarPartePDF/{id}', [UsersController::class, 'descargarPartePDF'])->name('descargarPartePDF');
+    Route::post('/updateParte/{id}', [UsersController::class, 'editarParte'])->name('parte.update');
+    Route::get('/deleteParte/{id}', [UsersController::class, 'eliminarParte'])->name('parte.delete');
     Route::get('/correo', [UsersController::class, 'correo'])->name('user.correo');
     Route::get('/correoenviar', [UsersController::class, 'pruebaCorreo'])->name('user.enviarcorreo');
     Route::get('/import', [UsersController::class, 'cargarImport'])->name('users.import');
@@ -38,7 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/prueba', [App\Http\Controllers\HomeController::class, 'prueba'])->name('prueba');
     Route::get('/prueba2', [App\Http\Controllers\HomeController::class, 'prueba2'])->name('prueba2');
-
+    Route::get('/get-course-unit', [App\Http\Controllers\UsersController::class, 'getCourseUnit']);
+    Route::get('/getParte/{id}', [App\Http\Controllers\UsersController::class, 'getParte']);
+  
     Route::group(['middleware' => ['role:jefatura']], function () { 
         Route::get('/gestion/incidencias', [App\Http\Controllers\IncidenciasController::class, 'index'])->name('gestion.incidencias');
         Route::get('/gestion/incidencias/deshabilitadas', [App\Http\Controllers\IncidenciasController::class, 'deshabilitadas'])->name('gestion.incidencias.deshabilitadas');
@@ -52,8 +57,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/gestion/correccionesaplicadas', [App\Http\Controllers\CorreccionesAplicadasController::class, 'crear'])->name('gestion.correcciones.crear');
         Route::get('/gestion/correccionesaplicadas/editar/{id}', [App\Http\Controllers\CorreccionesAplicadasController::class, 'editar'])->name('gestion.correcciones.editar');
         Route::get('/gestion/correccionesaplicadas/habilitar/{id}', [App\Http\Controllers\CorreccionesAplicadasController::class, 'habilitar'])->name('gestion.correcciones.habilitar');
-        Route::get('/gestion/correccionesaplicadas/eliminar/{id}', [App\Http\Controllers\CorreccionesAplicadasController::class, 'eliminar'])->name('gestion.correcciones.eliminar');
-
+        Route::get('/gestion/correccionesaplicadas/eliminar/{id}', [App\Http\Controllers\CorreccionesAplicadasController::class, 'eliminar'])->name('gestion.correcciones.eliminar')
+          
         Route::get('/gestion/conductasnegativas', [App\Http\Controllers\ConductasNegativasController::class, 'index'])->name('gestion.negativas');
         Route::get('/gestion/conductasnegativas/deshabilitadas', [App\Http\Controllers\ConductasNegativasController::class, 'deshabilitadas'])->name('gestion.negativas.deshabilitadas');
         Route::post('/gestion/conductasnegativas', [App\Http\Controllers\ConductasNegativasController::class, 'crear'])->name('gestion.negativas.crear');
@@ -74,6 +79,4 @@ Route::middleware('auth')->group(function () {
         })->name('gestion.puntos');
         Route::get('/gestion/profesoralumno/reiniciarpuntos', [App\Http\Controllers\ProfesorAlumnoController::class, 'reinciarPuntos'])->name('gestion.reinciarpuntos');
     });
-
-    
 });
