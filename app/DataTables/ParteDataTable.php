@@ -137,12 +137,12 @@ class ParteDataTable extends DataTable
     {
         return [
 //            Column::make('id'),
-            Column::make('created_at')->title('Fecha')->className('align-middle'),
-            Column::make('nombre')->name('alumnos.nombre')->title('Nombre')->className('align-middle'),
-            Column::make('colectivo')->title('¿Colectivo?')->data('colectivo')->className('align-middle')->searchable(false),
-            Column::make('descripcion')->title('Descripcion')->data('descripcion')->className('align-middle')->searchable(false),
-            Column::make('descripcion_conducta_negativa')->title('Conducta Negativa')->data('descripcion_conducta_negativa')->className('align-middle')->searchable(false),
-            Column::make('puntos_penalizados')->className('align-middle')->searchable(false),
+            Column::make('created_at')->title('Fecha')->className('align-middle text-center'),
+            Column::make('nombre')->name('alumnos.nombre')->title('Nombre')->className('align-middle text-center'),
+            Column::make('colectivo')->title('¿Colectivo?')->data('colectivo')->className('align-middle text-center')->searchable(false),
+            Column::make('descripcion')->title('Descripcion')->data('descripcion')->className('align-middle text-center')->searchable(false),
+            Column::make('descripcion_conducta_negativa')->title('Conducta Negativa')->data('descripcion_conducta_negativa')->className('align-middle text-center')->searchable(false),
+            Column::make('puntos_penalizados')->className('align-middle text-center')->searchable(false),
 //            Column::make('descripcion')->title('descripcion')->data('descripcion_conducta')->className('align-middle'),
 
 //            Column::make('parte.colectivo')->title('Colectivo')->data('parte.colectivo')->className('align-middle'),

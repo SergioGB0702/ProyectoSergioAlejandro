@@ -12,6 +12,30 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class AlumnosImport implements ToModel, WithHeadingRow
 {
+    public function validarDNI($value)
+    {
+        $pattern = "/^[XYZ]?\d{5,8}[A-Z]$/";
+        $dni = strtoupper($value);
+        if(preg_match($pattern, $dni))
+        {
+            $number = substr($dni, 0, -1);
+            $number = str_replace('X', 0, $number);
+            $number = str_replace('Y', 1, $number);
+            $number = str_replace('Z', 2, $number);
+            $dni = substr($dni, -1, 1);
+            $start = $number % 23;
+            $letter = 'TRWAGMYFPDXBNJZSQVHLCKET';
+            $letter = substr('TRWAGMYFPDXBNJZSQVHLCKET', $start, 1);
+            if($letter != $dni)
+            {
+                return false;
+            } else {
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
     public function model(array $row)
     {
         // Comprobar si la fila está vacía
@@ -21,10 +45,15 @@ class AlumnosImport implements ToModel, WithHeadingRow
 
         // Validar los datos
         $validator = Validator::make($row, [
-            'dni' => 'required|unique:alumnos,dni',
-            'nombre' => 'required',
-            'nombre_curso' => 'required',
-            'nombre_unidad' => 'required',
+            'dni' => ['required', 'unique:alumnos,dni', function ($attribute, $value, $fail) {
+                if (!$this->validarDNI($value)) {
+                    $fail($attribute.' is invalid.');
+                }
+            }],
+            'nombre' => 'required|string',
+            'nombre_curso' => 'required|string',
+            'nombre_unidad' => 'required|string',
+            'correo' => 'required|email',
         ]);
 
         if ($validator->fails()) {
@@ -34,7 +63,10 @@ class AlumnosImport implements ToModel, WithHeadingRow
         }
 
         // Crear o encontrar el curso
-        $anoacademico = AnioAcademico::firstOrCreate(['anio_academico' => '2023-2024']);
+        $year = date('Y');
+        $nextYear = date('Y', strtotime('+1 year'));
+
+        $anoacademico = AnioAcademico::firstOrCreate(['anio_academico' => $year . '-' . $nextYear]);
 
         $curso = Curso::firstOrCreate(['nombre' => $row['nombre_curso'], 'id_anio_academico' => $anoacademico->id]);
 
@@ -45,6 +77,7 @@ class AlumnosImport implements ToModel, WithHeadingRow
         return new Alumno([
             'dni' => $row['dni'],
             'nombre' => $row['nombre'],
+            'correo' => $row['correo'],
             'puntos' => 12,
             'id_unidad' => $unidad->id,
         ]);

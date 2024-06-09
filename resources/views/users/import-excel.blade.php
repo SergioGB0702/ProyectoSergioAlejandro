@@ -11,6 +11,14 @@
             </ul>
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            <strong>Errores de validación Importaciones:</strong>
+            <ul>
+                <li>{{ session('error') }}</li>
+            </ul>
+        </div>
+    @endif
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12">
@@ -21,9 +29,10 @@
                             @csrf
                             <div class="input-group mb-3">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="import_file" name="import_file"
+                                    <input type="file" class="custom-file-input" id="import_file" name="import_file">
                                 </div>
                             </div>
+
                             <button class="btn btn-primary" type="submit">Importar</button>
                         </form>
                     </div>

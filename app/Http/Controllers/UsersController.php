@@ -7,6 +7,7 @@ use App\DataTables\ResumenParteDataTable;
 use App\Imports\AlumnosImport;
 use App\DataTables\ParteDataTable;
 use App\Mail\CorreoJefaturaParte;
+use App\Mail\CorreoPuntosParte;
 use App\Mail\CorreoTutoresParte;
 use App\Models\Alumno;
 use App\Models\AlumnoParte;
@@ -27,13 +28,14 @@ use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UsersController extends Controller
 {
-    
+
     public function index(ParteDataTable $dataTable)
     {
         $anoAcademico = AnioAcademico::all();
@@ -136,6 +138,8 @@ class UsersController extends Controller
 
             if ($alumnoModel->puntos <= $puntosARestar) {
                 $alumnoModel->puntos = 0;
+
+                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoPuntosParte($alumnoModel));
             } else {
                 $alumnoModel->decrement('puntos', $puntosARestar);
             }
@@ -143,7 +147,7 @@ class UsersController extends Controller
             $alumnoModel->save();
             foreach ($alumnoModel->correos as $correo) {
 //                Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
-                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($alumnoModel, $parte));
+                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($alumnoModel, $parte));
             }
 
         }
@@ -276,7 +280,13 @@ class UsersController extends Controller
                 $puntosARestar = intval(request('Puntos'));
 
                 $alumnoModel->increment('puntos', $parte->puntos_penalizados);
-                $alumnoModel->decrement('puntos', $puntosARestar);
+                if ($alumnoModel->puntos <= $puntosARestar) {
+                    $alumnoModel->puntos = 0;
+
+                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoPuntosParte($alumnoModel));
+                } else {
+                    $alumnoModel->decrement('puntos', $puntosARestar);
+                }
 
                 $alumnoModel->save();
                 foreach ($alumno->correos as $correo) {
@@ -289,7 +299,13 @@ class UsersController extends Controller
                 $puntosARestar = intval(request('Puntos'));
 
                 $alumnoModel->increment('puntos', $parte->puntos_penalizados);
-                $alumnoModel->decrement('puntos', $puntosARestar);
+                if ($alumnoModel->puntos <= $puntosARestar) {
+                    $alumnoModel->puntos = 0;
+
+                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoPuntosParte($alumnoModel));
+                } else {
+                    $alumnoModel->decrement('puntos', $puntosARestar);
+                }
 
                 $alumnoModel->save();
 
@@ -468,29 +484,7 @@ class UsersController extends Controller
         ]);
     }
 
-    public function indexParte()
-    {
-        $profesores = Profesor::all();
 
-        $tramos = Tramohorario::all();
-
-        $cursos = Curso::all();
-
-        $incidencias = Incidencia::all();
-
-        $conductasNegativas = Conductanegativa::all();
-
-        $correcionesAplicadas = Correccionaplicada::all();
-
-        return view('users.createParte', [
-            'profesores' => $profesores,
-            'tramos' => $tramos,
-            'cursos' => $cursos,
-            'incidencias' => $incidencias,
-            'conductasNegativas' => $conductasNegativas,
-            'correcionesAplicadas' => $correcionesAplicadas
-        ]);
-    }
 
     public function correo()
     {
@@ -499,23 +493,21 @@ class UsersController extends Controller
 
     public function import(Request $request)
     {
-        AnioAcademico::truncate();
+        // Comprueba si se ha pasado un archivo
+        if (!$request->hasFile('import_file')) {
+            return redirect()->route('users.import')
+                ->with('error', 'No se ha subido ningún archivo.');
+        }
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        Correo::truncate();
+        Alumno::truncate();
         Curso::truncate();
         Unidad::truncate();
-        Alumno::truncate();
-        Correo::truncate();
-        Tramohorario::truncate();
-        Profesor::truncate();
-        Parte::truncate();
-        AlumnoParte::truncate();
-        Incidencia::truncate();
-        ParteIncidencia::truncate();
-        Conductanegativa::truncate();
-        Correccionaplicada::truncate();
-        ParteCorreccionsaplicada::truncate();
-        ParteConductanegativa::truncate();
+        AnioAcademico::truncate();
 
-
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $file = $request->file('import_file');
 
