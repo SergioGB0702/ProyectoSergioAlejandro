@@ -202,7 +202,7 @@ class ApiController extends Controller
 
         // Validamos los correos enviados antes de añadirlo, formateando el string recibido como array
         if ($listaCorreosAniadir != null) {
-            for ($i = 0; $i < count($listaCorreosAniadir); $i = $i+2) {
+            for ($i = 0; $i < count($listaCorreosAniadir); $i++) {
                 if (!(filter_var($listaCorreosAniadir[$i][0], FILTER_VALIDATE_EMAIL)) 
                 && ($listaCorreosAniadir[$i][1] != "personal" || $listaCorreosAniadir[$i][1] != "tutor")) {
                     return response()->json([

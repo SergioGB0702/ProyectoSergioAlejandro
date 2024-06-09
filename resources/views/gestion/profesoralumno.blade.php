@@ -464,7 +464,6 @@ use Illuminate\Support\Facades\Session;
             let dniEditar = $('#dniEditar').val();
             let nombreEditar = $('#nombreEditar').val();
             let puntosEditar = $('#puntosEditar').val();
-            console.log(correosEliminar);
             let datosForm = {
                     "dniOriginal" : dniOriginal,
                     "dniEditar" : dniEditar,
