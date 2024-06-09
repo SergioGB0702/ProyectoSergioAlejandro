@@ -39,17 +39,17 @@ class UsersController extends Controller
     public function index(ParteDataTable $dataTable)
     {
         $anoAcademico = AnioAcademico::all();
-        $profesores = Profesor::all();
+        $profesores = Profesor::all()->where('habilitado','=',true);
 
         $tramos = Tramohorario::all();
 
         $cursos = Curso::all();
 
-        $incidencias = Incidencia::all();
+        $incidencias = Incidencia::all()->where('habilitado','=',true);
 
-        $conductasNegativas = Conductanegativa::all();
+        $conductasNegativas = Conductanegativa::all()->where('habilitado','=',true);
 
-        $correcionesAplicadas = Correccionaplicada::all();
+        $correcionesAplicadas = Correccionaplicada::all()->where('habilitado','=',true);
         return $dataTable->render('users.index', ['anoAcademico' => $anoAcademico, 'profesores' => $profesores, 'tramos' => $tramos, 'cursos' => $cursos, 'incidencias' => $incidencias, 'conductasNegativas' => $conductasNegativas, 'correcionesAplicadas' => $correcionesAplicadas]);
     }
 
@@ -155,7 +155,7 @@ class UsersController extends Controller
         }
         Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte));
 
-        return redirect()->route('parte.index')
+        return redirect()->route('users.index')
             ->with('success', 'Parte creado correctamente.');
     }
 
@@ -323,7 +323,7 @@ class UsersController extends Controller
 
         Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte, false, true));
 
-        return redirect()->route('parte.index')
+        return redirect()->route('users.index')
             ->with('success', 'Parte creado correctamente.');
     }
 
@@ -346,7 +346,7 @@ class UsersController extends Controller
         Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte, true));
         $parte->delete();
 
-        return redirect()->route('parte.index')
+        return redirect()->route('users.index')
             ->with('success', 'Parte eliminado correctamente.');
     }
 
