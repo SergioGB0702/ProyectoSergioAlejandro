@@ -22,7 +22,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm card-general">
                     <div class="card-header ">Importar Alumnos y Clases</div>
                     <div class="card-body">
                         <form action="{{route('users.import')}}" method="POST" enctype="multipart/form-data">
