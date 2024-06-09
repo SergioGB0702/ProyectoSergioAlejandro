@@ -60,7 +60,9 @@ class ResumenParteDataTable extends DataTable
             ->select(
                 'alumnos.*',
                 DB::raw('COUNT(DISTINCT parte_incidencias.parte_id) as count_incidencia'),
-                DB::raw('COUNT(DISTINCT parte_conductanegativas.conductanegativas_id) as count_conducta_negativa')
+                DB::raw('COUNT(DISTINCT parte_conductanegativas.conductanegativas_id) as count_conducta_negativa'),
+                DB::raw("COUNT(CASE WHEN conductanegativas.tipo = 'grave' THEN parte_conductanegativas.conductanegativas_id END) as count_conducta_negativa_grave"),
+                DB::raw("COUNT( CASE WHEN conductanegativas.tipo = 'contraria' THEN parte_conductanegativas.conductanegativas_id END) as count_conducta_negativa_contraria"),
             )
             ->groupBy('alumnos.dni');
 
@@ -90,16 +92,7 @@ class ResumenParteDataTable extends DataTable
             ->parameters([
 
             ])
-            ->addColumn([
-                'defaultContent' => view('action_menu')->render(),
-                'data' => 'action',
-                'name' => 'action',
-                'className' => 'align-middle', // 'align-middle
-                'title' => 'Acciones',
-                'orderable' => false,
-                'searchable' => false,
-
-            ])
+//
             ->buttons([
                 Button::make('excel')->titleAttr('Exportar a Excel'),
                 Button::make('csv')->titleAttr('Exportar a CSV'),
@@ -117,8 +110,10 @@ class ResumenParteDataTable extends DataTable
 //            Column::make('id'),
 
             Column::make('nombre')->name('alumnos.nombre')->title('Nombre')->className('align-middle'),
-            Column::make('count_incidencia')->name('count_incidencia')->title('count_incidencia')->className('align-middle'),
-            Column::make('count_conducta_negativa')->name('count_conducta_negativa')->title('count_conducta_negativa')->className('align-middle'),
+            Column::make('count_incidencia')->name('count_incidencia')->title('Incidencias')->className('align-middle'),
+//            Column::make('count_conducta_negativa')->name('count_conducta_negativa')->title('Conductas negativas')->className('align-middle'),
+            Column::make('count_conducta_negativa_grave')->name('count_conducta_negativa_grave')->title('Conductas grave')->className('align-middle'),
+            Column::make('count_conducta_negativa_contraria')->name('count_conducta_negativa_contraria')->title('Conductas contrarias')->className('align-middle'),
 
 //            Column::make('descripcion')->title('descripcion')->data('descripcion_conducta')->className('align-middle'),
 

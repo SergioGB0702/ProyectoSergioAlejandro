@@ -11,6 +11,9 @@ class Alumno extends Model
     use HasFactory;
     public $timestamps = false;
     protected $table = 'alumnos';
+    protected $primaryKey = 'dni';
+    public $incrementing = false;
+
 
     protected $fillable = [
         'dni', 'nombre', 'puntos', 'id_unidad'
@@ -18,12 +21,12 @@ class Alumno extends Model
 
     public function partes()
     {
-        return $this->belongsToMany(Parte::class, 
+        return $this->belongsToMany(Parte::class,
         'alumno_partes', 'alumno_dni', 'dni');
     }
 
     public function unidad () {
-        return $this->belongsTo(Unidad::class);
+        return $this->belongsTo(Unidad::class, 'id_unidad', 'id');
     }
 
     public function correos () {

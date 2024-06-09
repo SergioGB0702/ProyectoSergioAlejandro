@@ -14,7 +14,7 @@ class AlumnoFactory extends Factory
     {
         return [
             'id_unidad' => Unidad::InRandomOrder()->first()->id,
-            'dni' => strtoupper($this->faker->unique()->bothify('########?')),
+            'dni' => strtoupper($this->faker->unique()->regexify('[0-9]{8}[A-Z]')),
             'nombre' => $this->faker->name(),
             'puntos' => $this->faker->numberBetween(0, 12),
         ];

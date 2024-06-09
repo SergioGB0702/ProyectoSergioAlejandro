@@ -22,19 +22,19 @@
                 <form class="row" action="{{route('parte.create')}}" method="post">
                     @csrf
                     <div class="col-12 mb-1">
-                        <label for="inputFecha" class="d-block">Fecha:</label>
+                        <label for="Fecha" class="d-block">Fecha:</label>
                         <div class="col-6">
                             <div class="form-group">
 
-                                <input name="inputFecha" type="date" id="inputFecha" class="form-control">
+                                <input name="Fecha" type="date" id="Fecha" class="form-control">
                             </div>
                         </div>
                     </div>
                     <div class="col-12 mb-1">
-                        <label for="inputProfesor" class="d-block">Profesional que registra el incidente:</label>
+                        <label for="Profesor" class="d-block">Profesional que registra el incidente:</label>
                         <div class="col-6">
                             <div class="form-group">
-                                <select  data-live-search="true" name="inputProfesor" id="inputProfesor"
+                                <select  data-live-search="true" name="Profesor" id="Profesor"
                                         class="selectpicker form-control">
                                     <option value="">Seleccione una opcion</option>
                                     @foreach($profesores as $profesor)
@@ -44,16 +44,16 @@
                             </div>
                         </div>
                     </div>
-                    @error('inputProfesor')
+                    @error('Profesor')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                     @enderror
                     <div class="col-12 mb-1">
-                        <label for="inputTramoHorario" class="d-block">Tramo Horario: </label>
+                        <label for="TramoHorario" class="d-block">Tramo Horario: </label>
                         <div class="col-6">
                             <div class="form-group">
-                                <select name="inputTramoHorario" id="inputTramoHorario" data-live-search="true"
+                                <select name="TramoHorario" id="TramoHorario" data-live-search="true"
                                         class="selectpicker form-control">
                                     <option value="">Seleccione una opcion</option>
                                     @foreach($tramos as $tramo)
@@ -63,16 +63,16 @@
                             </div>
                         </div>
                     </div>
-                    @error('inputTramoHorario')
+                    @error('TramoHorario')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                     @enderror
                     <div class="col-12 mb-1">
-                        <label for="inputCurso" class="d-block">Curso: </label>
+                        <label for="Curso" class="d-block">Curso: </label>
                         <div class="col-6">
                             <div class="form-group">
-                                <select name="inputCurso" id="inputCurso" data-live-search="true"
+                                <select name="Curso" id="Curso" data-live-search="true"
                                         class="selectpicker form-control">
                                     <option value="">Seleccione una opcion</option>
                                     @foreach($cursos as $curso)
@@ -82,48 +82,48 @@
                             </div>
                         </div>
                     </div>
-                    @error('inputCurso')
+                    @error('Curso')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                     @enderror
                     <div class="col-12 mb-1">
-                        <label for="inputUnidad" class="d-block">Unidad: </label>
+                        <label for="Unidad" class="d-block">Unidad: </label>
                         <div class="col-6">
                             <div class="form-group">
-                                <select name="inputUnidad" id="inputUnidad" data-live-search="true"
+                                <select name="Unidad" id="Unidad" data-live-search="true"
                                         class="selectpicker form-control">
 
                                 </select>
                             </div>
                         </div>
                     </div>
-                    @error('inputUnidad')
+                    @error('Unidad')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                     @enderror
                     <div class="col-12 mb-1">
-                        <label for="inputAlumno" class="d-block">Alumno Implicados: </label>
+                        <label for="Alumno" class="d-block">Alumno Implicados: </label>
                         <div class="col-6">
                             <div class="form-group">
-                                <select name="inputAlumno" id="inputAlumno" data-live-search="true"
+                                <select name="Alumno" id="Alumno" data-live-search="true"
                                         class="selectpicker form-control">
 
                                 </select>
                             </div>
                         </div>
                     </div>
-                    @error('inputAlumno')
+                    @error('Alumno')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                     @enderror
                     <div class="col-12 mb-1">
-                        <label for="inputIncidencia" class="d-block">Incidencia: </label>
+                        <label for="Incidencia" class="d-block">Incidencia: </label>
                         <div class="col-6">
                             <div class="form-group">
-                                <select name="inputIncidencia" id="inputIncidencia" data-live-search="true"
+                                <select name="Incidencia" id="Incidencia" data-live-search="true"
                                         class="selectpicker form-control">
                                     <option value="">Seleccione una opcion</option>
                                     @foreach($incidencias as $incidencia)
@@ -133,17 +133,17 @@
                             </div>
                         </div>
                     </div>
-                    @error('inputIncidencia')
+                    @error('Incidencia')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                     @enderror
                     <div class="col-12 mb-1">
-                        <label for="inputConductasNegativa" class="d-block">Conductas Negativas</label>
+                        <label for="ConductasNegativa" class="d-block">Conductas Negativas</label>
                         <div class="col-6">
                             <div class="form-group">
 
-                                <select multiple data-actions-box="true" name="inputConductasNegativa[]" id="inputConductasNegativa" data-live-search="true"
+                                <select multiple data-actions-box="true" name="ConductasNegativa[]" id="ConductasNegativa" data-live-search="true"
                                         class="selectpicker form-control">
                                     <option value="">Seleccione una opcion</option>
                                     @foreach($conductasNegativas as $conductaNegativa)
@@ -153,16 +153,16 @@
                             </div>
                         </div>
                     </div>
-                    @error('inputConductasNegativa')
+                    @error('ConductasNegativa')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                     @enderror
                     <div class="col-12 mb-1">
-                        <label for="inputCorrecionesAplicadas" class="d-block">Correciones Aplicadas</label>
+                        <label for="CorrecionesAplicadas" class="d-block">Correciones Aplicadas</label>
                         <div class="col-6">
                             <div class="form-group">
-                                <select name="inputCorrecionesAplicadas" id="inputCorrecionesAplicadas" data-live-search="true"
+                                <select name="CorrecionesAplicadas" id="CorrecionesAplicadas" data-live-search="true"
                                         class="selectpicker form-control">
                                     <option value="">Seleccione una opcion</option>
                                     @foreach($correcionesAplicadas as $correcionesAplicada)
@@ -172,21 +172,21 @@
                             </div>
                         </div>
                     </div>
-                    @error('inputCorrecionesAplicadas')
+                    @error('CorrecionesAplicadas')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                     @enderror
                     <div class="col-12 mb-1">
-                        <label for="inputDescripcionDetallada" class="d-block">Descripcion Detallada</label>
+                        <label for="DescripcionDetallada" class="d-block">Descripcion Detallada</label>
                         <div class="col-6">
                             <div class="form-group">
-                                <textarea name="inputDescripcionDetallada" class="form-control"
-                                          id="inputDescripcionDetallada"></textarea>
+                                <textarea name="DescripcionDetallada" class="form-control"
+                                          id="DescripcionDetallada"></textarea>
                             </div>
                         </div>
                     </div>
-                    @error('inputDescripcionDetallada')
+                    @error('DescripcionDetallada')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -226,12 +226,12 @@
         let fechaFormateada = ano + '-' + mes + '-' + dia;
 
         // Establece la fecha formateada en el campo de entrada de fecha
-        document.getElementById('inputFecha').value = fechaFormateada;
+        document.getElementById('Fecha').value = fechaFormateada;
 
 
 
         ClassicEditor
-            .create(document.querySelector('#inputDescripcionDetallada'), {
+            .create(document.querySelector('#DescripcionDetallada'), {
                 language: 'es',
                 extraPlugins: [MyCustomUploadAdapterPlugin],
             })
@@ -297,18 +297,18 @@
         }
 
 
-        $('#inputCurso').change(function () {
+        $('#Curso').change(function () {
             // console.log($(this).val());
 
-            handleSelectChange($(this), $('#inputUnidad'), "/unidades");
+            handleSelectChange($(this), $('#Unidad'), "/unidades");
 
 
         });
 
-        $('#inputUnidad').change(function () {
+        $('#Unidad').change(function () {
             // console.log($(this).val());
 
-            handleSelectChange($(this), $('#inputAlumno'), "/alumnos");
+            handleSelectChange($(this), $('#Alumno'), "/alumnos");
 
 
         });

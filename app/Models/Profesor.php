@@ -13,7 +13,7 @@ class Profesor extends Model
 
     protected $fillable = ['dni', 'nombre'];
 
-    public function partes () {
+    public function parte () {
         return $this->hasMany(Parte::class);
     }
 

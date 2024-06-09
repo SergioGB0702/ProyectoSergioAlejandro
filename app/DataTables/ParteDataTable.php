@@ -22,16 +22,20 @@ class ParteDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->setRowId('id')
-            ->rawColumns(['descripcion_conducta_negativa'])
+            ->rawColumns(['descripcion_conducta_negativa', 'action'])
 //            ->editColumn('created_at', function ($user) {
 //                return $user->created_at->format('d/m/Y H:i:s');
 //            })
-            ->editColumn('created_at', function ($user) {
-                return $user->updated_at->format('d/m/Y');
+            ->editColumn('created_at', function ($row) {
+                return $row->created_at->format('d/m/Y H:i');
             })
-            ->filterColumn('nombred', function ($query, $keyword) {
+            ->filterColumn('nombre', function ($query, $keyword) {
                 $query->whereRaw("alumnos.nombre like ?", ["%{$keyword}%"]);
+            })
+            ->addColumn('action', function ($row) {
+                return view('action_menu', ['id' => $row->id])->render();
             });
+
 
 //          ->editColumn('created_at', function ($user) {
 //          return $user->updated_at->format('d/m/Y H:i:s');
@@ -60,7 +64,6 @@ class ParteDataTable extends DataTable
 
 
         $query = $model->newQuery()
-
             ->leftJoin('alumno_partes', 'partes.id', '=', 'alumno_partes.parte_id')
             ->leftJoin('alumnos', 'alumno_partes.alumno_dni', '=', 'alumnos.dni')
             ->leftJoin('parte_incidencias', 'partes.id', '=', 'parte_incidencias.parte_id')
@@ -101,7 +104,7 @@ class ParteDataTable extends DataTable
 
             ])
             ->addColumn([
-                'defaultContent' => view('action_menu')->render(),
+
                 'data' => 'action',
                 'name' => 'action',
                 'className' => 'align-middle', // 'align-middle
@@ -112,7 +115,15 @@ class ParteDataTable extends DataTable
             ])
 
             ->buttons([
-                Button::make('add')->text('<span> Crear</span>')->className('btn btn-primary')->titleAttr('Crear nuevo parte'),
+                Button::make()->text('<span> Crear</span>')->className('btn btn-success text-white')->titleAttr('Crear nuevo parte')->attr([
+                    'data-bs-toggle' => 'modal',
+                    'data-bs-target' => '#exampleModal',
+                    'title' => 'Crear nuevo parte',
+                    'type' => 'button',
+                    'id' => 'btnCrearParte',
+                    'onclick' => 'crearParte()',
+
+                ]),
                 Button::make('excel')->titleAttr('Exportar a Excel'),
                 Button::make('csv')->titleAttr('Exportar a CSV'),
                 Button::make('print')->titleAttr('Imprimir'),
@@ -131,7 +142,7 @@ class ParteDataTable extends DataTable
             Column::make('colectivo')->title('¿Colectivo?')->data('colectivo')->className('align-middle')->searchable(false),
             Column::make('descripcion')->title('Descripcion')->data('descripcion')->className('align-middle')->searchable(false),
             Column::make('descripcion_conducta_negativa')->title('Conducta Negativa')->data('descripcion_conducta_negativa')->className('align-middle')->searchable(false),
-            Column::make('puntos')->className('align-middle')->searchable(false),
+            Column::make('puntos_penalizados')->className('align-middle')->searchable(false),
 //            Column::make('descripcion')->title('descripcion')->data('descripcion_conducta')->className('align-middle'),
 
 //            Column::make('parte.colectivo')->title('Colectivo')->data('parte.colectivo')->className('align-middle'),

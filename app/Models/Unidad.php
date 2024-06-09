@@ -9,10 +9,11 @@ class Unidad extends Model
 {
     public $timestamps = false;
     protected $table = 'unidades';
+    protected $fillable = ['nombre', 'id_curso'];
     use HasFactory;
 
     public function curso () {
-        return $this->belongsTo(Curso::class);
+        return $this->belongsTo(Curso::class, 'id_curso', 'id');
     }
 
     public function alumnos () {

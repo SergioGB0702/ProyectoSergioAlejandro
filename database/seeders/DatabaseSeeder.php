@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'jefatura',
             'email' => 'jefatura',
-            'password' => Hash::make('je21700010'),
+                'password' => Hash::make('je21700010'),
         ]);
 
         User::factory()->create([

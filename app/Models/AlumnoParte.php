@@ -9,4 +9,6 @@ class AlumnoParte extends Model
 {
     use HasFactory;
     protected $table = "alumno_partes";
+    protected $fillable = ['alumno_dni', 'parte_id'];
+
 }
