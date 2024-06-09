@@ -10,7 +10,7 @@ class Incidencia extends Model
     public $timestamps = false;
     protected $table = 'incidencias';
 
-    protected $fillable = ['descripcion'];
+    protected $fillable = ['descripcion','habilitado',];
     use HasFactory;
 
     public function partes()

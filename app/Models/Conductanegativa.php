@@ -14,6 +14,7 @@ class Conductanegativa extends Model
     protected $fillable = [
         'descripcion',
         'tipo',
+        'habilitado',
     ];
 
     public function partes()

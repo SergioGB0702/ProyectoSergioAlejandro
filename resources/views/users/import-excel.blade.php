@@ -21,8 +21,7 @@
                             @csrf
                             <div class="input-group mb-3">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="import_file" name="import_file">
-
+                                    <input type="file" class="custom-file-input" id="import_file" name="import_file"
                                 </div>
                             </div>
                             <button class="btn btn-primary" type="submit">Importar</button>

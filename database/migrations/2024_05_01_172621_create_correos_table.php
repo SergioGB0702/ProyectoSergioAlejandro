@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("alumno_dni");
             $table->string("correo");
             $table->string("tipo"); //Personal o de tutor
-            $table->foreign('alumno_dni')->references('dni')->on('alumnos');
+            $table->foreign('alumno_dni')->references('dni')->on('alumnos')->onUpdate('cascade');
         });
     }
 

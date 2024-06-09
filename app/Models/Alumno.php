@@ -14,7 +14,6 @@ class Alumno extends Model
     protected $primaryKey = 'dni';
     public $incrementing = false;
 
-
     protected $fillable = [
         'dni', 'nombre', 'puntos', 'id_unidad'
     ];

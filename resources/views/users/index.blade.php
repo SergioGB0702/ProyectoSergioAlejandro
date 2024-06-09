@@ -14,7 +14,7 @@
 
     <div class="container">
         <div id="alertPlaceholder"></div>
-        <div class="card">
+        <div class="card card-general">
             <div class="card-header">Incidencias Alumnos</div>
             <div class="card-body">
 

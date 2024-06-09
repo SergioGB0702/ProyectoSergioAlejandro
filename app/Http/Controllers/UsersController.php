@@ -33,6 +33,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class UsersController extends Controller
 {
+    
     public function index(ParteDataTable $dataTable)
     {
         $anoAcademico = AnioAcademico::all();

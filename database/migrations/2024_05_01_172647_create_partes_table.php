@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('partes', function (Blueprint $table) {
             $table->id();
-            $table->string("profesor_dni");
+            $table->string("profesor_dni")->nullable();
             $table->string("colectivo");
             $table->integer("puntos_penalizados");
             $table->longText("descripcion_detallada")->nullable();
-            $table->foreignId("tramo_horario_id");
-            $table->foreign('profesor_dni')->references('dni')->on('profesors');
-            $table->foreign('tramo_horario_id')->references('id')->on('tramohorarios');
+            $table->foreignId("tramo_horario_id")->nullable();
+            $table->foreign('profesor_dni')->references('dni')->on('profesors')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('tramo_horario_id')->references('id')->on('tramohorarios')->onDelete('set null');
             $table->timestamps();
         });
     }

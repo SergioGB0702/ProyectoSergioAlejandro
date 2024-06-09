@@ -5519,20 +5519,20 @@ textarea.form-control-lg {
     --cui-pagination-padding-x: 0.75rem;
     --cui-pagination-padding-y: 0.375rem;
     --cui-pagination-font-size: 1rem;
-    --cui-pagination-color: var(--cui-link-color);
+    --cui-pagination-color: rgba(27,158,62,255);
     --cui-pagination-bg: var(--cui-body-bg);
     --cui-pagination-border-width: var(--cui-border-width);
     --cui-pagination-border-color: var(--cui-border-color);
     --cui-pagination-border-radius: var(--cui-border-radius);
-    --cui-pagination-hover-color: var(--cui-link-hover-color);
+    --cui-pagination-hover-color: rgba(107,119,133,255);
     --cui-pagination-hover-bg: var(--cui-tertiary-bg);
     --cui-pagination-hover-border-color: var(--cui-border-color);
     --cui-pagination-focus-color: var(--cui-link-hover-color);
     --cui-pagination-focus-bg: var(--cui-secondary-bg);
     --cui-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(88, 86, 214, 0.25);
     --cui-pagination-active-color: rgba(255, 255, 255, 0.87);
-    --cui-pagination-active-bg: var(--cui-primary);
-    --cui-pagination-active-border-color: var(--cui-primary);
+    --cui-pagination-active-bg: rgba(107,119,133,255);
+    --cui-pagination-active-border-color: rgba(151,159,169,255);
     --cui-pagination-disabled-color: var(--cui-secondary-color);
     --cui-pagination-disabled-bg: var(--cui-secondary-bg);
     --cui-pagination-disabled-border-color: var(--cui-border-color);
@@ -15539,4 +15539,106 @@ textarea.form-control-lg {
 
 #alumnos-table td:hover {
     cursor: pointer;
+}
+
+.table-div {
+    margin-bottom: 10px !important;
+}
+
+.dataTables_length {
+    margin-bottom: 5px !important;
+}
+
+#alumnos-table_paginate {
+    margin-top: 5px !important;
+}
+
+#users-table_paginate {
+    margin-top: 8px !important;
+}
+
+#barraNavegacion {
+    clear: both;
+    display: table;
+    content: "";
+}
+
+@media (max-width: 1540px) {
+    .segundo-boton {
+        margin-top: 8px;
+    }
+    .segundo-boton-conductas {
+        margin-top: 8px;
+    }
+}
+
+@media (max-width: 1470px) {
+    .segundo-boton-profesores {
+        margin-top: 8px;
+    }
+    .segundo-boton-conductas {
+        margin-top: 8px;
+    }
+}
+
+@media (max-width: 1199px) {
+    .botones-crear {
+        margin-top: 8px !important;
+    }
+    .segundo-boton-conducta {
+        margin-top: 0px;
+    }
+    #fotoLogin {
+        margin-top: 40px !important;
+        width: 100%;
+        height: 50%;
+    }
+}
+
+@media (max-width: 1070px) {
+    .botones-crear {
+        margin-top: 8px !important;
+    }
+    #tabla-conductas {
+        display: block !important;
+        overflow-x: auto !important;
+        width: 1100px !important;
+    }
+}
+
+@media (max-width: 745px) {
+    #tabla-profesores {
+        display: block !important;
+        overflow-x: auto !important;
+        width: 800px !important;
+    }
+    #tabla-incidencias, #tabla-correcciones {
+        display: block !important;
+        overflow-x: auto !important;
+        width: 500px !important;
+    }
+    #alumnos-table_length {
+        margin-bottom: 8px !important;
+    }
+    #alumnos-table_paginate {
+        margin-top: 4px !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .card-general {
+        width: 95% !important;
+        margin-left: 2% !important;
+        margin-right: 2% !important;
+    }
+    .container {
+        width: 100% !important;
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+    .container-lg {
+        width: 100% !important;
+        padding: 0px !important;
+        margin: 0px !important;
+    }
 }

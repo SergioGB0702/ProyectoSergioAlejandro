@@ -64,52 +64,54 @@
         <button class="btn-close d-lg-none" type="button" aria-label="Close"
                 onclick="coreui.Sidebar.getInstance(document.querySelector(&quot;#sidebar&quot;)).toggle()"></button>
     </div>
-    <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
+    <ul class="sidebar-nav">
         <li class="nav-title" data-coreui-i18n="theme">Alumnado</li>
-        <li class="nav-item"><a class="nav-link" href="{{route('users.index')}}">
+        <li class="nav-item"><a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}" href="{{route('users.index')}}">
                 <svg class="nav-icon">
                     <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-spreadsheet')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">General</span></a></li>
 
-        <li class="nav-item"><a class="nav-link" href="{{route('parte.index')}}">
+        <li class="nav-item"><a class="nav-link {{ request()->routeIs('parte.index') ? 'active' : '' }}" href="{{route('parte.index')}}">
                 <svg class="nav-icon">
                     <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-ban')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Crear Parte</span></a></li>
 
-        <li class="nav-item"><a class="nav-link" href="{{route('parte.resumen')}}">
+        <li class="nav-item"><a class="nav-link {{ request()->routeIs('parte.resumen') ? 'active' : '' }}" href="{{route('parte.resumen')}}">
                 <svg class="nav-icon">
                     <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-balance-scale')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Resumen Incidencias</span></a></li>
         <!-- Gestión para jefatura -->
-        <li class="nav-title" data-coreui-i18n="theme">Gestión</li>
-        <li class="nav-item"><a class="nav-link" href="{{route('gestion.incidencias')}}">
-                <svg class="nav-icon">
-                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-sad')}}"></use>
-                </svg>
-                <span data-coreui-i18n="dashboard">Incidencias</span></a></li>
-        <li class="nav-item"><a class="nav-link" href="{{route('gestion.negativas')}}">
-                <svg class="nav-icon">
-                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-book')}}"></use>
-                </svg>
-                <span data-coreui-i18n="dashboard">Conductas Negativas</span></a></li>
-        <li class="nav-item"><a class="nav-link" href="{{route('gestion.correcciones')}}">
-                <svg class="nav-icon">
-                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-pin')}}"></use>
-                </svg>
-                <span data-coreui-i18n="dashboard">Correcciones Aplicadas</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="{{route('gestion.profesoralumno')}}">
-                <svg class="nav-icon">
-                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-school')}}"></use>
-                </svg>
-                <span data-coreui-i18n="dashboard">Alumnos / Profesores</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="{{route('gestion.puntos')}}">
-                <svg class="nav-icon">
-                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-bell-exclamation')}}"></use>
-                </svg>
-                <span data-coreui-i18n="dashboard">Reiniciar puntos</span></a></li>
+        @role('jefatura')
+            <li class="nav-title" data-coreui-i18n="theme">Gestión</li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('gestion.incidencias') ? 'active' : '' }}" href="{{route('gestion.incidencias')}}">
+                    <svg class="nav-icon">
+                        <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-sad')}}"></use>
+                    </svg>
+                    <span data-coreui-i18n="dashboard">Incidencias</span></a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('gestion.negativas') ? 'active' : '' }}" href="{{route('gestion.negativas')}}">
+                    <svg class="nav-icon">
+                        <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-book')}}"></use>
+                    </svg>
+                    <span data-coreui-i18n="dashboard">Conductas Negativas</span></a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('gestion.correcciones') ? 'active' : '' }}" href="{{route('gestion.correcciones')}}">
+                    <svg class="nav-icon">
+                        <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-pin')}}"></use>
+                    </svg>
+                    <span data-coreui-i18n="dashboard">Correcciones</span></a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('gestion.profesoralumno') ? 'active' : '' }}" href="{{route('gestion.profesoralumno')}}">
+                    <svg class="nav-icon">
+                        <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-school')}}"></use>
+                    </svg>
+                    <span data-coreui-i18n="dashboard">Alumnos / Profesores</span></a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('gestion.puntos') ? 'active' : '' }}" href="{{route('gestion.puntos')}}">
+                    <svg class="nav-icon">
+                        <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-bell-exclamation')}}"></use>
+                    </svg>
+                    <span data-coreui-i18n="dashboard">Reiniciar puntos</span></a></li>
+        @endrole
     </ul>
     <div class="sidebar-footer border-top d-none d-md-flex">
         <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
@@ -129,9 +131,12 @@
                 </svg>
             </button>
             <img width="52" height="52" alt="Logotipo App" src="{{asset('img/LogotipoApp.png')}}">
+            @role('jefatura')
+            <h2 class="h2 mb-0 ms-3">Jefatura</h2>
+            @elserole('profesor')
+            <h2 class="h2 mb-0 ms-3">Profesorado</h2>
+            @endrole
             <ul class="header-nav d-none d-md-flex ms-auto">
-
-
 
             </ul>
             <ul class="header-nav ms-auto ms-md-0">

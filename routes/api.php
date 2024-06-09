@@ -17,3 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('auth:sanctum')->group(function() {
+    Route::prefix('gestion/v2')->group(function() {
+        Route::post('alumno/crear', [App\Http\Controllers\ApiController::class, 'crearAlumno'])->name('gestion.crearAlumno');
+        Route::patch('alumno/editar', [App\Http\Controllers\ApiController::class, 'editarAlumno'])->name('gestion.editarAlumno');
+        Route::delete('alumno/eliminar', [App\Http\Controllers\ApiController::class, 'eliminarAlumno'])->name('gestion.eliminarAlumno');
+        Route::get('alumno/obtenerCorreos', [App\Http\Controllers\ApiController::class, 'obtenerCorreos'])->name('gestion.obtenerCorreos');
+    });
+});

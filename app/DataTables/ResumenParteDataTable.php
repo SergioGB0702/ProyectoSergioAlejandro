@@ -96,7 +96,6 @@ class ResumenParteDataTable extends DataTable
             ->buttons([
                 Button::make('excel')->titleAttr('Exportar a Excel'),
                 Button::make('csv')->titleAttr('Exportar a CSV'),
-                Button::make('pdf')->titleAttr('Exportar a PDF'),
                 Button::make('print')->titleAttr('Imprimir'),
                 Button::make('reset')->titleAttr('Restablecer'),
                 Button::make('reload')->titleAttr('recargar'),
@@ -125,6 +124,6 @@ class ResumenParteDataTable extends DataTable
 
     protected function filename(): string
     {
-        return 'Users_'.date('YmdHis');
+        return 'ResumenPartes_'.date('YmdHis');
     }
 }

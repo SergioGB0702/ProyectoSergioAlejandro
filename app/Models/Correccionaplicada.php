@@ -14,6 +14,7 @@ class Correccionaplicada extends Model
 
     protected $fillable = [
         'descripcion',
+        'habilitado',
     ];
 
     public function partes()
