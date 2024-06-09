@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
         $jefatura = User::factory()->create([
             'name' => 'jefatura',
             'email' => 'jefatura',
-                'password' => Hash::make('je21700010'),
+            'password' => Hash::make('je21700010'),
         ]);
 
         $profesor = User::factory()->create([

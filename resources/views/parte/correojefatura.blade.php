@@ -83,6 +83,9 @@
             <img src="{{ $message->embed($imagePath) }}" alt="Image">
         @endforeach
     @endif
+
+    <p>Un saludo</p>
+    <p> Este mensaje es una notificación. No responda directamente a este correo. Pulse en el asunto para acceder al correo de la plataforma</p>
 </div>
 </body>
 </html>

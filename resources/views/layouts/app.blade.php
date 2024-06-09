@@ -70,13 +70,9 @@
                 <svg class="nav-icon">
                     <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-spreadsheet')}}"></use>
                 </svg>
-                <span data-coreui-i18n="dashboard">General</span></a></li>
+                <span data-coreui-i18n="dashboard">Partes</span></a></li>
 
-        <li class="nav-item"><a class="nav-link {{ request()->routeIs('parte.index') ? 'active' : '' }}" href="{{route('parte.index')}}">
-                <svg class="nav-icon">
-                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-ban')}}"></use>
-                </svg>
-                <span data-coreui-i18n="dashboard">Crear Parte</span></a></li>
+
 
         <li class="nav-item"><a class="nav-link {{ request()->routeIs('parte.resumen') ? 'active' : '' }}" href="{{route('parte.resumen')}}">
                 <svg class="nav-icon">
@@ -111,6 +107,12 @@
                         <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-bell-exclamation')}}"></use>
                     </svg>
                     <span data-coreui-i18n="dashboard">Reiniciar puntos</span></a></li>
+
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('users.import') ? 'active' : '' }}" href="{{route('users.import')}}">
+                            <svg class="nav-icon">
+                                <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-bookmark')}}"></use>
+                            </svg>
+                            <span data-coreui-i18n="dashboard">Importaciones</span></a></li>
         @endrole
     </ul>
     <div class="sidebar-footer border-top d-none d-md-flex">

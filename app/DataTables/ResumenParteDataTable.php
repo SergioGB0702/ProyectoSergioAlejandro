@@ -23,18 +23,6 @@ class ResumenParteDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->setRowId('id')
             ;
-
-//          ->editColumn('created_at', function ($user) {
-//          return $user->updated_at->format('d/m/Y H:i:s');
-//          });
-//            ->addColumn('profesors.dni', function ($user) {
-//                return $user->partes->implode('dni',', ');
-//            })
-//            ->addColumn('parte.colectivo', function ($user) {
-//                return $user->partes->pluck('colectivo')->implode(', ');
-//            })
-
-
     }
 
     public function query(Alumno $model): QueryBuilder
@@ -106,19 +94,11 @@ class ResumenParteDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-//            Column::make('id'),
-
             Column::make('nombre')->name('alumnos.nombre')->title('Nombre')->className('align-middle text-center'),
             Column::make('count_incidencia')->name('count_incidencia')->title('Incidencias')->className('align-middle text-center'),
-//            Column::make('count_conducta_negativa')->name('count_conducta_negativa')->title('Conductas negativas')->className('align-middle text-center'),
             Column::make('count_conducta_negativa_grave')->name('count_conducta_negativa_grave')->title('Conductas grave')->className('align-middle text-center'),
             Column::make('count_conducta_negativa_contraria')->name('count_conducta_negativa_contraria')->title('Conductas contrarias')->className('align-middle text-center'),
-
-//            Column::make('descripcion')->title('descripcion')->data('descripcion_conducta')->className('align-middle text-center'),
-
-//            Column::make('parte.colectivo')->title('Colectivo')->data('parte.colectivo')->className('align-middle text-center'),
-            // Column::make('dni')->title('dni')->data('profesors.dni')->className('align-middle text-center'),
-
+            Column::make('puntos')->name('alumnos.puntos')->title('Conductas contrarias')->className('align-middle text-center'),
         ];
     }
 
