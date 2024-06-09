@@ -72,6 +72,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/gestion/profesoralumno/profesor/deshabilitados', [App\Http\Controllers\ProfesorAlumnoController::class, 'deshabilitados'])->name('gestion.profesoralumno.profesor.deshabilitados');
         Route::get('/gestion/profesoralumno/profesor/editar', [App\Http\Controllers\ProfesorAlumnoController::class, 'editarProfesor'])->name('gestion.profesoralumno.profesor.editar');
 
+        Route::get('/import', [UsersController::class, 'cargarImport'])->name('users.import');
+        Route::post('/import', [UsersController::class, 'import'])->name('users.import');
+
         // Rutas para la gestión de los puntos
         Route::get('/gestion/puntos', function () {
             return view("gestion.puntos");
