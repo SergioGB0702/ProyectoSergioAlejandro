@@ -48,8 +48,8 @@ class ApiController extends Controller
             'dniCrear.string' => '- El DNI debe ser una cadena de texto. <br><br>',
             'dniCrear.size' => '- El DNI debe tener una longitud de 9. <br><br>',
             'dniCrear.regex' => '- El DNI tiene un formato incorrecto. <br><br>',
-            'nombreCrear.required' => '- El nombre del alumno es obligatorio. ',
-            'nombreCrear.string' => '- El nombre debe ser una cadena de texto. ',
+            'nombreCrear.required' => '- El nombre del alumno es obligatorio. <br><br>',
+            'nombreCrear.string' => '- El nombre debe ser una cadena de texto. <br><br>',
             'nombreCrear.min' => '- El nombre debe tener 10 o más caracteres, se deben incluir apellidos. <br><br>',
             'nombreCrear.max' => '- El nombre es demasiado largo, no debe superar los 80 caracteres. <br><br>',
             'puntosCrear.required' => '- Los puntos son obligatorios. <br><br>',
@@ -202,7 +202,7 @@ class ApiController extends Controller
 
         // Validamos los correos enviados antes de añadirlo, formateando el string recibido como array
         if ($listaCorreosAniadir != null) {
-            for ($i = 0; $i < count($listaCorreosAniadir); $i = $i+2) {
+            for ($i = 0; $i < count($listaCorreosAniadir); $i++) {
                 if (!(filter_var($listaCorreosAniadir[$i][0], FILTER_VALIDATE_EMAIL)) 
                 && ($listaCorreosAniadir[$i][1] != "personal" || $listaCorreosAniadir[$i][1] != "tutor")) {
                     return response()->json([

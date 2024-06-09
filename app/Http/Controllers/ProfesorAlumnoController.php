@@ -192,7 +192,8 @@ class ProfesorAlumnoController extends Controller
         $usuarioActual = Auth::user();
         $rol = $usuarioActual->getRoleNames()[0];
         if ($rol == "jefatura" && Session::get('TokenApi') == "") {
-            $usuarioActual->currentAccessToken()->delete();
+            $tokenPre = $usuarioActual->currentAccessToken();
+            if ($tokenPre) $tokenPre->delete();
             $tokenAuth = $usuarioActual->createToken('ApiToken')->plainTextToken;
             Session::put("TokenApi", $tokenAuth);
         }

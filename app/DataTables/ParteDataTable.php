@@ -23,9 +23,6 @@ class ParteDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->setRowId('id')
             ->rawColumns(['descripcion_conducta_negativa', 'action'])
-//            ->editColumn('created_at', function ($user) {
-//                return $user->created_at->format('d/m/Y H:i:s');
-//            })
             ->editColumn('created_at', function ($row) {
                 return $row->created_at->format('d/m/Y H:i');
             })
@@ -35,17 +32,6 @@ class ParteDataTable extends DataTable
             ->addColumn('action', function ($row) {
                 return view('action_menu', ['id' => $row->id])->render();
             });
-
-
-//          ->editColumn('created_at', function ($user) {
-//          return $user->updated_at->format('d/m/Y H:i:s');
-//          });
-//            ->addColumn('profesors.dni', function ($user) {
-//                return $user->partes->implode('dni',', ');
-//            })
-//            ->addColumn('parte.colectivo', function ($user) {
-//                return $user->partes->pluck('colectivo')->implode(', ');
-//            })
 
 
     }
@@ -107,7 +93,7 @@ class ParteDataTable extends DataTable
 
                 'data' => 'action',
                 'name' => 'action',
-                'className' => 'align-middle', // 'align-middle
+                'className' => 'align-middle text-center', // 'align-middle text-center
                 'title' => 'Acciones',
                 'orderable' => false,
                 'searchable' => false,
@@ -136,18 +122,12 @@ class ParteDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-//            Column::make('id'),
             Column::make('created_at')->title('Fecha')->className('align-middle text-center'),
             Column::make('nombre')->name('alumnos.nombre')->title('Nombre')->className('align-middle text-center'),
             Column::make('colectivo')->title('¿Colectivo?')->data('colectivo')->className('align-middle text-center')->searchable(false),
             Column::make('descripcion')->title('Descripcion')->data('descripcion')->className('align-middle text-center')->searchable(false),
             Column::make('descripcion_conducta_negativa')->title('Conducta Negativa')->data('descripcion_conducta_negativa')->className('align-middle text-center')->searchable(false),
             Column::make('puntos_penalizados')->className('align-middle text-center')->searchable(false),
-//            Column::make('descripcion')->title('descripcion')->data('descripcion_conducta')->className('align-middle'),
-
-//            Column::make('parte.colectivo')->title('Colectivo')->data('parte.colectivo')->className('align-middle'),
-            // Column::make('dni')->title('dni')->data('profesors.dni')->className('align-middle'),
-
         ];
     }
 

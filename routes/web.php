@@ -34,12 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/deleteParte/{id}', [UsersController::class, 'eliminarParte'])->name('parte.delete');
     Route::get('/correo', [UsersController::class, 'correo'])->name('user.correo');
     Route::get('/correoenviar', [UsersController::class, 'pruebaCorreo'])->name('user.enviarcorreo');
-    Route::get('/import', [UsersController::class, 'cargarImport'])->name('users.import');
-        Route::post('/import', [UsersController::class, 'import'])->name('users.import');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/prueba', [App\Http\Controllers\HomeController::class, 'prueba'])->name('prueba');
-    Route::get('/prueba2', [App\Http\Controllers\HomeController::class, 'prueba2'])->name('prueba2');
     Route::get('/get-course-unit', [App\Http\Controllers\UsersController::class, 'getCourseUnit']);
     Route::get('/getParte/{id}', [App\Http\Controllers\UsersController::class, 'getParte']);
 
