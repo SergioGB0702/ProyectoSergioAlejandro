@@ -15,7 +15,7 @@
     @endif
 
     <div class="container">
-        <div class="card">
+        <div class="card card-general">
             <div class="card-header">Incidencia</div>
             <div class="card-body">
 

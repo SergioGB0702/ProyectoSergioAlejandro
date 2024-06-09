@@ -12,11 +12,11 @@
     <div class="container">
 
     @if (session('success'))
-        <div class="alert alert-success text-center text-white align-middle" style="background-color: #6b7785 !important; border-color: #979fa9 !important;"">
-            <h3 class="mb-0">{{ session('success') }}</h3>
+        <div class="alert alert-success align-center text-center h3">
+                {{ session('success') }}
         </div>
     @endif
-        <div class="card">
+        <div class="card mb-4 card-general">
             <div class="card-header">Reinicio de puntos del alumnado</div>
             <div class="card-body">
                     <h2 class="mt-3 mb-3">¿Desea reiniciar todos los puntos del alumnado?</h2>

@@ -78,7 +78,6 @@ class AlumnoDataTable extends DataTable
             ->buttons([
                 Button::make('excel')->titleAttr('Exportar a Excel'),
                 Button::make('csv')->titleAttr('Exportar a CSV'),
-                Button::make('pdf')->titleAttr('Exportar a PDF'),
                 Button::make('print')->titleAttr('Imprimir'),
                 Button::make('reset')->titleAttr('Restablecer'),
                 Button::make('reload')->titleAttr('recargar'),
@@ -92,12 +91,13 @@ class AlumnoDataTable extends DataTable
             Column::make('dni')->title('DNI')->data('dni')->className('align-middle text-center'),
             Column::make('nombre')->name('alumnos.nombre')->title('Nombre')->data('nombre')->className('align-middle text-center'),
             Column::make('Correos')->name('Correos')->title('Correos')->data('Correos')->className('align-middle text-center lista-datatable'),
-            Column::make('puntos')->title('Puntos')->data('puntos')->data('puntos')->className('align-middle text-center')->searchable(false),
+            Column::make('puntos')->title('Puntos')->data('puntos')->type('num')
+            ->className('align-middle text-center')->searchable(false),
         ];
     }
 
     protected function filename(): string
     {
-        return 'Users_'.date('YmdHis');
+        return 'Alumnos_'.date('YmdHis');
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('dni');
             $table->primary('dni');
             $table->string('nombre');
-            $table->string('puntos');
+            $table->integer('puntos');
             $table->unsignedBigInteger('id_unidad')->nullable();
             $table->foreign('id_unidad')->references('id')->on('unidades')->onDelete('cascade');
         });

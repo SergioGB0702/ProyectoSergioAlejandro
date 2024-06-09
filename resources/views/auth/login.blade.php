@@ -1,21 +1,24 @@
 @extends('layouts.auth')
 
 @section('content')
-    <div class="row mb-2" style="height: 150px; justify-content: center;">
+    <div class="row justify-content: center;">
 
-        <div class="col-3 text-start">
+        <div class="col-5 col-md-3 text-center text-xs-start d-none d-xs-block d-md-none">
+            <img src="{{ asset('/img/LogoSanSebastian.png') }}" height="60%" style="margin-top: 20px;"/>
+        </div>
+        <div class="col-12 col-xs-5 col-md-3 text-center text-xs-start">
             <img src="{{ asset('/img/LogotipoApp.png') }}" width="130" height="130" />
         </div>
-        <div class="col-6 text-center">
+        <div class="col-12 col-md-6 text-center">
             <h1>Sistema de Gestión de Partes</h1>
             <h2>IES San Sebastián</h2>
         </div>
-        <div class="col-3 text-end">
-            <img src="{{ asset('/img/LogoSanSebastian.png') }}" height="60%" style="margin-top: 20px;"/>
+        <div class="col-12 col-md-3 d-none d-md-block text-md-end">
+            <img src="{{ asset('/img/LogoSanSebastian.png') }}" height="60%" style="margin-top: 20px;" id="fotoLogin"/>
         </div>
 
     </div>
-    <h1 class="mb-4">Login de usuario</h1>
+    <h1 class="mb-4 mt-md-4 mt-4">Login de usuario</h1>
 
     <form method="POST" action="{{ route('login') }}">
         @csrf

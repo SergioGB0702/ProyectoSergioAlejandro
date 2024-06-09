@@ -5,8 +5,8 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Importar productos</div>
+            <div class="card card-general">
+                <div class="card-header">Importar</div>
 
                 <div class="card-body">
                     @if (isset($errors) && $errors->any())

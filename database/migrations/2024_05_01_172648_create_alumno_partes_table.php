@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("alumno_dni");
             $table->unsignedBigInteger('parte_id');
-            $table->foreign('alumno_dni')->references('dni')->on('alumnos');
+            $table->foreign('alumno_dni')->references('dni')->on('alumnos')->onUpdate('cascade');
             $table->foreign('parte_id')->references('id')->on('partes');
             $table->timestamps();
         });

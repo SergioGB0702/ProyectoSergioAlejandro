@@ -11,10 +11,14 @@ class ProfesorFactory extends Factory
 
     public function definition(): array
     {
+        $prefijo = rand(10000000, 99999999);
+        $posibleLetraCadena = "TRWAGMYFPDXBNJZSQVHLCKE";
+        $letraDniIndex = $prefijo % 23;
+        $dni = $prefijo . ($posibleLetraCadena[$letraDniIndex]);
         return [
-            'dni' => strtoupper($this->faker->unique()->bothify('########?')),
+            'dni' => $dni,
             'nombre' => $this->faker->name(),
-            'telefono' => $this->faker->numerify('###-##-##-##'),
+            'telefono' => $this->faker->numerify('#########'),
             'correo' => $this->faker->email(),
             'habilitado' => $this->faker->boolean(),
         ];

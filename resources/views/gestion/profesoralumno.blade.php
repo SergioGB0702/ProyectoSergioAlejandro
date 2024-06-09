@@ -1,3 +1,7 @@
+<?php
+
+use Illuminate\Support\Facades\Session;
+?>
 @extends('layouts.app')
 
 @section('content')
@@ -12,19 +16,20 @@
     <div class="container">
 
     @if (session('success'))
-        <div class="alert alert-success text-center text-white align-middle" style="background-color: #6b7785 !important; border-color: #979fa9 !important;"">
-            <h3 class="mb-0">{{ session('success') }}</h3>
+        <div class="alert alert-success align-middle text-center h3">
+                {{ session('success') }}
         </div>
     @endif
                     
-    <div class="card mb-4">
+    <div class="card mb-4 card-general">
         <div class="card-header">Gestión de Profesores y Alumnos</div>
             <!-- Card body alumnos -->
-            <div class="card-body">        
+            <div class="card-body"> 
                 <input id="switchProfeAlumno" onchange="cambiarDiv();" type="checkbox" data-on="Alumnos" data-off="Profesores" checked data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary">            
                 <div id="divAlumno">
                     <h2 class="mt-2 mb-4">Introduzca los datos generales</h2>
                     <form class="row">
+                    @csrf
                         <div class="col-12 mb-1">
                             <label for="inputAnoAcademico" class="d-block">Año Academico</label>
                             <div class="col-6">
@@ -58,10 +63,10 @@
                                 </div>
                             </div>
                         </div>
-    {{--                    <div class="col-12 align-self-end">--}}
-    {{--                        <button type="button" class="btn btn-primary" id="generate">Buscar</button>--}}
-    {{--                        <button type="reset" class="btn btn-danger" id="reset">Limpiar</button>--}}
-    {{--                    </div>--}}
+                       <div class="col-12 mt-4 align-self-end">
+                            <button style="pointer-events: auto !important;" data-toggle="tooltip" data-placement="right" 
+                            title="Seleccione una unidad para añadir al alumno" type="button" class="btn btn-secondary" id="mostrarCrearAlumnoModal" disabled>Añadir</button>
+                       </div>
                     </form>
                 <br>
                 <h2 class="mt-2 mb-4">Listado de Alumnos</h2>
@@ -72,18 +77,18 @@
             <div id="divProfesor">
                 <h2 class="mt-3 mb-3">Añadir nuevo profesor/a</h2>
 
-                <form class="row" method="post" action="{{route('gestion.negativas.crear')}}">
+                <form class="row" method="post" action="{{route('gestion.profesoralumno.profesor.crear')}}">
                     @csrf
                     <div class="col-auto w-75">
                         <label for="nuevaProfesor">Campos del nuevo profesor/a:</label>
                         <div class="row">
-                            <input type="text" class="form-control mt-2 col" id="dniProfesor" name="dniProfesor" placeholder="DNI" style="margin-right: 2% !important; margin-left: 2% !important;">
-                            <input type="text" class="form-control mt-2 col" id="nombreProfesor" name="nombreProfesor" placeholder="Nombre" style="margin-right: 2% !important; margin-left: 2% !important;">
-                            <input type="text" class="form-control mt-2 col" id="telefonoProfesor" name="telefonoProfesor" placeholder="Teléfono" style="margin-right: 2% !important; margin-left: 2% !important;">
-                            <input type="email" class="form-control mt-2 col" id="emailProfesor" name="emailProfesor" placeholder="Correo" style="margin-right: 2% !important; margin-left: 2% !important;">
+                            <input type="text" class="form-control xl-2 col-2 col-lg mt-3" id="dniProfesor" name="dniProfesor" placeholder="DNI" style="margin-right: 2% !important; margin-left: 2% !important;">
+                            <input type="text" class="form-control xl-2 col-2 col-lg mt-3" id="nombreProfesor" name="nombreProfesor" placeholder="Nombre" style="margin-right: 2% !important; margin-left: 2% !important;">
+                            <input type="text" class="form-control xl-2 col-2 col-lg mt-3" id="telefonoProfesor" name="telefonoProfesor" placeholder="Teléfono" style="margin-right: 2% !important; margin-left: 2% !important;">
+                            <input type="email" class="form-control xl-2 col-2 col-lg mt-3" id="emailProfesor" name="emailProfesor" placeholder="Correo" style="margin-right: 2% !important; margin-left: 2% !important;">
                         </div>
                     </div>
-                    <div class="col-auto align-self-end">
+                    <div class="col-auto align-self-end botones-crear">
                         <button type="submit" class="btn btn-secondary" id="generate">Añadir</button>
                         <button type="reset" class="btn btn-danger text-white" id="reset">Limpiar</button>
                     </div>
@@ -92,30 +97,31 @@
                 <br>
 
                 <h2 class="mt-2 mb-4">Listado de Profesores/as</h2>
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped table-bordered">
+                <div class="table-responsive-xl table-div">
+                    <table class="table table-hover table-striped table-bordered" id="tabla-profesores">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col" style="width: 12%" class="text-center">DNI</th>
-                            <th scope="col" class="text-center" style="width: 16%">Nombre</th>
-                            <th scope="col" class="text-center" style="width: 10%">Teléfono</th>
-                            <th scope="col" class="text-center" style="width: 10%">Correo</th>
-                            <th scope="col" style="width: 10%" class="text-center">Opciones</th>
+                            <th class="text-center">DNI</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Teléfono</th>
+                            <th class="text-center">Correo</th>
+                            <th class="text-center">Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach ($profesores as $profesor)
-                    <form class="row" method="patch" action="/gestion/conductasnegativas/editar/{{$profesor->dni}}">
+                    <form class="row" method="patch" action="{{route('gestion.profesoralumno.profesor.editar')}}">
                         @csrf 
+                        <input type="text" class="form-control d-none" id="editarProfesorDniOriginal" name="editarProfesorDniOriginal" value="{{$profesor->dni}}">
                         <tr class="align-middle">
-                            <td><input type="text" class="form-control" id="cambioConducta" name="cambioConducta" value="{{$profesor->dni}}"></td>
-                            <td><input type="text" class="form-control" id="cambioConducta" name="cambioConducta" value="{{$profesor->nombre}}"></td>
-                            <td><input type="text" class="form-control" id="cambioConducta" name="cambioConducta" value="{{$profesor->telefono}}"></td>
-                            <td><input type="text" class="form-control" id="cambioConducta" name="cambioConducta" value="{{$profesor->correo}}"></td>
+                            <td><input type="text" class="form-control" id="editarProfesorDni" name="editarProfesorDni" value="{{$profesor->dni}}"></td>
+                            <td><input type="text" class="form-control" id="editarProfesorNombre" name="editarProfesorNombre" value="{{$profesor->nombre}}"></td>
+                            <td><input type="text" class="form-control" id="editarProfesorTelefono" name="editarProfesorTelefono" value="{{$profesor->telefono}}"></td>
+                            <td><input type="text" class="form-control" id="editarProfesorCorreo" name="editarProfesorCorreo" value="{{$profesor->correo}}"></td>
                             <td class="text-center">
                             <button type="submit" class="btn btn-primary" id="generate">Editar</button>
                     </form>
-                            <a class="btn btn-warning text-black sm-mt-2" href="/gestion/profesoralumno/habilitar/{{$profesor->dni}}">Deshabilitar</a>
+                            <a class="btn btn-warning text-dark sm-mt-2 segundo-boton-profesores" href="/gestion/profesoralumno/habilitar/{{$profesor->dni}}">Deshabilitar</a>
                             </td>
                         </tr>
                     @endforeach
@@ -126,53 +132,211 @@
                 <div class="h-10 grid grid-cols-1 gap-4 content-between">
                 {{ $profesores->links('vendor.pagination.bootstrap-5') }}
                 </div>
+                <div class="mt-2 mb-3">
+                    <a href="{{route('gestion.profesoralumno.profesor.deshabilitados')}}" class="btn btn-warning text-dark">Ver deshabilitad@s</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal crear alumno -->
+    <!-- Modal para editar el alumno -->
+    <div class="modal fade" id="modalCrearAlumno" tabindex="-1" aria-labelledby="modalAlumnoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <form id="formCrearAlumno" method="post" action="">
+            @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAlumnoLabel">Formulario</h5>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label for="dniCrear">DNI:</label>
+                            <input type="text" class="form-control mt-2" id="dniCrear" name="dniCrear">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="nombreCrear">Nombre:</label>
+                            <input type="text" class="form-control mt-2" id="nombreCrear" name="nombreCrear">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="puntosCrear">Puntos:</label>
+                            <input type="number" class="form-control mt-2" id="puntosCrear" name="puntosCrear">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="email">Correo Electrónico:</label>
+                            <div id="email-alumnos" class="row mt-2">
+                                <div class="col-12 col-lg-8">
+                                    <input type="email" class="form-control col" name="email" id="inputNuevoCorreoCrear">
+                                </div>
+                                <div class="col-12 mt-2 mt-lg-0 col-lg-4">
+                                    <select class="form-control selectpicker col" id="selectTipoCorreo" name="tipo_correo">
+                                        <option value="personal">Personal</option>
+                                        <option value="tutor">Tutor</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary mt-2" id="aniadirCorreoAlumnoCrear">Añadir correo</button>
+                        </div>
+                        <div class="form-group mt-3 d-none" id="divGeneralCorreosCrear">
+                        <label for="emailRegistrados">Lista de correos registrados:</label>
+                            <div id="divEmailRegistradosCrear" class="row mt-2"></div>
+                        </div>
+                    
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                <div>
+                    <button type="button" class="btn btn-danger text-white" data-dismiss="modal" id="botonCerrarModalCrear">Cerrar</button>
+                    <button type="submit" class="btn btn-secondary" >Añadir</button> 
+                </div>
+            </form>
+            </div>
             </div>
         </div>
     </div>
     <!-- Modal para editar el alumno -->
     <div class="modal fade" id="modalAlumno" tabindex="-1" aria-labelledby="modalAlumnoLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+            <form id="formEditarAlumno" method="patch" action="/gestion/profesoralumno/alumno/editar">
+            @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalAlumnoLabel">Formulario</h5>
                 </div>
                 <div class="modal-body">
-                    <form id="formEditarAlumno">
                         <div class="form-group">
-                            <label for="dniEditar">DNI</label>
-                            <input type="text" class="form-control" id="dniEditar" name="dniEditar">
+                            <label for="dniEditar">DNI:</label>
+                            <input type="text" class="form-control mt-2" id="dniEditar" name="dniEditar">
                         </div>
-                        <div class="form-group">
-                            <label for="nombreEditar">Nombre</label>
-                            <input type="text" class="form-control" id="nombreEditar" name="nombreEditar">
+                        <div class="form-group mt-3">
+                            <label for="nombreEditar">Nombre:</label>
+                            <input type="text" class="form-control mt-2" id="nombreEditar" name="nombreEditar">
                         </div>
-                        <div class="form-group">
-                            <label for="puntosEditar">Puntos</label>
-                            <input type="number" class="form-control" id="puntosEditar" name="puntosEditar">
+                        <div class="form-group mt-3">
+                            <label for="puntosEditar">Puntos:</label>
+                            <input type="number" class="form-control mt-2" id="puntosEditar" name="puntosEditar">
                         </div>
-                        <div class="form-group">
-                            <label for="email">Correo Electrónico</label>
-                            <div id="email-fields">
-                                <div class="input-group mb-3 email-group">
-                                    <input type="email" class="form-control" name="email">
-                                    <div class="input-group-append">
-                                        <select class="form-control" name="email_type">
-                                            <option value="personal">Personal</option>
-                                            <option value="tutor">Tutor</option>
-                                        </select>
-                                    </div>
+                        <div class="form-group mt-3">
+                            <label for="email">Correo Electrónico:</label>
+                            <div id="email-alumnos" class="row mt-2">
+                                <div class="col-12 col-lg-8">
+                                    <input type="email" class="form-control col" name="email" id="inputNuevoCorreo">
+                                </div>
+                                <div class="col-12 mt-2 mt-lg-0 col-lg-4">
+                                    <select class="form-control selectpicker col" id="selectTipoCorreo" name="tipo_correo">
+                                        <option value="personal">Personal</option>
+                                        <option value="tutor">Tutor</option>
+                                    </select>
                                 </div>
                             </div>
+                            <button type="button" class="btn btn-secondary mt-2" id="aniadirCorreoAlumno">Añadir correo</button>
                         </div>
-                    </form>
+                        <div class="form-group mt-3 d-none" id="divGeneralCorreos">
+                        <label for="emailRegistrados">Lista de correos registrados:</label>
+                            <div id="divEmailRegistrados" class="row mt-2"></div>
+                        </div>
+                    
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger text-white" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-secondary" form="form">Guardar</button>
+                <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger text-white" data-dismiss="modal" id="botonEliminarModal">Eliminar</button>
+                <div>
+                    <button type="button" class="btn btn-danger text-white" data-dismiss="modal" id="botonCerrarModal">Cerrar</button>
+                    <button type="submit" class="btn btn-secondary" >Guardar</button> 
                 </div>
+            </form>
+            </div>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalConfirmar" style="display: none;" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">¿Está usted completamente segur@?</h5>
+                        <button type="button" id="cerrarModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body align-middle">
+                        <p class="align-middle"">Eliminará completamente los datos del alumno y sus partes</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="cancelarConfirmar" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form id="formularioEliminarAlumno" action="">
+                        @csrf
+                            <button type="submit" name="dniEliminar" id="cancelarEliminar" class="btn btn-danger text-white" value="">Confirmar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalExito" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mensajeModalExito"></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="botonCerrarModalExito" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalErrorCrearAlumno" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">La creación del alumno ha resultado en los siguientes errores</h5>
+                </div>
+                <div class="modal-body">
+                    <p id="mensajeErrorCrearAlumno"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="botonCerrarModalErrorCrearAlumno" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalErrorEditarAlumno" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">La edición del alumno ha resultado en los siguientes errores</h5>
+                </div>
+                <div class="modal-body">
+                    <p id="mensajeErrorEditarAlumno"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="botonCerrarModalErrorEditarAlumno" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalErrorCorreo" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error con el formato del correo</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="botonCerrarModalError" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalErrorCorreoCrear" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error con el formato del correo</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="botonCerrarModalErrorCrear" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
+            </div>
+        </div>
 </div>
 
     @if (isset($paginaProfesor))
@@ -184,6 +348,7 @@
 {{ $dataTable->scripts() }}
 <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function() {
@@ -201,11 +366,10 @@
             divAlumno.style.display = 'block';
             divProfesor.style.display = 'none';
         }
-        
-        
     });
 
     function cambiarDiv() {
+        $('#alumnos-table').DataTable().ajax.reload();
         const divProfesor = document.getElementById('divProfesor');
         const divAlumno = document.getElementById('divAlumno');
         const checked = document.getElementById('switchProfeAlumno').checked;
@@ -219,13 +383,15 @@
         }
     }
 
-
 </script>
 
     <script type="module">
-
+    
     const table = $('#alumnos-table');
-
+    // Variables que se usarán para el formulario de alumno
+    var dniPulsado = "";
+    var correosAlumnoAniadir = [];
+    var correosAlumnoEliminar = [];
     $(document).ready(function() {
         // Para controlar si existe página, se crea o no un div oculto con un condicional de su valor
         const divPagina = document.getElementById('divPagina');
@@ -242,9 +408,134 @@
             divAlumno.style.display = 'block';
             divProfesor.style.display = 'none';
         }        
+        $('#formCrearAlumno').on('submit', function(event) {
+            event.preventDefault();
+            let correosAniadirCrear = null;
+            if (correosAlumnoAniadir.length > 0) correosAniadirCrear = correosAlumnoAniadir;
+            let dniCrear = $('#dniCrear').val();
+            let nombreCrear = $('#nombreCrear').val();
+            let puntosCrear = $('#puntosCrear').val();
+            // idUnidadCrear ya establecido
+            let datosForm = {
+                    "dniCrear" : dniCrear,
+                    "nombreCrear" : nombreCrear,
+                    "puntosCrear" : puntosCrear,
+                    "idUnidadCrear" : idUnidadCrear,
+                    "correosAniadirCrear" : correosAniadirCrear,
+                }
+                let tokenAuth = "Bearer <?= Session::get('TokenApi') ?>";
+                $.ajaxSetup({
+                    headers: {
+                        'Authorization': tokenAuth
+                    }
+                });
+                $.ajax({
+                    url: "{{route('gestion.crearAlumno')}}",
+                    type: 'POST',
+                    data: datosForm,
+                    dataType: 'json',
+                    success: function(datos) {
+                        $("#modalCrearAlumno").modal("hide");
+                        $("#mensajeModalExito").html("Alumno añadido correctamente");
+                        $("#modalExito").modal("show");
+                        table.DataTable().ajax.reload();
+                    },
+                    error: function(error) {
+                        let errores = error.responseJSON.errors;
+                        let cadenaErrores = "";
+                        for (let errorActual in errores) {
+                            if (errores.hasOwnProperty(errorActual)) {
+                                cadenaErrores += errores[errorActual]
+                            }
+                        }
+                        $("#modalCrearAlumno").modal("hide");
+                        $('#mensajeErrorCrearAlumno').html(cadenaErrores);
+                        $("#modalErrorCrearAlumno").modal("show");
+                    }
+                });
+        });
+        $('#formEditarAlumno').on('submit', function(event) {
+            event.preventDefault();
+            let correosAniadir = null;
+            let correosEliminar = null;
+            if (correosAlumnoAniadir.length > 0) correosAniadir = correosAlumnoAniadir;
+            if (correosAlumnoEliminar.length > 0) correosEliminar = JSON.stringify(correosAlumnoEliminar);
+            let dniOriginal = dniPulsado;
+            let dniEditar = $('#dniEditar').val();
+            let nombreEditar = $('#nombreEditar').val();
+            let puntosEditar = $('#puntosEditar').val();
+            console.log(correosEliminar);
+            let datosForm = {
+                    "dniOriginal" : dniOriginal,
+                    "dniEditar" : dniEditar,
+                    "nombreEditar" : nombreEditar,
+                    "puntosEditar" : puntosEditar,
+                    "correosAniadir" : correosAniadir,
+                    "correosEliminar" : correosEliminar,
+                }
+                let tokenAuth = "Bearer <?= Session::get('TokenApi') ?>";
+                $.ajaxSetup({
+                    headers: {
+                        'Authorization': tokenAuth
+                    }
+                });
+                $.ajax({
+                    url: "{{route('gestion.editarAlumno')}}",
+                    type: 'PATCH',
+                    data: datosForm,
+                    dataType: 'json',
+                    success: function(datos) {
+                        $("#modalAlumno").modal("hide");
+                        $("#mensajeModalExito").html("Alumno editado correctamente");
+                        $("#modalExito").modal("show");
+                        table.DataTable().ajax.reload();
+                    },
+                    error: function(error) {
+                        let errores = error.responseJSON.errors;
+                        let cadenaErrores = "";
+                        for (let errorActual in errores) {
+                            if (errores.hasOwnProperty(errorActual)) {
+                                cadenaErrores += errores[errorActual]
+                            }
+                        }
+                        $("#modalAlumno").modal("hide");
+                        $('#mensajeErrorEditarAlumno').html(cadenaErrores);
+                        $("#modalErrorEditarAlumno").modal("show");
+                    }
+                });
+
+        });
+        $('#formularioEliminarAlumno').on('submit', function(event) {
+            event.preventDefault();
+            // Solo necesita dniEliminar, que es dniPulsado
+            let datosForm = {
+                    "dniEliminar" : dniPulsado,
+                }
+                let tokenAuth = "Bearer <?= Session::get('TokenApi') ?>";
+                $.ajaxSetup({
+                    headers: {
+                        'Authorization': tokenAuth
+                    }
+                });
+                $.ajax({
+                    url: "{{route('gestion.eliminarAlumno')}}",
+                    type: 'DELETE',
+                    data: datosForm,
+                    dataType: 'json',
+                    success: function(datos) {
+                        $("#modalConfirmar").modal("hide");
+                        table.DataTable().ajax.reload();
+                    },
+                    error: function(error) {
+                        // Si hay algún no se cerrar
+                    }
+                });
+        });
+        $('[data-toggle="tooltip"]').tooltip();   
     });
 
     function cambiarDiv() {
+        table.DataTable().ajax.reload();
         const divProfesor = document.getElementById('divProfesor');
         const divAlumno = document.getElementById('divAlumno');
         const checked = document.getElementById('switchProfeAlumno').checked;
@@ -284,9 +575,10 @@
             if ($(this).val() === 'Seleccione una opcion') {
                 $('#inputCurso').empty().selectpicker('refresh');
                 $('#inputUnidad').empty().selectpicker('refresh');
-
+                $('#mostrarCrearAlumnoModal').attr("disabled", '');
             //$('div.dataTables_filter input').prop('disabled', true);
             } else {
+                $('#mostrarCrearAlumnoModal').attr("disabled", '');
                  handleSelectChange($(this), $('#inputCurso'), "/cursos");
             }
 
@@ -295,7 +587,7 @@
         $('#inputCurso').change(function () {
             console.log($(this).val());
             if ($(this).val() === '0' || $(this).val() === '') {
-
+                $('#mostrarCrearAlumnoModal').attr("disabled", '');
                 $('#inputUnidad').empty().selectpicker('refresh');
 
                 //$('div.dataTables_filter input').prop('disabled', true);
@@ -303,7 +595,7 @@
             } else {
 
                 $('#inputUnidad').empty().selectpicker('refresh');
-
+                $('#mostrarCrearAlumnoModal').attr("disabled", '');
                 //$('div.dataTables_filter input').prop('disabled', true);
 
                 handleSelectChange($(this), $('#inputUnidad'), "/unidades");
@@ -314,19 +606,8 @@
         table.on('preXhr.dt', function (e, settings, data) {
 
             data.unidad = $('#inputUnidad').val();
-            // console.log(data.clase);
-
 
         });
-
-        table.on('init.dt', function (e, settings, data) {
-
-            ///$('div.dataTables_filter input').prop('disabled', true);
-            // console.log(data.clase);
-
-
-        });
-
 
         const hamBurger = document.querySelector(".toggle-btn");
 
@@ -340,8 +621,10 @@
         $('#inputUnidad').change(function () {
             if ($(this).val() === 1 || $(this).val() === '') {
                 //$('div.dataTables_filter input').prop('disabled', true);
+                $('#mostrarCrearAlumnoModal').attr("disabled", '');
             } else {
                 //$('div.dataTables_filter input').prop('disabled', false);
+                $('#mostrarCrearAlumnoModal').removeAttr("disabled");
             }
             table.DataTable().ajax.reload();
             return false;
@@ -355,33 +638,67 @@
             table.DataTable().ajax.reload();
             return false;
         });
-
+        
         $('#alumnos-table').on('click', 'td', function() {
+            // Reiniciamos los arrays
+            correosAlumnoAniadir = [];
+            correosAlumnoEliminar = [];
+            $('#inputNuevoCorreo').val('');
             let data = $('#alumnos-table').DataTable().row(this).data();
             let dni = data.dni;
+            dniPulsado = dni;
             let nombre = data.nombre;
             let puntos = data.puntos;
             let correos = data.Correos;
             if (correos == null) {
-                alert('DNI: ' + data.dni + '\nNombre: ' + data.nombre + '\nPuntos: ' + data.puntos);
+                $("#divEmailRegistrados").html("");
+                $("#divGeneralCorreos").removeClass("d-block");
+                $("#divGeneralCorreos").addClass("d-none");
+                $("#dniEditar").val(dni);
+                $("#nombreEditar").val(nombre);
+                $("#puntosEditar").val(puntos);
+                $("#modalAlumno").modal("show");
             } else {
                 let correosBienFormato = [];
                 let datosForm = {
                     "dni" : dni
                 }
+                let tokenAuth = "Bearer <?= Session::get('TokenApi') ?>";
+                $.ajaxSetup({
+                    headers: {
+                        'Authorization': tokenAuth
+                    }
+                });
                 $.ajax({
-                    url: '/gestion/obtenerCorreos',
+                    url: "{{route('gestion.obtenerCorreos')}}",
                     type: 'GET',
                     data: datosForm,
                     dataType: 'json',
                     success: function(datos) {
+                        $("#divEmailRegistrados").html("");
                         for (let i = 0; i < datos.length; i++) {
                             correosBienFormato[i] = datos[i];
+                            const $ElementoCorreo = `
+                                <div class="row mb-2">
+                                    <input type="number" value="" name="codCorreo" class="form-control d-none">
+                                    <div class="col-8 col-md-10">
+                                        <input  type="text" value="` + correosBienFormato[i]['correo'] + ` (` + correosBienFormato[i]['tipo'] + `)` 
+                                        +`" name="emailRegistrado" class="form-control" disabled>
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="button" value="` + correosBienFormato[i]['id'] + `" class="btn btn-danger text-white eliminar-correo-alumno">Borrar</button>
+                                    </div>
+                                </div>
+                            `;
+                            $('#divEmailRegistrados').append($ElementoCorreo);
                         }
-                        var emailGroup = $('.email-group').first().clone();
-                        emailGroup.find('input').val('');
-                        emailGroup.find('.add-email').removeClass('add-email').addClass('remove-email').text('Eliminar');
-                        $('#email-fields').append(emailGroup);
+                        $('#divEmailRegistrados').on('click', '.eliminar-correo-alumno', function() {
+                            let codigoEliminar = $(this).val();
+                            if (!(correosAlumnoEliminar.includes(codigoEliminar))) correosAlumnoEliminar.push(codigoEliminar);
+                            $(this).closest('.row').remove();
+                        });
+                        $("#divGeneralCorreos").removeClass("d-none");
+                        $("#divGeneralCorreos").addClass("d-block");
                         // Asignación de valores a los input
                         $("#dniEditar").val(dni);
                         $("#nombreEditar").val(nombre);
@@ -393,12 +710,139 @@
                     }
                 });
             }
-    });
-
-    $(document).on('click', '.remove-email', function() {
-            $(this).closest('.email-group').remove();
         });
 
+        $(document).on('click', '.remove-email', function() {
+            $(this).closest('.email-group').remove();
+        });
+        
+        $('#botonCerrarModal').on('click', function() {
+            $("#modalAlumno").modal("hide");
+            $("#modalCrearAlumno").modal("hide");
+        });
+
+        $('#botonCerrarModalExito').on('click', function() {
+            $("#modalExito").modal("hide");
+            $("#modalAlumno").modal("hide");
+            $("#modalCrearAlumno").modal("hide");
+        });
+
+        $('#botonCerrarModalCrear').on('click', function() {
+            $("#modalAlumno").modal("hide");
+            $("#modalCrearAlumno").modal("hide");
+        });
+        
+        $('#botonEliminarModal').on('click', function() {
+            $("#modalAlumno").modal("hide");
+            $("#modalConfirmar").modal("show");
+            $("#cancelarEliminar").val(dniPulsado);
+        });
+
+        $('#cancelarConfirmar').on('click', function() {
+            $("#modalAlumno").modal("show");
+            $("#modalConfirmar").modal("hide");
+        });
+
+        $('#cerrarModal').on('click', function() {
+            $("#modalAlumno").modal("show");
+            $("#modalConfirmar").modal("hide");
+        });
+
+        let idUnidadCrear = null;
+        $('#mostrarCrearAlumnoModal').on('click', function() {
+            correosAlumnoAniadir = [];
+            $('#dniCrear').val('');
+            $('#nombreCrear').val('');
+            $('#puntosCrear').val('');
+            $("#divEmailRegistradosCrear").html("");
+            idUnidadCrear = $('#inputUnidad').val();
+            $("#modalCrearAlumno").modal("show");
+        });
+
+        $('#aniadirCorreoAlumnoCrear').on('click', function() {
+            let correoNuevo = $("#inputNuevoCorreoCrear").val().toLowerCase();
+            let tipoCorreoNuevo = $("#selectTipoCorreo").val();
+            if (validateEmail(correoNuevo)) {
+                let datosCorreo = [correoNuevo, tipoCorreoNuevo];
+                correosAlumnoAniadir.push(datosCorreo);
+                $('#correosAniadirCrear').val(correosAlumnoAniadir);
+                const $ElementoCorreo = `
+                    <div class="row mb-2">
+                        <input type="number" value="" name="codCorreo" class="form-control d-none">
+                        <div class="col-8 col-md-10">
+                            <input  type="text" value="` + correoNuevo + ` (` + tipoCorreoNuevo + `)` 
+                            +`" name="emailRegistrado" class="form-control" disabled>
+                        </div>
+                        <div class="col-2">
+                            
+                        </div>
+                    </div>
+                `;
+                $('#divEmailRegistradosCrear').append($ElementoCorreo);
+                $("#inputNuevoCorreoCrear").val('');
+                $("#divGeneralCorreosCrear").removeClass("d-none");
+                $("#divGeneralCorreosCrear").addClass("d-block");
+            } else {
+                $("#modalCrearAlumno").modal("hide");
+                $("#modalErrorCorreoCrear").modal("show");
+            }
+            
+        });
+
+        $('#botonCerrarModalErrorCrearAlumno').on('click', function() {
+            $("#modalErrorCrearAlumno").modal("hide");
+            $("#modalCrearAlumno").modal("show");
+        });
+
+        $('#botonCerrarModalErrorEditarAlumno').on('click', function() {
+            $("#modalErrorEditarAlumno").modal("hide");
+            $("#modalAlumno").modal("show");
+        });
+
+        $('#botonCerrarModalErrorCrear').on('click', function() {
+            $("#modalErrorCorreoCrear").modal("hide");
+            $("#modalCrearAlumno").modal("show");
+        });
+
+        $('#aniadirCorreoAlumno').on('click', function() {
+            let correoNuevo = $("#inputNuevoCorreo").val().toLowerCase();
+            let tipoCorreoNuevo = $("#selectTipoCorreo").val();
+            if (validateEmail(correoNuevo)) {
+                let datosCorreo = [correoNuevo, tipoCorreoNuevo];
+                correosAlumnoAniadir.push(datosCorreo);
+                const $ElementoCorreo = `
+                    <div class="row mb-2">
+                        <input type="number" value="" name="codCorreo" class="form-control d-none">
+                        <div class="col-8 col-md-10">
+                            <input  type="text" value="` + correoNuevo + ` (` + tipoCorreoNuevo + `)` 
+                            +`" name="emailRegistrado" class="form-control" disabled>
+                        </div>
+                        <div class="col-2">
+                            
+                        </div>
+                    </div>
+                `;
+                $('#divEmailRegistrados').append($ElementoCorreo);
+                $("#inputNuevoCorreo").val('');
+                $("#divGeneralCorreos").removeClass("d-none");
+                $("#divGeneralCorreos").addClass("d-block");
+            } else {
+                $("#modalAlumno").modal("hide");
+                $("#modalErrorCorreo").modal("show");
+            }
+            
+        });
+
+        $('#botonCerrarModalError').on('click', function() {
+            $("#modalErrorCorreo").modal("hide");
+            $("#modalAlumno").modal("show");
+        });
+
+        // Función importada de https://mailtrap.io/blog/javascript-email-validation/
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
     </script>
 
 

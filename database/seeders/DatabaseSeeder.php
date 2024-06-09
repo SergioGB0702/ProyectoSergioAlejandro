@@ -15,6 +15,7 @@ use App\Models\Profesor;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,6 +24,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        Role::create(['name' => 'jefatura']);
+        Role::create(['name' => 'profesor']);
 
         AnioAcademico::factory()->create(['anio_academico' => '2023-2024']);
 
@@ -100,21 +104,20 @@ class DatabaseSeeder extends Seeder
 
         foreach ($unidades as $unidad) \App\Models\Unidad::factory()->create($unidad);
 
-        User::factory()->create([
+        $jefatura = User::factory()->create([
             'name' => 'jefatura',
             'email' => 'jefatura',
             'password' => Hash::make('je21700010'),
         ]);
 
-        User::factory()->create([
+        $profesor = User::factory()->create([
             'name' => 'profesor',
             'email' => 'profesor',
             'password' => Hash::make('21700010'),
         ]);
 
-
-
-
+        $jefatura->assignRole('jefatura');
+        $profesor->assignRole('profesor');
 
         foreach (range(0, 20) as $i) {
 

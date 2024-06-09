@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="/css/coreuicss.css">
     <link rel="stylesheet" href="/css/simplebar.css">
     <link rel="stylesheet" href="/css/simplebar2.css">
+    <title>Gestión de Partes IES SS</title>
+    <link rel="shortcut icon" type="image/png" href="{{ asset('/img/LogotipoApp.png') }}">
+    <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/LogotipoApp.png') }}">
 
     <script src="/js/simplebar2.js"></script>
     <script src="/js/coreui.js"></script>
@@ -40,7 +43,7 @@
 <div class="min-vh-100 d-flex flex-row align-items-center">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-10 col-lg-8">
                 <div class="card-group d-block d-md-flex row">
                     <div class="card col-md-7 p-4 mb-0">
                         <div class="card-body">
@@ -89,9 +92,7 @@ or
 
 {{--    <!-- CSRF Token -->--}}
 {{--    <meta name="csrf-token" content="{{ csrf_token() }}">--}}
-        <title>Gestión de Partes IES SS</title>
-        <link rel="shortcut icon" type="image/png" href="{{ asset('/img/LogotipoApp.png') }}">
-        <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/LogotipoApp.png') }}">
+        
 
 {{--    <!-- Fonts -->--}}
 

@@ -11,6 +11,8 @@ class Alumno extends Model
     use HasFactory;
     public $timestamps = false;
     protected $table = 'alumnos';
+    protected $primaryKey = 'dni';
+    public $incrementing = false;
 
     protected $fillable = [
         'dni', 'nombre', 'puntos', 'id_unidad'

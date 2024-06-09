@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('parte_id');
             $table->unsignedBigInteger('incidencia_id');
             $table->foreign('parte_id')->references('id')->on('partes');
-            $table->foreign('incidencia_id')->references('id')->on('incidencias');
+            $table->foreign('incidencia_id')->references('id')->on('incidencias')->onDelete('cascade');;
             $table->primary(['incidencia_id', 'parte_id']);
         });
     }
