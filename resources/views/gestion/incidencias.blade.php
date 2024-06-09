@@ -36,7 +36,7 @@
 
                             <br>
 
-                            <h2 class="mt-2 mb-4">Listado de incidencias</h2>
+                            <h2 class="mt-2 mb-4">Listado de Incidencias</h2>
                             <div class="table-responsive-md table-div">
                                 <table class="table table-hover table-striped table-bordered" id="tabla-incidencias">
                                     <thead class="thead-dark">
