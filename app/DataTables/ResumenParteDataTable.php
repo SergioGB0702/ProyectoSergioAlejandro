@@ -108,16 +108,16 @@ class ResumenParteDataTable extends DataTable
         return [
 //            Column::make('id'),
 
-            Column::make('nombre')->name('alumnos.nombre')->title('Nombre')->className('align-middle'),
-            Column::make('count_incidencia')->name('count_incidencia')->title('Incidencias')->className('align-middle'),
-//            Column::make('count_conducta_negativa')->name('count_conducta_negativa')->title('Conductas negativas')->className('align-middle'),
-            Column::make('count_conducta_negativa_grave')->name('count_conducta_negativa_grave')->title('Conductas grave')->className('align-middle'),
-            Column::make('count_conducta_negativa_contraria')->name('count_conducta_negativa_contraria')->title('Conductas contrarias')->className('align-middle'),
+            Column::make('nombre')->name('alumnos.nombre')->title('Nombre')->className('align-middle text-center'),
+            Column::make('count_incidencia')->name('count_incidencia')->title('Incidencias')->className('align-middle text-center'),
+//            Column::make('count_conducta_negativa')->name('count_conducta_negativa')->title('Conductas negativas')->className('align-middle text-center'),
+            Column::make('count_conducta_negativa_grave')->name('count_conducta_negativa_grave')->title('Conductas grave')->className('align-middle text-center'),
+            Column::make('count_conducta_negativa_contraria')->name('count_conducta_negativa_contraria')->title('Conductas contrarias')->className('align-middle text-center'),
 
-//            Column::make('descripcion')->title('descripcion')->data('descripcion_conducta')->className('align-middle'),
+//            Column::make('descripcion')->title('descripcion')->data('descripcion_conducta')->className('align-middle text-center'),
 
-//            Column::make('parte.colectivo')->title('Colectivo')->data('parte.colectivo')->className('align-middle'),
-            // Column::make('dni')->title('dni')->data('profesors.dni')->className('align-middle'),
+//            Column::make('parte.colectivo')->title('Colectivo')->data('parte.colectivo')->className('align-middle text-center'),
+            // Column::make('dni')->title('dni')->data('profesors.dni')->className('align-middle text-center'),
 
         ];
     }
