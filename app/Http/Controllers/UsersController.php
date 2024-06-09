@@ -138,8 +138,10 @@ class UsersController extends Controller
 
             if ($alumnoModel->puntos <= $puntosARestar) {
                 $alumnoModel->puntos = 0;
-
-                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoPuntosParte($alumnoModel));
+                foreach ($alumnoModel->correos as $correo) {
+//                Mail::to($correo->correo)->queue(new CorreoPuntosParte($alumnoModel));
+                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoPuntosParte($alumnoModel));
+                }
             } else {
                 $alumnoModel->decrement('puntos', $puntosARestar);
             }

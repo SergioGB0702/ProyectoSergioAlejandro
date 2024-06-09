@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CorreoPuntosParte;
 use App\Models\Alumno;
 use App\Models\AlumnoParte;
 use App\Models\Correo;
@@ -11,6 +12,7 @@ use App\Models\ParteCorreccionsaplicada;
 use App\Models\ParteIncidencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class ApiController extends Controller
 {
@@ -217,9 +219,12 @@ class ApiController extends Controller
                 $nuevoCorreo->save();
             }
         }
-
+        $alumnoEditar = Alumno::find($dniAlumnoOriginal);
         if ($puntosEditar == 0) {
-            //Correo para informar de que el alumno tiene 0 puntos
+            foreach ($alumnoEditar->correos as $correo) {
+//              Mail::to($correo->correo)->queue(new CorreoPuntosParte($alumnoEditar));
+                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoPuntosParte($alumnoEditar));
+            }
         }
 
         return response()->json([
