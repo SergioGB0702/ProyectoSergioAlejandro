@@ -98,7 +98,7 @@ class ResumenParteDataTable extends DataTable
             Column::make('count_incidencia')->name('count_incidencia')->title('Incidencias')->className('align-middle text-center'),
             Column::make('count_conducta_negativa_grave')->name('count_conducta_negativa_grave')->title('Conductas grave')->className('align-middle text-center'),
             Column::make('count_conducta_negativa_contraria')->name('count_conducta_negativa_contraria')->title('Conductas contrarias')->className('align-middle text-center'),
-            Column::make('puntos')->name('alumnos.puntos')->title('Conductas contrarias')->className('align-middle text-center'),
+            Column::make('puntos')->name('alumnos.puntos')->title('Puntos restantes')->className('align-middle text-center'),
         ];
     }
 

@@ -223,7 +223,7 @@ class ApiController extends Controller
         if ($puntosEditar == 0) {
             foreach ($alumnoEditar->correos as $correo) {
 //              Mail::to($correo->correo)->queue(new CorreoPuntosParte($alumnoEditar));
-                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoPuntosParte($alumnoEditar));
+                Mail::to('sergioggbb02@gmail.com')->send(new CorreoPuntosParte($alumnoEditar));
             }
         }
 
