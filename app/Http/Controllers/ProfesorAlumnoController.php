@@ -155,6 +155,7 @@ class ProfesorAlumnoController extends Controller
     public function habilitar($dni) {
         if (!($this->validarDNI($dni))) return back()->with('success', 'DNI incorrecto');
         $dniProfesor = $dni;
+        if (count(Profesor::select('*')->where('dni','=',$dniProfesor)->get()) == 0) return back()->with('success', 'El profesor no existe');
         $profesor = Profesor::select('*')->where('dni','=',$dniProfesor)->get()[0];
         Profesor::where('dni','=',$dniProfesor)->update(['habilitado' =>  !($profesor->habilitado)]);
         $this->renovarSesion();
