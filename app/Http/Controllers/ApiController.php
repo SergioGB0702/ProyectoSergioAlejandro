@@ -35,6 +35,15 @@ class ApiController extends Controller
         }
 
         $dniAlumno = $request->dni;
+
+        $existeDNI = Alumno::select('*')->where('dni','=',$dniAlumno)->get();
+        if (count($existeDNI) == 0) {
+            return response()->json([
+                'success' => false,
+                'errors' => ["- DNI no registrado. <br><br>"]
+            ], 422);
+        }
+
         $listaCorreos = Correo::select("id","correo","tipo")->where("alumno_dni","=",$dniAlumno)->get();
         return $listaCorreos;
     }
@@ -223,7 +232,7 @@ class ApiController extends Controller
         if ($puntosEditar == 0) {
             foreach ($alumnoEditar->correos as $correo) {
 //              Mail::to($correo->correo)->queue(new CorreoPuntosParte($alumnoEditar));
-                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoPuntosParte($alumnoEditar));
+                Mail::to('sergioggbb02@gmail.com')->send(new CorreoPuntosParte($alumnoEditar));
             }
         }
 
@@ -265,9 +274,7 @@ class ApiController extends Controller
                 // Si no quedan es que el parte no tiene más alumnos asociados a él, por lo que podemos eliminar
                 // todas sus referencias, y a él mismo
                 if (count($comprobarNoMasAlumnos) == 0) {
-                    ParteIncidencia::where('parte_id','=',$parteId)->delete();
                     ParteConductanegativa::where('parte_id','=',$parteId)->delete();
-                    ParteCorreccionsaplicada::where('parte_id','=',$parteId)->delete();
                     Parte::where('id','=',$parteId)->delete();
                 }
             }
