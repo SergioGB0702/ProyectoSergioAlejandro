@@ -265,9 +265,7 @@ class ApiController extends Controller
                 // Si no quedan es que el parte no tiene más alumnos asociados a él, por lo que podemos eliminar
                 // todas sus referencias, y a él mismo
                 if (count($comprobarNoMasAlumnos) == 0) {
-                    ParteIncidencia::where('parte_id','=',$parteId)->delete();
                     ParteConductanegativa::where('parte_id','=',$parteId)->delete();
-                    ParteCorreccionsaplicada::where('parte_id','=',$parteId)->delete();
                     Parte::where('id','=',$parteId)->delete();
                 }
             }

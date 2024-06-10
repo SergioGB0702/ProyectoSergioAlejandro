@@ -52,8 +52,7 @@ class ParteDataTable extends DataTable
         $query = $model->newQuery()
             ->leftJoin('alumno_partes', 'partes.id', '=', 'alumno_partes.parte_id')
             ->leftJoin('alumnos', 'alumno_partes.alumno_dni', '=', 'alumnos.dni')
-            ->leftJoin('parte_incidencias', 'partes.id', '=', 'parte_incidencias.parte_id')
-            ->leftJoin('incidencias', 'parte_incidencias.incidencia_id', '=', 'incidencias.id')
+            ->leftJoin('incidencias', 'partes.incidencia_id', '=', 'incidencias.id')
             ->leftJoin('parte_conductanegativas', 'partes.id', '=', 'parte_conductanegativas.parte_id')
             ->leftJoin('conductanegativas', 'parte_conductanegativas.conductanegativas_id', '=', 'conductanegativas.id')
             ->select(

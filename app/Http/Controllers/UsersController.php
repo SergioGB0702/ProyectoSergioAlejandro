@@ -96,24 +96,15 @@ class UsersController extends Controller
 
 
         $fecha = Carbon::parse($fechaInput)->format('Y-m-d H:i');
-
         $parte = Parte::create([
             'profesor_dni' => request('Profesor'),
             'tramo_horario_id' => request('TramoHorario'),
             'colectivo' => count(request('Alumno')) > 1 ? 'Si' : 'No',
+            'correccionaplicadas_id' => request('CorrecionesAplicadas'),
+            'incidencia_id' => request('Incidencia'),
             'created_at' => $fecha,
             'puntos_penalizados' => intval(request('Puntos')),
             'descripcion_detallada' => request('DescripcionDetallada'),
-        ]);
-
-        ParteIncidencia::create([
-            'parte_id' => $parte->id,
-            'incidencia_id' => request('Incidencia'),
-        ]);
-
-        ParteCorreccionsaplicada::create([
-            'parte_id' => $parte->id,
-            'correccionaplicadas_id' => request('CorrecionesAplicadas'),
         ]);
 
         foreach (request('ConductasNegativa') as $conducta) {
@@ -221,20 +212,8 @@ class UsersController extends Controller
             'tramo_horario_id' => $request->input('TramoHorario'),
             'puntos_penalizados' => $request->input('Puntos'),
             'descripcion_detallada' => $request->input('DescripcionDetallada'),
-        ]);
-
-        //$parteIncidencia = ParteIncidencia::where('parte_id', $parte->id)->first();
-
-        $parte->incidencias()->update([
-            'incidencia_id' => $request->input('Incidencia'),
-        ]);
-
-
-// Obtén la instancia de ParteCorreccionsaplicada que deseas actualizar
-        //$parteCorreccion = ParteCorreccionsaplicada::where('parte_id', $parte->id)->first();
-
-        $parte->correccionesaplicadas()->update([
             'correccionaplicadas_id' => $request->input('CorrecionesAplicadas'),
+            'incidencia_id' => $request->input('Incidencia'),
         ]);
 
 
@@ -357,19 +336,16 @@ class UsersController extends Controller
 
         $alumnos = AlumnoParte::where('parte_id', $parteId)->get();
         $profesor = Profesor::where('dni', $parte->profesor_dni)->first()->get();
-        $incidencia = ParteIncidencia::where('parte_id', $parteId)->get();
         $conductasNegativas = ParteConductanegativa::where('parte_id', $parteId)->get();
-        $correcionesAplicadas = ParteCorreccionsaplicada::where('parte_id', $parteId);
-
 
         return response()->json([
             'id' => $parte->id,
             'fecha' => Carbon::parse($parte->created_at)->format('Y-m-d H:i'), // Formato 'Y-m-d' para que funcione con el componente 'date' de Vue
             'alumnos' => $alumnos,
             'profesor' => $profesor->first()->dni,
-            'incidencia' => $incidencia->first()->incidencia_id,
+            'incidencia' => $parte->incidencia_id,
             'conductasNegativas' => $conductasNegativas,
-            'correcionesAplicadas' => $correcionesAplicadas->first()->correccionaplicadas_id,
+            'correcionesAplicadas' => $parte->correccionaplicadas_id,
             'tramoHorario' => $parte->tramo_horario_id,
             'puntos' => $parte->puntos_penalizados,
             'descripcionDetallada' => $parte->descripcion_detallada,

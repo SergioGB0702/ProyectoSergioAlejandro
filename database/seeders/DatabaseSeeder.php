@@ -130,8 +130,6 @@ class DatabaseSeeder extends Seeder
             Parte::factory()->create();
             foreach (range(0, 1) as $o) {
                 ParteConductanegativa::factory()->create();
-                ParteCorreccionsaplicada::factory()->create();
-                ParteIncidencia::factory()->create();
             }
         }
 
