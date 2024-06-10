@@ -35,6 +35,15 @@ class ApiController extends Controller
         }
 
         $dniAlumno = $request->dni;
+
+        $existeDNI = Alumno::select('*')->where('dni','=',$dniAlumno)->get();
+        if (count($existeDNI) == 0) {
+            return response()->json([
+                'success' => false,
+                'errors' => ["- DNI no registrado. <br><br>"]
+            ], 422);
+        }
+
         $listaCorreos = Correo::select("id","correo","tipo")->where("alumno_dni","=",$dniAlumno)->get();
         return $listaCorreos;
     }
