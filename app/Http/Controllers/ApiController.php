@@ -231,9 +231,10 @@ class ApiController extends Controller
         $alumnoEditar = Alumno::find($dniAlumnoOriginal);
         if ($puntosEditar == 0) {
             foreach ($alumnoEditar->correos as $correo) {
-//              Mail::to($correo->correo)->queue(new CorreoPuntosParte($alumnoEditar));
-                Mail::to('sergioggbb02@gmail.com')->send(new CorreoPuntosParte($alumnoEditar));
-            }
+                Mail::to($correo->correo)->queue(new CorreoPuntosParte($alumnoEditar));
+                }
+            // Correo jefatura
+            Mail::to('sergioggbb02@gmail.com')->queue(new CorreoPuntosParte($alumnoEditar));
         }
 
         return response()->json([
