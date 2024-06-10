@@ -41,13 +41,12 @@ class ResumenParteDataTable extends DataTable
         $query = $model->newQuery()
             ->leftJoin('alumno_partes', 'alumnos.dni', '=', 'alumno_partes.alumno_dni')
             ->leftJoin('partes', 'alumno_partes.parte_id', '=', 'partes.id')
-            ->leftJoin('parte_incidencias', 'partes.id', '=', 'parte_incidencias.parte_id')
-            ->leftJoin('incidencias', 'parte_incidencias.incidencia_id', '=', 'incidencias.id')
+            ->leftJoin('incidencias', 'partes.incidencia_id', '=', 'incidencias.id')
             ->leftJoin('parte_conductanegativas', 'partes.id', '=', 'parte_conductanegativas.parte_id')
             ->leftJoin('conductanegativas', 'parte_conductanegativas.conductanegativas_id', '=', 'conductanegativas.id')
             ->select(
                 'alumnos.*',
-                DB::raw('COUNT(DISTINCT parte_incidencias.parte_id) as count_incidencia'),
+                DB::raw('COUNT(DISTINCT partes.incidencia_id) as count_incidencia'),
                 DB::raw('COUNT(DISTINCT parte_conductanegativas.conductanegativas_id) as count_conducta_negativa'),
                 DB::raw("COUNT(CASE WHEN conductanegativas.tipo = 'grave' THEN parte_conductanegativas.conductanegativas_id END) as count_conducta_negativa_grave"),
                 DB::raw("COUNT( CASE WHEN conductanegativas.tipo = 'contraria' THEN parte_conductanegativas.conductanegativas_id END) as count_conducta_negativa_contraria"),
@@ -98,7 +97,7 @@ class ResumenParteDataTable extends DataTable
             Column::make('count_incidencia')->name('count_incidencia')->title('Incidencias')->className('align-middle text-center'),
             Column::make('count_conducta_negativa_grave')->name('count_conducta_negativa_grave')->title('Conductas grave')->className('align-middle text-center'),
             Column::make('count_conducta_negativa_contraria')->name('count_conducta_negativa_contraria')->title('Conductas contrarias')->className('align-middle text-center'),
-            Column::make('puntos')->name('alumnos.puntos')->title('Conductas contrarias')->className('align-middle text-center'),
+            Column::make('puntos')->name('alumnos.puntos')->title('Puntos restantes')->className('align-middle text-center'),
         ];
     }
 

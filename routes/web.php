@@ -38,6 +38,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/get-course-unit', [App\Http\Controllers\UsersController::class, 'getCourseUnit']);
     Route::get('/getParte/{id}', [App\Http\Controllers\UsersController::class, 'getParte']);
+    Route::get('/getProfesores', [App\Http\Controllers\UsersController::class, 'getProfesores']);
+
+    Route::get('/offline', function () {
+        return view('vendor.laravelpwa.offline');
+    })->name('offline');
 
     Route::group(['middleware' => ['role:jefatura']], function () {
         Route::get('/gestion/incidencias', [App\Http\Controllers\IncidenciasController::class, 'index'])->name('gestion.incidencias');

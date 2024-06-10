@@ -17,10 +17,8 @@ class Correccionaplicada extends Model
         'habilitado',
     ];
 
-    public function partes()
-    {
-        return $this->belongsToMany(Parte::class,
-         'parte_correccionaplicadas');
+    public function parte () {
+        return $this->hasMany(Parte::class);
     }
 
 }

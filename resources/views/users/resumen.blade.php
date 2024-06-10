@@ -18,7 +18,7 @@
                 <form class="row">
                     <div class="col-12 mb-1">
                         <label for="inputAnoAcademico" class="d-block">Año Academico</label>
-                        <div class="col-6">
+                        <div class="col-12">
                             <div class="form-group">
                                 <select id="inputAnoAcademico" class="selectpicker form-control">
                                     <option value="Seleccione una opcion">Seleccione una opcion</option>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="col-12 mb-1">
                         <label for="inputCurso" class="d-block">Curso</label>
-                        <div class="col-6" >
+                        <div class="col-12" >
                             <div class="form-group">
                                 <select id="inputCurso" data-live-search="true" class="selectpicker form-control">
 
@@ -41,7 +41,7 @@
                     </div>
                     <div class="col-12 mb-2">
                         <label for="inputUnidad" class="d-block">Unidad</label>
-                        <div class="col-6">
+                        <div class="col-12">
                             <div class="form-group">
                                 <select id="inputUnidad" data-live-search="true" class="selectpicker form-control">
 

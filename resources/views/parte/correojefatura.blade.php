@@ -52,11 +52,9 @@
     <h3>Tipo De Parte:</h3>
     <p>{{ $parte->colectivo == 'Si' ? 'Colectivo' : 'Individual' }}</p>
     <div class="incidencias">
-        <h3>Incidencias:</h3>
+        <h3>Incidencia:</h3>
         <ul>
-            @foreach($parte->incidencias as $incidencia)
-                <li>{{ $incidencia->descripcion }}</li>
-            @endforeach
+            <li>{{ $parte->incidencias->first()->descripcion }}</li>
         </ul>
     </div>
     <div class="conductas-negativas">
@@ -68,11 +66,9 @@
         </ul>
     </div>
     <div class="correcciones-aplicadas">
-        <h3>Correcciones Aplicadas:</h3>
+        <h3>Corrección Aplicada:</h3>
         <ul>
-            @foreach($parte->correccionesaplicadas as $correccion)
-                <li>{{ $correccion->descripcion }}</li>
-            @endforeach
+            <li>{{ $parte->correccionesaplicadas->first()->descripcion }}</li>
         </ul>
     </div>
 

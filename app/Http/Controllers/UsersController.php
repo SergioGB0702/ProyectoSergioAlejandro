@@ -39,17 +39,17 @@ class UsersController extends Controller
     public function index(ParteDataTable $dataTable)
     {
         $anoAcademico = AnioAcademico::all();
-        $profesores = Profesor::all();
+        $profesores = Profesor::all()->where('habilitado','=',true);
 
         $tramos = Tramohorario::all();
 
         $cursos = Curso::all();
 
-        $incidencias = Incidencia::all();
+        $incidencias = Incidencia::all()->where('habilitado','=',true);
 
-        $conductasNegativas = Conductanegativa::all();
+        $conductasNegativas = Conductanegativa::all()->where('habilitado','=',true);
 
-        $correcionesAplicadas = Correccionaplicada::all();
+        $correcionesAplicadas = Correccionaplicada::all()->where('habilitado','=',true);
         return $dataTable->render('users.index', ['anoAcademico' => $anoAcademico, 'profesores' => $profesores, 'tramos' => $tramos, 'cursos' => $cursos, 'incidencias' => $incidencias, 'conductasNegativas' => $conductasNegativas, 'correcionesAplicadas' => $correcionesAplicadas]);
     }
 
@@ -96,24 +96,15 @@ class UsersController extends Controller
 
 
         $fecha = Carbon::parse($fechaInput)->format('Y-m-d H:i');
-
         $parte = Parte::create([
             'profesor_dni' => request('Profesor'),
             'tramo_horario_id' => request('TramoHorario'),
             'colectivo' => count(request('Alumno')) > 1 ? 'Si' : 'No',
+            'correccionaplicadas_id' => request('CorrecionesAplicadas'),
+            'incidencia_id' => request('Incidencia'),
             'created_at' => $fecha,
             'puntos_penalizados' => intval(request('Puntos')),
             'descripcion_detallada' => request('DescripcionDetallada'),
-        ]);
-
-        ParteIncidencia::create([
-            'parte_id' => $parte->id,
-            'incidencia_id' => request('Incidencia'),
-        ]);
-
-        ParteCorreccionsaplicada::create([
-            'parte_id' => $parte->id,
-            'correccionaplicadas_id' => request('CorrecionesAplicadas'),
         ]);
 
         foreach (request('ConductasNegativa') as $conducta) {
@@ -149,13 +140,13 @@ class UsersController extends Controller
             $alumnoModel->save();
             foreach ($alumnoModel->correos as $correo) {
 //                Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
-                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($alumnoModel, $parte));
+                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($alumnoModel, $parte));
             }
 
         }
         Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte));
 
-        return redirect()->route('parte.index')
+        return redirect()->route('users.index')
             ->with('success', 'Parte creado correctamente.');
     }
 
@@ -221,20 +212,8 @@ class UsersController extends Controller
             'tramo_horario_id' => $request->input('TramoHorario'),
             'puntos_penalizados' => $request->input('Puntos'),
             'descripcion_detallada' => $request->input('DescripcionDetallada'),
-        ]);
-
-        //$parteIncidencia = ParteIncidencia::where('parte_id', $parte->id)->first();
-
-        $parte->incidencias()->update([
-            'incidencia_id' => $request->input('Incidencia'),
-        ]);
-
-
-// Obtén la instancia de ParteCorreccionsaplicada que deseas actualizar
-        //$parteCorreccion = ParteCorreccionsaplicada::where('parte_id', $parte->id)->first();
-
-        $parte->correccionesaplicadas()->update([
             'correccionaplicadas_id' => $request->input('CorrecionesAplicadas'),
+            'incidencia_id' => $request->input('Incidencia'),
         ]);
 
 
@@ -323,7 +302,7 @@ class UsersController extends Controller
 
         Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte, false, true));
 
-        return redirect()->route('parte.index')
+        return redirect()->route('users.index')
             ->with('success', 'Parte creado correctamente.');
     }
 
@@ -346,7 +325,7 @@ class UsersController extends Controller
         Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte, true));
         $parte->delete();
 
-        return redirect()->route('parte.index')
+        return redirect()->route('users.index')
             ->with('success', 'Parte eliminado correctamente.');
     }
 
@@ -354,27 +333,35 @@ class UsersController extends Controller
     {
         $parteId = $id;
         $parte = Parte::find($parteId);
-
+        $profesorAll = Profesor::all();
         $alumnos = AlumnoParte::where('parte_id', $parteId)->get();
-        $profesor = Profesor::where('dni', $parte->profesor_dni)->first()->get();
-        $incidencia = ParteIncidencia::where('parte_id', $parteId)->get();
+        //$profesor = Profesor::where('dni', $parte->profesor_dni)->first()->get();
         $conductasNegativas = ParteConductanegativa::where('parte_id', $parteId)->get();
-        $correcionesAplicadas = ParteCorreccionsaplicada::where('parte_id', $parteId);
-
 
         return response()->json([
             'id' => $parte->id,
             'fecha' => Carbon::parse($parte->created_at)->format('Y-m-d H:i'), // Formato 'Y-m-d' para que funcione con el componente 'date' de Vue
             'alumnos' => $alumnos,
-            'profesor' => $profesor->first()->dni,
-            'incidencia' => $incidencia->first()->incidencia_id,
+            'profesor' => $parte->profesor_dni,
+            'profesorAll' => $profesorAll,
+            'incidencia' => $parte->incidencia_id,
             'conductasNegativas' => $conductasNegativas,
-            'correcionesAplicadas' => $correcionesAplicadas->first()->correccionaplicadas_id,
+            'correcionesAplicadas' => $parte->correccionaplicadas_id,
             'tramoHorario' => $parte->tramo_horario_id,
             'puntos' => $parte->puntos_penalizados,
             'descripcionDetallada' => $parte->descripcion_detallada,
 
         ]);
+    }
+
+    function getProfesores()
+    {
+        $profesoresAll = Profesor::all()->where('habilitado','=',true);
+        return response()->json([
+            'profesoresAll' => $profesoresAll
+
+        ]);
+
     }
 
     public function getCursos(Request $request)

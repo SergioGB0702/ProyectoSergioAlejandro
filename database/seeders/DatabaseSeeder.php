@@ -68,6 +68,7 @@ class DatabaseSeeder extends Seeder
         foreach ($conductasNegativas as $conductaNegativa) \App\Models\Conductanegativa::factory()->create($conductaNegativa);
 
         $correcionesAplicadas = [
+            ["descripcion" => "Ninguna.", 'habilitado' => true],
             ["descripcion" => "Suspender el derecho de asistencia al centro entre 1 y 3 días.", 'habilitado' => true],
             ["descripcion" => "Suspender el derecho de asistencia al centro entre 4 y 30 días.", 'habilitado' => true],
             ["descripcion" => "Realizar tareas fuera del horario lectivo del Centro.", 'habilitado' => true],
@@ -129,8 +130,6 @@ class DatabaseSeeder extends Seeder
             Parte::factory()->create();
             foreach (range(0, 1) as $o) {
                 ParteConductanegativa::factory()->create();
-                ParteCorreccionsaplicada::factory()->create();
-                ParteIncidencia::factory()->create();
             }
         }
 

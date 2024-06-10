@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('parte_conductanegativas', function (Blueprint $table) {
             $table->unsignedBigInteger('parte_id');
             $table->unsignedBigInteger('conductanegativas_id');
-            $table->foreign('parte_id')->references('id')->on('partes');
+            $table->foreign('parte_id')->references('id')->on('partes')->onDelete('cascade');
             $table->foreign('conductanegativas_id')->references('id')->on('conductanegativas')->onDelete('cascade');
             $table->primary(['parte_id', 'conductanegativas_id']);
         });
