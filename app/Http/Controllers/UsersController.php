@@ -140,7 +140,7 @@ class UsersController extends Controller
             $alumnoModel->save();
             foreach ($alumnoModel->correos as $correo) {
 //                Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
-                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($alumnoModel, $parte));
+                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($alumnoModel, $parte));
             }
 
         }
@@ -333,16 +333,17 @@ class UsersController extends Controller
     {
         $parteId = $id;
         $parte = Parte::find($parteId);
-
+        $profesorAll = Profesor::all();
         $alumnos = AlumnoParte::where('parte_id', $parteId)->get();
-        $profesor = Profesor::where('dni', $parte->profesor_dni)->first()->get();
+        //$profesor = Profesor::where('dni', $parte->profesor_dni)->first()->get();
         $conductasNegativas = ParteConductanegativa::where('parte_id', $parteId)->get();
 
         return response()->json([
             'id' => $parte->id,
             'fecha' => Carbon::parse($parte->created_at)->format('Y-m-d H:i'), // Formato 'Y-m-d' para que funcione con el componente 'date' de Vue
             'alumnos' => $alumnos,
-            'profesor' => $profesor->first()->dni,
+            'profesor' => $parte->profesor_dni,
+            'profesorAll' => $profesorAll,
             'incidencia' => $parte->incidencia_id,
             'conductasNegativas' => $conductasNegativas,
             'correcionesAplicadas' => $parte->correccionaplicadas_id,
@@ -351,6 +352,16 @@ class UsersController extends Controller
             'descripcionDetallada' => $parte->descripcion_detallada,
 
         ]);
+    }
+
+    function getProfesores()
+    {
+        $profesoresAll = Profesor::all()->where('habilitado','=',true);
+        return response()->json([
+            'profesoresAll' => $profesoresAll
+
+        ]);
+
     }
 
     public function getCursos(Request $request)

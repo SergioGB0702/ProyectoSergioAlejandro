@@ -123,7 +123,7 @@
 
                             <div class="col-md-6 mb-3">
                                 <label for="Profesor" class="form-label">Profesor:</label>
-                                <select data-live-search="true" name="Profesor" id="Profesor"
+                                <select data-live-search="true" data-selected-text-format="count" name="Profesor" id="Profesor"
                                         class="selectpicker form-control">
                                     <option value="">Seleccione una opción</option>
                                     @foreach($profesores as $profesor)
@@ -138,7 +138,7 @@
                             @enderror
                             <div class="col-md-6 mb-3">
                                 <label for="TramoHorario" class="form-label">Tramo Horario:</label>
-                                <select name="TramoHorario" id="TramoHorario" data-live-search="true"
+                                <select name="TramoHorario" data-selected-text-format="count" id="TramoHorario" data-live-search="true"
                                         class="selectpicker form-control">
                                     <option value="">Seleccione una opción</option>
                                     @foreach($tramos as $tramo)
@@ -153,7 +153,7 @@
                             @enderror
                             <div class="col-md-6 mb-3">
                                 <label for="Alumno" class="form-label">Alumno Implicados:</label>
-                                <select name="Alumno[]" id="Alumno" data-live-search="true" multiple
+                                <select name="Alumno[]" data-selected-text-format="count" id="Alumno" data-live-search="true" multiple
                                         class="selectpicker form-control">
                                     <!-- Options will be dynamically populated -->
                                 </select>
@@ -167,7 +167,7 @@
 
 
                                 <label for="Incidencia" class="form-label">Incidencia:</label>
-                                <select name="Incidencia" id="Incidencia" data-live-search="true"
+                                <select name="Incidencia" data-selected-text-format="count" id="Incidencia" data-live-search="true"
                                         class="selectpicker form-control">
                                     <option value="">Seleccione una opción</option>
                                     @foreach($incidencias as $incidencia)
@@ -184,7 +184,7 @@
                             @enderror
                             <div class="col-md-6 mb-3">
                                 <label for="ConductasNegativa" class="form-label">Conductas Negativas:</label>
-                                <select multiple data-actions-box="true" name="ConductasNegativa[]"
+                                <select multiple data-actions-box="true" data-selected-text-format="count" name="ConductasNegativa[]"
                                         id="ConductasNegativa" data-live-search="true"
                                         class="selectpicker form-control">
 
@@ -202,7 +202,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="CorrecionesAplicadas" class="form-label">Correciones Aplicadas:</label>
                                 <select name="CorrecionesAplicadas" id="CorrecionesAplicadas"
-                                        data-live-search="true" class="selectpicker form-control">
+                                        data-live-search="true" data-selected-text-format="count" class="selectpicker form-control">
                                     <option value="">Seleccione una opción</option>
                                     @foreach($correcionesAplicadas as $correcionesAplicada)
                                         <option
@@ -526,9 +526,7 @@
 
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/translations/es.js"></script>
     <script type="text/javascript">
 
         function getFecha() {
@@ -665,9 +663,34 @@
 
 
         });
-
         function crearParte() {
             document.getElementById('Fecha').value = getFecha();
+
+            $.ajax({
+                url: '/getProfesores',
+                method: 'GET',
+                success: function (response) {
+
+                    $('#Profesor').empty();
+
+
+
+                    console.log(response.profesoresAll);
+                    $.each(response.profesoresAll, function(index, option) {
+                        $('#Profesor').append(new Option(option.nombre, option.dni));
+                    });
+
+                    $('#Profesor').selectpicker('refresh');
+                    $('#Profesor').selectpicker('val', '')
+
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+
             // // Obtener los valores seleccionados de curso y unidad
             // var selectedCurso = $('#Curso').val();
             // var selectedUnidad = $('#Unidad').val();
@@ -689,7 +712,7 @@
             //         console.log(xhr.responseText);
             //     }
             // });
-        }
+
 
         function editarParte($id) {
 
@@ -704,23 +727,32 @@
                     // Establece los valores obtenidos en los campos ocultos
                     $('#hiddenId').val(response.id);
                     $('#Fecha').val(response.fecha);
+                    console.log(response.profesor);
+
+                    $('#Profesor').empty();
+
+                    $.each(response.profesorAll, function(index, option) {
+                        $('#Profesor').append(new Option(option.nombre, option.dni));
+                    });
+                    $('#Profesor').selectpicker('refresh');
+
                     $('#Profesor').selectpicker('val', response.profesor)
                     $('#TramoHorario').selectpicker('val', response.tramoHorario.toString());
                     var dniAlumnos = response.alumnos.map(function (alumno) {
                         return alumno.alumno_dni;
                     });
                     $('#Alumno').selectpicker('val', dniAlumnos)
-                    console.log(response.alumnos);
+
                     $('#Incidencia').selectpicker('val', response.incidencia.toString())
-                    console.log(response.conductasNegativas);
+
                     var conductasNegativas = response.conductasNegativas.map(function (conducta) {
                         return conducta.conductanegativas_id.toString();
                     });
                     $('#ConductasNegativa').selectpicker('val', conductasNegativas);
                     $('#CorrecionesAplicadas').selectpicker('val', response.correcionesAplicadas.toString());
-                    console.log(response.puntos);
+
                     $('#Puntos').val(response.puntos);
-                    console.log(response.descripcionDetallada);
+
                     if(response.descripcionDetallada !== null) {
                         editorInstance.setData(response.descripcionDetallada);
                     } else {

@@ -1,14 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    <!-- Option 1: CoreUI for Bootstrap CSS -->
-    {{--    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-KGkYqG3gD435LMZAC/8byquZiD5665LheNozmHAqp8vrOKBaBL/bFUO5Er5tMRNi" crossorigin="anonymous">--}}
-    {{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />--}}
-    <!-- Option 2: CoreUI PRO for Bootstrap CSS -->
+
     <link rel="stylesheet" href="{{asset('css/coreuicss.css')}}">
     <link rel="stylesheet" href="{{asset('css/simplebar.css')}}">
     <link rel="stylesheet" href="{{asset('css/simplebar2.css')}}">
@@ -19,39 +17,25 @@
     <script src="{{asset('js/ckeditor.js')}}"></script>
 
 
-
-
-    {{--        <script src="https://cdn.jsdelivr.net/npm/@coreui/icons@3.0.1/dist/cjs/index.min.js"></script>--}}
-    {{--        <link href="https://cdn.jsdelivr.net/npm/@coreui/icons@3.0.1/css/all.min.css" rel="stylesheet">--}}
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Icons"
         rel="stylesheet"
     />
-    {{--    <!-- Latest compiled and minified CSS -->--}}
-    {{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">--}}
 
-    {{--    <!-- Latest compiled and minified JavaScript -->--}}
-    {{--    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>--}}
+    <script src="{{asset('js/jquery.js')}}"></script>
 
-    {{--    <!-- (Optional) Latest compiled and minified JavaScript translation files -->--}}
-    {{--    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/i18n/defaults-*.min.js"></script>--}}
+    <link rel="stylesheet" href="{{asset('js/bootstrap-select.css')}}">
 
+    <script defer src="{{asset('js/bootstrap-select.js')}}"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-select@v1.14.0-beta2/dist/css/bootstrap-select.min.css">
-    <!-- Latest compiled and minified JavaScript -->
-    <script defer
-            src="https://cdn.jsdelivr.net/npm/bootstrap-select@v1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
-
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-es_ES.js"></script>
+    <script defer src="{{asset('js/bootstrap-select@es_ES.js')}}"></script>
 
     <title>Gestión de Partes IES SS</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('/img/LogotipoApp.png') }}">
     <link rel="shortcut icon" sizes="192x192" href="{{ asset('/img/LogotipoApp.png') }}">
+    @laravelPWA
 </head>
 <body>
 
