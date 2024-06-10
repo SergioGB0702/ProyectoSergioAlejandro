@@ -380,15 +380,17 @@
                 var id = $('#hiddenId').val();
                 console.log(id);
                 var url, method;
-
+                let operacionParte = "";
                 if (id) {
                     // Estás editando un registro existente
                     url = '/updateParte/' + id; // Asegúrate de que esta URL es correcta
                     method = 'POST';
+                    operacionParte = 'Parte editado correctamente.';
                 } else {
                     // Estás creando un nuevo registro
                     url = '/createParte'; // Asegúrate de que esta URL es correcta
                     method = 'POST';
+                    operacionParte = 'Parte creado correctamente.';
                 }
                 $('#DescripcionDetallada').val(editorInstance.getData());
                 var formData = $('#modalForm').serialize();
@@ -406,7 +408,7 @@
                         table.DataTable().ajax.reload();
                         var alertHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 5%; left: 50%; width: 60%; transform: translateX(-50%) translateY(-50%); z-index: 9999;">' +
                             ' <svg class="icon me-2"> <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-check-circle')}} "></use></svg>' +
-                            'Parte creado correctamente.' +
+                            operacionParte +
                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                             '</div>';
 
