@@ -33,7 +33,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/updateParte/{id}', [UsersController::class, 'editarParte'])->name('parte.update');
     Route::get('/deleteParte/{id}', [UsersController::class, 'eliminarParte'])->name('parte.delete');
     Route::get('/correo', [UsersController::class, 'correo'])->name('user.correo');
-    Route::get('/correoenviar', [UsersController::class, 'pruebaCorreo'])->name('user.enviarcorreo');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/get-course-unit', [App\Http\Controllers\UsersController::class, 'getCourseUnit']);
@@ -72,6 +71,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/gestion/profesoralumno/profesor/crear', [App\Http\Controllers\ProfesorAlumnoController::class, 'crearProfesor'])->name('gestion.profesoralumno.profesor.crear');
         Route::get('/gestion/profesoralumno/profesor/deshabilitados', [App\Http\Controllers\ProfesorAlumnoController::class, 'deshabilitados'])->name('gestion.profesoralumno.profesor.deshabilitados');
         Route::get('/gestion/profesoralumno/profesor/editar', [App\Http\Controllers\ProfesorAlumnoController::class, 'editarProfesor'])->name('gestion.profesoralumno.profesor.editar');
+
+        Route::get('/gestion/tutores', [App\Http\Controllers\TutoresController::class, 'index'])->name('gestion.tutores');
 
         Route::get('/import', [UsersController::class, 'cargarImport'])->name('users.import');
         Route::post('/import', [UsersController::class, 'import'])->name('users.import');

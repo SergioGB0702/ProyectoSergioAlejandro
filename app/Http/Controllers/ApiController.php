@@ -10,6 +10,8 @@ use App\Models\Parte;
 use App\Models\ParteConductanegativa;
 use App\Models\ParteCorreccionsaplicada;
 use App\Models\ParteIncidencia;
+use App\Models\Profesor;
+use App\Models\Unidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
@@ -310,4 +312,51 @@ class ApiController extends Controller
             return false;
         }
     }
+
+    public function asignarTutor(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'dniTutor' => ['required', 'string', 'size:9', 'regex:/^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i'],
+            'idUnidad' => ['required', 'numeric', 'between:1,5000'],
+        ],[
+            'dniTutor' => '- Problema al obtener los datos del profesor. <br>',
+            'idUnidad' => '- Problema al obtener los datos de la unidad. <br>',
+        ]);
+        
+        // Se devuelve la información de los errores si ha fallado
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Asignamos los datos recibidos por Request a variables
+        $dniTutor = $request->dniTutor;
+        $idUnidad = $request->idUnidad;
+        if (!($this->validarDNI($dniTutor))) {
+            return response()->json([
+                'success' => false,
+                'errors' => ["- DNI con formato incorrecto. <br><br>"]
+            ], 422);
+        }
+
+        
+        $unidadComprobar = Unidad::select('*')->where('id','=',$idUnidad)->get();
+        $profesorComprobar = Profesor::select('*')->where('dni','=',$dniTutor)->get();
+        if (count($unidadComprobar) == 0 || count($profesorComprobar) == 0) {
+            return response()->json([
+                'success' => false,
+                'errors' => ["- Problema al obtener los datos de los campos seleccionados, inténtelo de nuevo. <br>"]
+            ], 422);
+        }
+
+        $unidadAsignar = $unidadComprobar[0];
+        $unidadAsignar->tutor_dni = $dniTutor;
+        $unidadAsignar->save();
+
+        return response()->json([
+            'success' => true,
+        ], 200);
+    }
+
 }

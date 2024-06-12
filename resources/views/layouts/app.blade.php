@@ -86,12 +86,16 @@
                         <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-school')}}"></use>
                     </svg>
                     <span data-coreui-i18n="dashboard">Alumnos / Profesores</span></a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('gestion.tutores') ? 'active' : '' }}" href="{{route('gestion.tutores')}}">
+                    <svg class="nav-icon">
+                        <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-user')}}"></use>
+                    </svg>
+                    <span data-coreui-i18n="dashboard">Tutores</span></a></li>
                     <li class="nav-item"><a class="nav-link {{ request()->routeIs('gestion.puntos') ? 'active' : '' }}" href="{{route('gestion.puntos')}}">
                     <svg class="nav-icon">
                         <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-bell-exclamation')}}"></use>
                     </svg>
                     <span data-coreui-i18n="dashboard">Reiniciar puntos</span></a></li>
-
                     <li class="nav-item"><a class="nav-link {{ request()->routeIs('users.import') ? 'active' : '' }}" href="{{route('users.import')}}">
                             <svg class="nav-icon">
                                 <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-bookmark')}}"></use>
