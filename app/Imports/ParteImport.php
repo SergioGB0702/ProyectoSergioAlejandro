@@ -47,29 +47,29 @@ class ParteImport implements ToModel, WithHeadingRow
         }
 
 
-        $fechaInput = request('Fecha');
+        $fechaInput = $row['Fecha'];
 
 
         $fecha = Carbon::parse($fechaInput)->format('Y-m-d H:i');
 
-        $profesor_dni = Profesor::where('nombre', request('Profesor'))->first();
-        $tramohorario = Tramohorario::where('nombre', request('TramoHorario'))->first();
-        $incidencia = Incidencia::where('descripcion', request('Incidencia'))->first();
-        $correcionesAplicadas = Correccionaplicada::where('descripcion', request('CorrecionesAplicadas'))->first();
+        $profesor_dni = Profesor::where('nombre', $row['Profesor'])->first();
+        $tramohorario = Tramohorario::where('nombre', $row['TramoHorario'])->first();
+        $incidencia = Incidencia::where('descripcion', $row['Incidencia'])->first();
+        $correcionesAplicadas = Correccionaplicada::where('descripcion', $row['CorreccionAplicada'])->first();
 
 
 
         // Crear el alumno
         Parte::updateOrCreate([
-                'id' => request('parte_id'),
+                'id' => $row['parte_id'],
                 'profesor_dni' => $profesor_dni,
                 'tramo_horario_id' => $tramohorario,
-                'colectivo' => request('Alumno'),
+                'colectivo' => $row['colectivo'],
                 'correccionaplicadas_id' => $correcionesAplicadas,
                 'incidencia_id' => $incidencia,
                 'created_at' => $fecha,
-                'puntos_penalizados' => intval(request('Puntos')),
-                'descripcion_detallada' => request('DescripcionDetallada'),
+                'puntos_penalizados' => $row['Puntos'],
+                'descripcion_detallada' => $row['CorreccionAplicada'],
             ]
         );
     }

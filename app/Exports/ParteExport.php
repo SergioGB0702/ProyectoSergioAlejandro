@@ -26,8 +26,8 @@ class ParteExport implements FromCollection, withHeadings
     {
         return [
             'parte_id',
-            'colectivo',
             'FechaIncidencia',
+            'colectivo',
             'Profesor',
             'TramoHorario',
             'AlumnoImplicados',

@@ -116,11 +116,11 @@ class PartesController extends Controller
                 'tramohorarios.nombre as tramo_horario',
                 'alumnos.nombre as alumno_implicado',
                 'incidencias.descripcion as incidencia',
-                'conductanegativas.descripcion as conducta_negativa',
+                DB::raw('GROUP_CONCAT(DISTINCT conductanegativas.descripcion SEPARATOR ", ") as conducta_negativa'),
                 'correccionaplicadas.descripcion as correccion_aplicada',
                 'partes.puntos_penalizados as puntos',
                 'partes.descripcion_detallada as descripcion_detallada',
-                DB::raw('GROUP_CONCAT(DISTINCT conductanegativas.descripcion SEPARATOR ", ") as descripcion_conducta_negativa')
+
             )
 
             ->groupBy('partes.id');

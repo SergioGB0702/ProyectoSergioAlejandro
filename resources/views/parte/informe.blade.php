@@ -124,7 +124,7 @@
 
 // Formatea la fecha en el formato 'YYYYMMDD'
                     var formattedDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
-
+                    console.log(formattedDate);
                     var objectUrl = url.createObjectURL(data);
                     var invisibleLink = document.createElement('a');
                     invisibleLink.href = objectUrl;
