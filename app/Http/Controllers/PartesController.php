@@ -160,11 +160,11 @@ class PartesController extends Controller
         $validator = Validator::make($request->all(), [
             'Profesor' => 'required|in:' . implode(',', Profesor::all()->pluck('dni')->toArray()),
             'TramoHorario' => 'required|in:' . implode(',', Tramohorario::all()->pluck('id')->toArray()),
-            'Alumno' => 'required|in:' . implode(',', Alumno::all()->pluck('dni')->toArray()),
+            'Alumno' => 'required',
             'Puntos' => 'required|numeric',
             'Fecha' => 'required|date',
             'Incidencia' => 'required|in:' . implode(',', Incidencia::all()->pluck('id')->toArray()),
-            'ConductasNegativa' => 'required|in:' . implode(',', Conductanegativa::all()->pluck('id')->toArray()),
+            'ConductasNegativa' => 'required',
             'CorrecionesAplicadas' => 'required|in:' . implode(',', Correccionaplicada::all()->pluck('id')->toArray()),
         ]);
         if ($validator->fails()) {
@@ -228,7 +228,7 @@ class PartesController extends Controller
                 $alumnoModel->puntos = 0;
                 foreach ($alumnoModel->correos as $correo) {
 //                Mail::to($correo->correo)->queue(new CorreoPuntosParte($alumnoModel));
-                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoPuntosParte($alumnoModel));
+                    Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoPuntosParte($alumnoModel));
                 }
             } else {
                 $alumnoModel->decrement('puntos', $puntosARestar);
@@ -237,14 +237,14 @@ class PartesController extends Controller
             $alumnoModel->save();
             foreach ($alumnoModel->correos as $correo) {
 //                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
-                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutores($alumnoModel, $parte));
+                Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutores($alumnoModel, $parte));
             }
 
         }
-        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte));
+        Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoJefaturaParte($parte));
 
-//        Mail::to($parte->alumnos->first()->unidad->tutor_dni)->send(new CorreoTutoresCurso($parte));
-        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresCurso($parte));
+//        Mail::to($parte->alumnos->first()->unidad->tutor_dni)->queue(new CorreoTutoresCurso($parte));
+        Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutoresCurso($parte));
 
         return redirect()->route('users.index')
             ->with('success', 'Parte creado correctamente.');
@@ -306,7 +306,7 @@ class PartesController extends Controller
                 $parte->alumnos()->increment('puntos', $parte->puntos_penalizados);
                 foreach ($alumno->correos as $correo) {
 //                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
-                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresCurso($alumno, $parte, true));
+                    Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutoresCurso($alumno, $parte, true));
                 }
 
             }
@@ -379,7 +379,7 @@ class PartesController extends Controller
                 if ($alumnoModel->puntos <= $puntosARestar) {
                     $alumnoModel->puntos = 0;
 
-                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoPuntosParte($alumnoModel));
+                    Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoPuntosParte($alumnoModel));
                 } else {
                     $alumnoModel->decrement('puntos', $puntosARestar);
                 }
@@ -387,7 +387,7 @@ class PartesController extends Controller
                 $alumnoModel->save();
                 foreach ($alumno->correos as $correo) {
 //                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
-                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresCurso($alumno, $parte));
+                    Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutoresCurso($alumno, $parte));
                 }
             } else {
 
@@ -398,7 +398,7 @@ class PartesController extends Controller
                 if ($alumnoModel->puntos <= $puntosARestar) {
                     $alumnoModel->puntos = 0;
 
-                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoPuntosParte($alumnoModel));
+                    Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoPuntosParte($alumnoModel));
                 } else {
                     $alumnoModel->decrement('puntos', $puntosARestar);
                 }
@@ -407,7 +407,7 @@ class PartesController extends Controller
 
                 foreach ($alumnoModel->correos as $correo) {
 //                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
-                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutores($alumnoModel, $parte, false, true));
+                    Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutores($alumnoModel, $parte, false, true));
                 }
             }
 
@@ -415,9 +415,9 @@ class PartesController extends Controller
         }
 
 
-        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte, false, true));
-//        Mail::to($parte->alumnos->first()->unidad->profesor->correo)->send(new CorreoTutoresCurso($parte,false,true));
-        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresCurso($parte,false,true));
+        Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoJefaturaParte($parte, false, true));
+//        Mail::to($parte->alumnos->first()->unidad->profesor->correo)->queue(new CorreoTutoresCurso($parte,false,true));
+        Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutoresCurso($parte,false,true));
         return redirect()->route('users.index')
             ->with('success', 'Parte creado correctamente.');
     }
@@ -441,12 +441,12 @@ class PartesController extends Controller
             $alumnoModel->save();
             foreach ($alumnoModel->correos as $correo) {
 //                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
-                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutores($alumnoModel, $parte, true));
+                Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutores($alumnoModel, $parte, true));
             }
 
         }
-        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte, true));
-        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresCurso($parte,true));
+        Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoJefaturaParte($parte, true));
+        Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutoresCurso($parte,true));
         $parte->delete();
 
         return redirect()->route('users.index')
