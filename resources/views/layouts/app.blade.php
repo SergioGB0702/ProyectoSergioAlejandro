@@ -63,6 +63,11 @@
                     <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-balance-scale')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Resumen Incidencias</span></a></li>
+        <li class="nav-item"><a class="nav-link {{ request()->routeIs('parte.informe') ? 'active' : '' }}" href="{{route('parte.informe')}}">
+                <svg class="nav-icon">
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-file')}}"></use>
+                </svg>
+                <span data-coreui-i18n="dashboard">Informe Incidencias</span></a></li>
         <!-- Gestión para jefatura -->
         @role('jefatura')
             <li class="nav-title" data-coreui-i18n="theme">Gestión</li>
@@ -86,6 +91,11 @@
                         <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-school')}}"></use>
                     </svg>
                     <span data-coreui-i18n="dashboard">Alumnos / Profesores</span></a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('gestion.tutores') ? 'active' : '' }}" href="{{route('gestion.tutores')}}">
+                    <svg class="nav-icon">
+                        <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-user')}}"></use>
+                    </svg>
+                    <span data-coreui-i18n="dashboard">Tutores</span></a></li>
                     <li class="nav-item"><a class="nav-link {{ request()->routeIs('gestion.puntos') ? 'active' : '' }}" href="{{route('gestion.puntos')}}">
                     <svg class="nav-icon">
                         <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-bell-exclamation')}}"></use>

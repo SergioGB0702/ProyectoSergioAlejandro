@@ -19,4 +19,8 @@ class Profesor extends Model
         return $this->hasMany(Parte::class);
     }
 
+    public function cursos () {
+        return $this->hasMany(Curso::class);
+    }
+
 }

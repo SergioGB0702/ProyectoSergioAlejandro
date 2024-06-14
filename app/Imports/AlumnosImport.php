@@ -53,7 +53,18 @@ class AlumnosImport implements ToModel, WithHeadingRow
             'nombre' => 'required|string',
             'nombre_curso' => 'required|string',
             'nombre_unidad' => 'required|string',
-            'correo' => 'required|email',
+            'correo' => ['required', function ($attribute, $value, $fail) {
+                $correos = explode(',', $value);
+                foreach ($correos as $correo) {
+                    $correoValidator = Validator::make(['correo' => $correo], [
+                        'correo' => 'email',
+                    ]);
+
+                    if ($correoValidator->fails()) {
+                        $fail($attribute.'debe contener direcciones de correo electrónico válidas, con una coma y un espacio.');
+                    }
+                }
+            }],
         ]);
 
         if ($validator->fails()) {

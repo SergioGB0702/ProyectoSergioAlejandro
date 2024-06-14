@@ -673,9 +673,6 @@
 
                     $('#Profesor').empty();
 
-
-
-                    console.log(response.profesoresAll);
                     $.each(response.profesoresAll, function(index, option) {
                         $('#Profesor').append(new Option(option.nombre, option.dni));
                     });

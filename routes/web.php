@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\UsersController;
+use App\Http\Controllers\PartesController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,23 +22,26 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware('auth')->group(function () {
-    Route::get('/resumen', [UsersController::class, 'resumen'])->name('parte.resumen');
-    Route::post('/upload', [UsersController::class, 'upload']);
-    Route::get('/cursos', [UsersController::class, 'getCursos']);
-    Route::get('/unidades', [UsersController::class, 'getUnidades']);
-    Route::get('/alumnos', [UsersController::class, 'getAlumnos']);
-    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
-    Route::post('/createParte', [UsersController::class, 'crearParte'])->name('parte.create');
-    Route::get('/descargarPartePDF/{id}', [UsersController::class, 'descargarPartePDF'])->name('descargarPartePDF');
-    Route::post('/updateParte/{id}', [UsersController::class, 'editarParte'])->name('parte.update');
-    Route::get('/deleteParte/{id}', [UsersController::class, 'eliminarParte'])->name('parte.delete');
-    Route::get('/correo', [UsersController::class, 'correo'])->name('user.correo');
-    Route::get('/correoenviar', [UsersController::class, 'pruebaCorreo'])->name('user.enviarcorreo');
+    Route::get('/resumen', [PartesController::class, 'resumen'])->name('parte.resumen');
+    Route::post('/upload', [PartesController::class, 'upload']);
+    Route::get('/cursos', [PartesController::class, 'getCursos']);
+    Route::get('/unidades', [PartesController::class, 'getUnidades']);
+    Route::get('/alumnos', [PartesController::class, 'getAlumnos']);
+    Route::get('/users', [PartesController::class, 'index'])->name('users.index');
+    Route::post('/createParte', [PartesController::class, 'crearParte'])->name('parte.create');
+    Route::get('/descargarPartePDF/{id}', [PartesController::class, 'descargarPartePDF'])->name('descargarPartePDF');
+    Route::post('/updateParte/{id}', [PartesController::class, 'editarParte'])->name('parte.update');
+    Route::get('/deleteParte/{id}', [PartesController::class, 'eliminarParte'])->name('parte.delete');
+    Route::get('/correo', [PartesController::class, 'correo'])->name('user.correo');
+    Route::get('/informe', [PartesController::class, 'informe'])->name('parte.informe');
+    Route::post('/informeExcel', [PartesController::class, 'informeExcel'])->name('parte.informeExcel');
+
+
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/get-course-unit', [App\Http\Controllers\UsersController::class, 'getCourseUnit']);
-    Route::get('/getParte/{id}', [App\Http\Controllers\UsersController::class, 'getParte']);
-    Route::get('/getProfesores', [App\Http\Controllers\UsersController::class, 'getProfesores']);
+    Route::get('/get-course-unit', [App\Http\Controllers\PartesController::class, 'getCourseUnit']);
+    Route::get('/getParte/{id}', [App\Http\Controllers\PartesController::class, 'getParte']);
+    Route::get('/getProfesores', [App\Http\Controllers\PartesController::class, 'getProfesores']);
 
     Route::get('/offline', function () {
         return view('vendor.laravelpwa.offline');
@@ -73,8 +76,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/gestion/profesoralumno/profesor/deshabilitados', [App\Http\Controllers\ProfesorAlumnoController::class, 'deshabilitados'])->name('gestion.profesoralumno.profesor.deshabilitados');
         Route::get('/gestion/profesoralumno/profesor/editar', [App\Http\Controllers\ProfesorAlumnoController::class, 'editarProfesor'])->name('gestion.profesoralumno.profesor.editar');
 
-        Route::get('/import', [UsersController::class, 'cargarImport'])->name('users.import');
-        Route::post('/import', [UsersController::class, 'import'])->name('users.import');
+        Route::get('/gestion/tutores', [App\Http\Controllers\TutoresController::class, 'index'])->name('gestion.tutores');
+
+
+        Route::get('/import', [PartesController::class, 'cargarImport'])->name('users.import');
+        Route::post('/import', [PartesController::class, 'import'])->name('users.import');
+
+        Route::post('/importInforme', [PartesController::class, 'importInforme'])->name('parte.importInforme');
+
 
         // Rutas para la gestión de los puntos
         Route::get('/gestion/puntos', function () {

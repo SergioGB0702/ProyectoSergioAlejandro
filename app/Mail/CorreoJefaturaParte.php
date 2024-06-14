@@ -15,6 +15,7 @@ class CorreoJefaturaParte extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $alumno;
     protected $parte;
 
     protected bool $actualizado;
@@ -87,7 +88,7 @@ class CorreoJefaturaParte extends Mailable
             $this->parte->descripcion_detallada = $dom->saveHTML();
         }
 
-            return $this->view('parte.correojefatura')
+            return $this->view('parte.correotutor')
                 ->with([
                     'parte' => $this->parte,
                     'imagePaths' => $this->imagePaths ?? null,

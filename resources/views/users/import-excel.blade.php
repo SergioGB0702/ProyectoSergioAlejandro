@@ -19,7 +19,7 @@
             </ul>
         </div>
     @endif
-    <div class="container">
+    <div class="container mb-3">
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="card shadow-sm card-general">
@@ -33,7 +33,28 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-primary" type="submit">Importar</button>
+                            <button class="btn btn-success text-white" type="submit">Importar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card shadow-sm card-general">
+                    <div class="card-header ">Importar partes</div>
+                    <div class="card-body">
+                        <form action="{{route('parte.importInforme')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="import_file" name="import_file">
+                                </div>
+                            </div>
+
+                            <button class="btn btn-success text-white" type="submit">Importar</button>
                         </form>
                     </div>
                 </div>

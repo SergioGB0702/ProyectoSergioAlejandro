@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('unidades', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('tutor_dni')->nullable();
             $table->unsignedBigInteger('id_curso')->nullable();
+            $table->foreign('tutor_dni')->references('dni')->on('profesors')->onDelete('set null')->onUpdate('cascade');
             $table->foreign('id_curso')->references('id')->on('cursos')->onDelete('cascade');
         });
     }

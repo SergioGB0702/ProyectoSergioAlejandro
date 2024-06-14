@@ -21,4 +21,9 @@ class Curso extends Model
         return $this->hasMany(Unidad::class);
     }
 
+    public function profesors()
+    {
+        return $this->belongsTo(Profesor::class, 'tutor_dni', 'dni');
+    }
+
 }
