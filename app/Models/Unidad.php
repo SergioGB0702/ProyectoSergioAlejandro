@@ -20,4 +20,8 @@ class Unidad extends Model
         return $this->hasMany(Alumno::class);
     }
 
+    public function profesor()
+    {
+        return $this->belongsTo(Profesor::class, 'tutor_dni', 'dni');
+    }
 }

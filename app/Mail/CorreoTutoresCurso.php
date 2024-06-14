@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class CorreoTutoresParte extends Mailable
+class CorreoTutoresCurso extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -57,7 +57,7 @@ class CorreoTutoresParte extends Mailable
     /**
      * Get the message content definition.
      */
-    public function build(): CorreoTutoresParte
+    public function build(): CorreoTutoresCurso
     {
 
 

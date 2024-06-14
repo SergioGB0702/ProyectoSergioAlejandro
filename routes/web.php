@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/correo', [PartesController::class, 'correo'])->name('user.correo');
     Route::get('/informe', [PartesController::class, 'informe'])->name('parte.informe');
     Route::post('/informeExcel', [PartesController::class, 'informeExcel'])->name('parte.informeExcel');
-
+    Route::post('/importInforme', [PartesController::class, 'importInforme'])->name('parte.importInforme');
 
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

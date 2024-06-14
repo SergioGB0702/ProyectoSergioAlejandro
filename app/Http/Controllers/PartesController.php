@@ -10,7 +10,8 @@ use App\DataTables\ParteDataTable;
 use App\Imports\ParteImport;
 use App\Mail\CorreoJefaturaParte;
 use App\Mail\CorreoPuntosParte;
-use App\Mail\CorreoTutoresParte;
+use App\Mail\CorreoTutores;
+use App\Mail\CorreoTutoresCurso;
 use App\Models\Alumno;
 use App\Models\AlumnoParte;
 use App\Models\AnioAcademico;
@@ -235,15 +236,15 @@ class PartesController extends Controller
 
             $alumnoModel->save();
             foreach ($alumnoModel->correos as $correo) {
-//                Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
-                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($alumnoModel, $parte));
+//                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
+                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutores($alumnoModel, $parte));
             }
 
         }
         Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte));
 
-//        Mail::to($parte->alumnos->first()->unidad->tutor_dni)->send(new CorreoTutoresParte($parte));
-        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($parte));
+//        Mail::to($parte->alumnos->first()->unidad->tutor_dni)->send(new CorreoTutoresCurso($parte));
+        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresCurso($parte));
 
         return redirect()->route('users.index')
             ->with('success', 'Parte creado correctamente.');
@@ -304,8 +305,8 @@ class PartesController extends Controller
                 $parte->alumnos()->detach($alumno->dni);
                 $parte->alumnos()->increment('puntos', $parte->puntos_penalizados);
                 foreach ($alumno->correos as $correo) {
-//                Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
-                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($alumno, $parte, true));
+//                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
+                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresCurso($alumno, $parte, true));
                 }
 
             }
@@ -385,8 +386,8 @@ class PartesController extends Controller
 
                 $alumnoModel->save();
                 foreach ($alumno->correos as $correo) {
-//                Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
-                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($alumno, $parte));
+//                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
+                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresCurso($alumno, $parte));
                 }
             } else {
 
@@ -405,8 +406,8 @@ class PartesController extends Controller
                 $alumnoModel->save();
 
                 foreach ($alumnoModel->correos as $correo) {
-//                Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
-                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($alumnoModel, $parte, false, true));
+//                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
+                    Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutores($alumnoModel, $parte, false, true));
                 }
             }
 
@@ -415,8 +416,8 @@ class PartesController extends Controller
 
 
         Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte, false, true));
-        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($parte,false,true));
-
+//        Mail::to($parte->alumnos->first()->unidad->profesor->correo)->send(new CorreoTutoresCurso($parte,false,true));
+        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresCurso($parte,false,true));
         return redirect()->route('users.index')
             ->with('success', 'Parte creado correctamente.');
     }
@@ -429,7 +430,7 @@ class PartesController extends Controller
                 'errors' => ["- Problema al obtener los datos del parte."]
             ], 422);
         }
-        
+
         $parte = Parte::find($id);
 
         $alumnos = AlumnoParte::where('parte_id', $parte->id)->get();
@@ -439,13 +440,13 @@ class PartesController extends Controller
             $alumnoModel->increment('puntos', $parte->puntos_penalizados);
             $alumnoModel->save();
             foreach ($alumnoModel->correos as $correo) {
-//                Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
-                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($alumnoModel, $parte, true));
+//                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
+                Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutores($alumnoModel, $parte, true));
             }
 
         }
         Mail::to('alejandrocbt@hotmail.com')->send(new CorreoJefaturaParte($parte, true));
-        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte($parte,true));
+        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresCurso($parte,true));
         $parte->delete();
 
         return redirect()->route('users.index')
