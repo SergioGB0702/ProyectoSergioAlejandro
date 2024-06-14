@@ -19,7 +19,7 @@ class TutoresController extends Controller
         $profesores = Profesor::all()->where('habilitado','=',true);
         $this->renovarSesion();
         return view('gestion.tutores', ["anioAcademicos" => $anioAcademicos, "cursos" => $cursos,
-            "unidades" => $unidades, "profesores" => $profesores]);
+        "unidades" => $unidades, "profesores" => $profesores]);
     }
 
     public function renovarSesion() {

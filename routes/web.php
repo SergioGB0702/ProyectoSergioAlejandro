@@ -78,12 +78,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/gestion/tutores', [App\Http\Controllers\TutoresController::class, 'index'])->name('gestion.tutores');
 
-
         Route::get('/import', [PartesController::class, 'cargarImport'])->name('users.import');
         Route::post('/import', [PartesController::class, 'import'])->name('users.import');
-
-        Route::post('/importInforme', [PartesController::class, 'importInforme'])->name('parte.importInforme');
-
 
         // Rutas para la gestión de los puntos
         Route::get('/gestion/puntos', function () {

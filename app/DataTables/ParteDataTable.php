@@ -60,7 +60,7 @@ class ParteDataTable extends DataTable
                 'partes.*',
                 'alumnos.*',
                 'incidencias.descripcion',
-                DB::raw(' CONCAT("<ul><li>", GROUP_CONCAT(DISTINCT conductanegativas.descripcion SEPARATOR "</li><li>"), "</li></ul>") as descripcion_conducta_negativa')
+                DB::raw('CONCAT("<ul><li>", GROUP_CONCAT(DISTINCT CONCAT(conductanegativas.descripcion, " (", conductanegativas.tipo, ")") SEPARATOR "</li><li>"), "</li></ul>") as descripcion_conducta_negativa')
             )
             ->groupBy('partes.id');
 
@@ -96,7 +96,8 @@ class ParteDataTable extends DataTable
                 'title' => 'Acciones',
                 'orderable' => false,
                 'searchable' => false,
-
+                'exportable' => false,
+                'printable' => false,
             ])
 
             ->buttons([
@@ -110,7 +111,6 @@ class ParteDataTable extends DataTable
 
                 ]),
                 Button::make('excel')->titleAttr('Exportar a Excel'),
-                Button::make('csv')->titleAttr('Exportar a CSV'),
                 Button::make('print')->titleAttr('Imprimir'),
                 Button::make('reset')->titleAttr('Restablecer'),
                 Button::make('reload')->titleAttr('recargar'),
