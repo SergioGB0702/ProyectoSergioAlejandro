@@ -33,7 +33,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-primary" type="submit">Importar</button>
+                            <button class="btn btn-primary btn-success text-white" type="submit">Importar</button>
                         </form>
                     </div>
                 </div>

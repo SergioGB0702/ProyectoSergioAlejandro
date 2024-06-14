@@ -190,7 +190,7 @@
 
                                     @foreach($conductasNegativas as $conductaNegativa)
                                         <option
-                                            value="{{ $conductaNegativa->id }}">{{ $conductaNegativa->descripcion }}</option>
+                                            value="{{ $conductaNegativa->id }}">{{ $conductaNegativa->descripcion }} ({{ $conductaNegativa->tipo }})</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -206,7 +206,7 @@
                                     <option value="">Seleccione una opción</option>
                                     @foreach($correcionesAplicadas as $correcionesAplicada)
                                         <option
-                                            value="{{ $correcionesAplicada->id }}">{{ $correcionesAplicada->descripcion }}</option>
+                                            value="{{ $correcionesAplicada->id }}">{{ $correcionesAplicada->descripcion }} </option>
                                     @endforeach
                                 </select>
                             </div>

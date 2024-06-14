@@ -38,7 +38,9 @@
     @laravelPWA
 </head>
 <body>
-
+    <div style="display: none !important;">
+        <a href="#contenido" aria-label="Saltar al contenido">Saltar al contenido</a>
+    </div>
 <div class="sidebar sidebar-fixed border-end" id="sidebar">
     <div class="sidebar-header border-bottom">
         <div class="sidebar-brand">
@@ -197,7 +199,7 @@
         </div>
     </header>
     <div class="body flex-grow-1">
-        <div class="container-lg px-4">
+        <div class="container-lg px-4" id="contenido">
             @yield('content')
         </div>
     </div>

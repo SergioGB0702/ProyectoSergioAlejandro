@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cursos', [UsersController::class, 'getCursos']);
     Route::get('/unidades', [UsersController::class, 'getUnidades']);
     Route::get('/alumnos', [UsersController::class, 'getAlumnos']);
-    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+    Route::get('/partes', [UsersController::class, 'index'])->name('users.index');
     Route::post('/createParte', [UsersController::class, 'crearParte'])->name('parte.create');
     Route::get('/descargarPartePDF/{id}', [UsersController::class, 'descargarPartePDF'])->name('descargarPartePDF');
     Route::post('/updateParte/{id}', [UsersController::class, 'editarParte'])->name('parte.update');

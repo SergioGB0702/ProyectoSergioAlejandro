@@ -287,30 +287,39 @@ class ApiController extends Controller
         ], 200);
     }
 
-    // Función importada de https://robertostory.com/blog/12/validacion-de-dni-nie-espanol-php
-    public function validarDNI($value)
-    {
-        $pattern = "/^[XYZ]?\d{5,8}[A-Z]$/";
-        $dni = strtoupper($value);
-        if(preg_match($pattern, $dni))
-        {
-            $number = substr($dni, 0, -1);
-            $number = str_replace('X', 0, $number);
-            $number = str_replace('Y', 1, $number);
-            $number = str_replace('Z', 2, $number);
-            $dni = substr($dni, -1, 1);
-            $start = $number % 23;
-            $letter = 'TRWAGMYFPDXBNJZSQVHLCKET';
-            $letter = substr('TRWAGMYFPDXBNJZSQVHLCKET', $start, 1);
-            if($letter != $dni)
-            {
-              return false;
-            } else {
-              return true;
-            }
-        }else{
-            return false;
+    public function obtenerTutores(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'idCurso' => ['required', 'numeric', 'between:1,5000'],
+        ],[
+            'idCurso' => 'Problema al obtener los datos del curso. <br>',
+        ]);
+
+        // Se devuelve la información de los errores si ha fallado
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
         }
+        
+        $idCurso = $request->idCurso;
+
+        $unidadProfesor = Unidad::select('unidades.nombre AS cursoNombre','profesors.nombre AS tutorNombre')->leftjoin('profesors','unidades.tutor_dni','=','profesors.dni')->where("id_curso","=",$idCurso)->get();
+
+        $cursosTutores = [];
+
+        for ($i = 0; $i < count($unidadProfesor); $i++) {
+            if ($unidadProfesor[$i]->tutorNombre == null) {
+                $cursosTutores[$i] = [$unidadProfesor[$i]->cursoNombre, "Sin tutor"];
+            } else {
+                $cursosTutores[$i] = [$unidadProfesor[$i]->cursoNombre, $unidadProfesor[$i]->tutorNombre];
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'cursosTutores' => $cursosTutores
+        ], 200);
     }
 
     public function asignarTutor(Request $request) {
@@ -357,6 +366,32 @@ class ApiController extends Controller
         return response()->json([
             'success' => true,
         ], 200);
+    }
+
+    // Función importada de https://robertostory.com/blog/12/validacion-de-dni-nie-espanol-php
+    public function validarDNI($value)
+    {
+        $pattern = "/^[XYZ]?\d{5,8}[A-Z]$/";
+        $dni = strtoupper($value);
+        if(preg_match($pattern, $dni))
+        {
+            $number = substr($dni, 0, -1);
+            $number = str_replace('X', 0, $number);
+            $number = str_replace('Y', 1, $number);
+            $number = str_replace('Z', 2, $number);
+            $dni = substr($dni, -1, 1);
+            $start = $number % 23;
+            $letter = 'TRWAGMYFPDXBNJZSQVHLCKET';
+            $letter = substr('TRWAGMYFPDXBNJZSQVHLCKET', $start, 1);
+            if($letter != $dni)
+            {
+              return false;
+            } else {
+              return true;
+            }
+        }else{
+            return false;
+        }
     }
 
 }

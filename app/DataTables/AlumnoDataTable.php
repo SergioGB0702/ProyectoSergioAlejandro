@@ -77,7 +77,6 @@ class AlumnoDataTable extends DataTable
             ])
             ->buttons([
                 Button::make('excel')->titleAttr('Exportar a Excel'),
-                Button::make('csv')->titleAttr('Exportar a CSV'),
                 Button::make('print')->titleAttr('Imprimir'),
                 Button::make('reset')->titleAttr('Restablecer'),
                 Button::make('reload')->titleAttr('recargar'),

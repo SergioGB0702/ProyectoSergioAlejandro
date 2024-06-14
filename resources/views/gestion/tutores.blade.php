@@ -71,7 +71,20 @@ use Illuminate\Support\Facades\Session;
                             <button style="pointer-events: auto !important;" data-toggle="tooltip" data-placement="right" 
                             title="Seleccione un profesor y una unidad" class="btn btn-success text-white align-middle btn-lg" id="botonAsignar" disabled>Asignar</button>
                         </div>
+                    </div>
                     <br>
+                    <div class="table-responsive table-div">
+                        <table class="table table-hover table-striped table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col" class="text-center">Unidades</th>
+                                    <th scope="col" class="text-center">Tutores</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyTutores">
+                            </tbody>
+                        </table>
+                    </div>
             </div>
         </div>
     </div>
@@ -141,6 +154,7 @@ use Illuminate\Support\Facades\Session;
                 $('#inputUnidad').empty().selectpicker('refresh');
                 //$('div.dataTables_filter input').prop('disabled', true);
                 $('#botonAsignar').attr('disabled','');
+                cargarAjaxTutores();
                 handleSelectChange($(this), $('#inputUnidad'), "/unidades");
             }
 
@@ -155,7 +169,7 @@ use Illuminate\Support\Facades\Session;
             } else {
 
                 $('#botonAsignar').removeAttr('disabled');
-
+                cargarAjaxTutores();
             }
 
         });
@@ -169,67 +183,119 @@ use Illuminate\Support\Facades\Session;
             } else {
 
                 $('#botonAsignar').removeAttr('disabled');
-
+                cargarAjaxTutores();
             }
 
         });
 
         $('#botonAsignar').on('click', function () {
             let tokenAuth = "Bearer <?= Session::get('TokenApi') ?>";
-                $.ajaxSetup({
-                    headers: {
-                        'Authorization': tokenAuth
-                    }
-                });
-                let datosForm = {
-                    "dniTutor" : $('#inputProfesor').val(),
-                    "idUnidad" : $('#inputUnidad').val(),
+            $.ajaxSetup({
+                headers: {
+                    'Authorization': tokenAuth
                 }
-                $.ajax({
-                    url: "{{route('gestion.asignarTutor')}}",
-                    type: 'POST',
-                    data: datosForm,
-                    dataType: 'json',
-                    success: function(datos) {
-                        var alertHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 5%; left: 50%; width: 60%; transform: translateX(-50%) translateY(-50%); z-index: 9999;">' +
-                            ' <svg class="icon me-2"> <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-check-circle')}} "></use></svg>' +
-                            " El tutor ha sido asignado correctamente " +
-                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                            '</div>';
+            });
+            let datosForm = {
+                "dniTutor" : $('#inputProfesor').val(),
+                "idUnidad" : $('#inputUnidad').val(),
+            }
+            $.ajax({
+                url: "{{route('gestion.asignarTutor')}}",
+                type: 'POST',
+                data: datosForm,
+                dataType: 'json',
+                success: function(datos) {
+                    cargarAjaxTutores();
+                    var alertHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 5%; left: 50%; width: 60%; transform: translateX(-50%) translateY(-50%); z-index: 9999;">' +
+                        ' <svg class="icon me-2"> <use xlink:href="{{asset('vendors/@coreui/icons/svg/free.svg#cil-check-circle')}} "></use></svg>' +
+                        " El tutor ha sido asignado correctamente " +
+                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                        '</div>';
+
+                    // Añadir la alerta al DOM
+                    $('#alertPlaceholder').html(alertHtml);
+
+                    // Cerrar la alerta después de 3 segundos (3000 milisegundos)
+                    setTimeout(function () {
+                        $('.alert').alert('close');
+                    }, 3000);
+                },
+                error: function( error) {
+                    if (error.status === 422) { // 422 significa que la validación falló
+                        var errors = error.responseJSON.errors;
+                        var errorHtml = '<div id="errorMessages" class="alert alert-danger"><ul>';
+
+                        Object.values(errors).forEach(function (error) {
+                            errorHtml += '<li>' + error + '</li>';
+                        });
+
+                        errorHtml += '</ul></div>';
 
                         // Añadir la alerta al DOM
-                        $('#alertPlaceholder').html(alertHtml);
+                        $('#alertPlaceholder').html(errorHtml);
 
-                        // Cerrar la alerta después de 3 segundos (3000 milisegundos)
+                        // Cerrar la alerta después de 10 segundos
                         setTimeout(function () {
                             $('.alert').alert('close');
-                        }, 3000);
-                    },
-                    error: function( error) {
-                        if (error.status === 422) { // 422 significa que la validación falló
-                            var errors = error.responseJSON.errors;
-                            var errorHtml = '<div id="errorMessages" class="alert alert-danger"><ul>';
+                        }, 10000);
 
-                            Object.values(errors).forEach(function (error) {
-                                errorHtml += '<li>' + error + '</li>';
-                            });
-
-                            errorHtml += '</ul></div>';
-
-                            // Añadir la alerta al DOM
-                            $('#alertPlaceholder').html(errorHtml);
-
-                            // Cerrar la alerta después de 10 segundos
-                            setTimeout(function () {
-                                $('.alert').alert('close');
-                            }, 10000);
-
-                        }
                     }
-                });
+                }
+            });
             
         });
 
+        function cargarAjaxTutores() {
+            let tokenAuth = "Bearer <?= Session::get('TokenApi') ?>";
+            $.ajaxSetup({
+                headers: {
+                    'Authorization': tokenAuth
+                }
+            });
+            let datosForm = {
+                "idCurso" : $('#inputCurso').val(),
+            }
+            $.ajax({
+                url: "{{route('gestion.obtenerTutores')}}",
+                type: 'GET',
+                data: datosForm,
+                dataType: 'json',
+                success: function(datos) {
+                    let tablaTutores = $('#tbodyTutores');
+                    tablaTutores.html('');
+                    let datosTutores = datos.cursosTutores;
+                    let aniadirTabla = "";
+                    for (let i = 0; i < datosTutores.length; i++) {
+                        aniadirTabla += '<tr>'
+                        + '<td class="text-center">' + datosTutores[i][0] + '</td>'
+                        + '<td class="text-center">' + datosTutores[i][1] + '</td>'
+                        + '</tr>';
+                    }
+                    tablaTutores.html(aniadirTabla);
+                },
+                error: function( error) {
+                    if (error.status === 422) { // 422 significa que la validación falló
+                        var errors = error.responseJSON.errors;
+                        var errorHtml = '<div id="errorMessages" class="alert alert-danger"><ul>';
+
+                        Object.values(errors).forEach(function (error) {
+                            errorHtml += '<li>' + error + '</li>';
+                        });
+
+                        errorHtml += '</ul></div>';
+
+                        // Añadir la alerta al DOM
+                        $('#alertPlaceholder').html(errorHtml);
+
+                        // Cerrar la alerta después de 10 segundos
+                        setTimeout(function () {
+                            $('.alert').alert('close');
+                        }, 10000);
+
+                    }
+                }
+            });
+        }
 
     </script>
 
