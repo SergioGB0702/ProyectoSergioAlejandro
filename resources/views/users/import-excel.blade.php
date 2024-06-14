@@ -44,7 +44,7 @@
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="card shadow-sm card-general">
-                    <div class="card-header ">Importar partes</div>
+                    <div class="card-header ">Importar Partes</div>
                     <div class="card-body">
                         <form action="{{route('parte.importInforme')}}" method="POST" enctype="multipart/form-data">
                             @csrf

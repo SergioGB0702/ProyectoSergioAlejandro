@@ -643,9 +643,7 @@ class PartesController extends Controller
             return redirect()->route('users.import')
                 ->with('error', 'No se ha subido ningún archivo.');
         }
-        $request->validate([
-            'upload' => 'required|file|mimes:xlsx,xls|max:3000000'
-        ]);
+        
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         Correo::truncate();
