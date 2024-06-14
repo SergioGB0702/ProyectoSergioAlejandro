@@ -25,7 +25,8 @@ use Illuminate\Support\Facades\Session;
         <div class="card-header">Gestión de Profesores y Alumnos</div>
             <!-- Card body alumnos -->
             <div class="card-body"> 
-                <input id="switchProfeAlumno" onchange="cambiarDiv();" type="checkbox" data-on="Alumnos" data-off="Profesores" checked data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary">            
+                <input id="switchProfeAlumno" onchange="cambiarDiv();" type="checkbox" data-on="Alumnos" data-off="Profesores" checked data-toggle="toggle" data-onstyle="primary" data-offstyle="secondary" tabindex="1" aria-checked="true" 
+                aria-label="Cambiar entre Alumnos y Profesores">          
                 <div id="divAlumno">
                     <h2 class="mt-2 mb-4">Introduzca los datos generales</h2>
                     <form class="row">
@@ -351,7 +352,7 @@ use Illuminate\Support\Facades\Session;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-    $(document).ready(function() {
+    $(document).ready(function() { 
         // Para controlar si existe página, se crea o no un div oculto con un condicional de su valor
         const divPagina = document.getElementById('divPagina');
         const divProfesor = document.getElementById('divProfesor');
@@ -366,6 +367,16 @@ use Illuminate\Support\Facades\Session;
             divAlumno.style.display = 'block';
             divProfesor.style.display = 'none';
         }
+        // https://stackoverflow.com/questions/45617292/bootstrap-toggle-buttons-not-accessible
+        var $toggle = $('input:checkbox');
+        var $toggleDiv = $toggle.parent();
+        $toggleDiv.attr('tabindex','0');                // allow focus
+        $toggleDiv.unbind('keypress').keypress((e) => { // have enter trigger toggle
+            if (e.which===13) {
+                e.preventDefault();
+                cambiarDivTab();
+            }
+        })
     });
 
     function cambiarDiv() {
@@ -383,6 +394,26 @@ use Illuminate\Support\Facades\Session;
         }
     }
 
+    function cambiarDivTab() {
+        table.DataTable().ajax.reload();
+        const divProfesor = document.getElementById('divProfesor');
+        const divAlumno = document.getElementById('divAlumno');
+        const checked = document.getElementById('switchProfeAlumno').checked;
+        const switchToggleProfeAlumno = document.getElementsByClassName('toggle')[0];
+        if (checked) {
+            divAlumno.style.display = 'block';
+            divProfesor.style.display = 'none';
+            switchProfeAlumno.checked = false;
+            switchToggleProfeAlumno.classList.add("off");
+        } else {
+            divAlumno.style.display = 'none';
+            divProfesor.style.display = 'block';
+            switchProfeAlumno.checked = true;
+            switchToggleProfeAlumno.classList.remove("off");
+        }
+    }
+
+
 </script>
 
     <script type="module">
@@ -393,6 +424,16 @@ use Illuminate\Support\Facades\Session;
     var correosAlumnoAniadir = [];
     var correosAlumnoEliminar = [];
     $(document).ready(function() {
+        // https://stackoverflow.com/questions/45617292/bootstrap-toggle-buttons-not-accessible
+        var $toggle = $('input:checkbox');
+        var $toggleDiv = $toggle.parent();
+        $toggleDiv.attr('tabindex','0');                // allow focus
+        $toggleDiv.unbind('keypress').keypress((e) => { // have enter trigger toggle
+            if (e.which===13) {
+                e.preventDefault();
+                cambiarDivTab();
+            }
+        })
         // Para controlar si existe página, se crea o no un div oculto con un condicional de su valor
         const divPagina = document.getElementById('divPagina');
         const divProfesor = document.getElementById('divProfesor');
@@ -538,13 +579,32 @@ use Illuminate\Support\Facades\Session;
         const divProfesor = document.getElementById('divProfesor');
         const divAlumno = document.getElementById('divAlumno');
         const checked = document.getElementById('switchProfeAlumno').checked;
-
+        
         if (checked) {
             divAlumno.style.display = 'block';
             divProfesor.style.display = 'none';
         } else {
             divAlumno.style.display = 'none';
             divProfesor.style.display = 'block';
+        }
+    }
+
+    function cambiarDivTab() {
+        table.DataTable().ajax.reload();
+        const divProfesor = document.getElementById('divProfesor');
+        const divAlumno = document.getElementById('divAlumno');
+        const checked = document.getElementById('switchProfeAlumno').checked;
+        const switchToggleProfeAlumno = document.getElementsByClassName('toggle')[0];
+        if (checked) {
+            divAlumno.style.display = 'block';
+            divProfesor.style.display = 'none';
+            switchProfeAlumno.checked = false;
+            switchToggleProfeAlumno.classList.remove("off");
+        } else {
+            divAlumno.style.display = 'none';
+            divProfesor.style.display = 'block';
+            switchProfeAlumno.checked = true;
+            switchToggleProfeAlumno.classList.add("off");
         }
     }
 

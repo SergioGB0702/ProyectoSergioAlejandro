@@ -102,7 +102,7 @@
             <h3>Conductas Negativas:</h3>
             <ul>
                 @foreach($parte->conductanegativas as $conducta)
-                    <li>{{ $conducta->descripcion }}</li>
+                    <li>{{ $conducta->descripcion }} ({{ $conducta->tipo }})</li>
                 @endforeach
             </ul>
         </div>

@@ -38,7 +38,9 @@
     @laravelPWA
 </head>
 <body>
-
+    <div style="display: none !important;">
+        <a href="#contenido" aria-label="Saltar al contenido">Saltar al contenido</a>
+    </div>
 <div class="sidebar sidebar-fixed border-end" id="sidebar">
     <div class="sidebar-header border-bottom">
         <div class="sidebar-brand">
@@ -101,7 +103,6 @@
                         <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-bell-exclamation')}}"></use>
                     </svg>
                     <span data-coreui-i18n="dashboard">Reiniciar puntos</span></a></li>
-
                     <li class="nav-item"><a class="nav-link {{ request()->routeIs('users.import') ? 'active' : '' }}" href="{{route('users.import')}}">
                             <svg class="nav-icon">
                                 <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-bookmark')}}"></use>
@@ -203,7 +204,7 @@
         </div>
     </header>
     <div class="body flex-grow-1">
-        <div class="container-lg px-4">
+        <div class="container-lg px-4" id="contenido">
             @yield('content')
         </div>
     </div>

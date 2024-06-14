@@ -7,6 +7,7 @@ use App\DataTables\ResumenParteDataTable;
 use App\Exports\ParteExport;
 use App\Imports\AlumnosImport;
 use App\DataTables\ParteDataTable;
+use App\Imports\ParteImport;
 use App\Mail\CorreoJefaturaParte;
 use App\Mail\CorreoPuntosParte;
 use App\Mail\CorreoTutoresParte;
@@ -56,6 +57,13 @@ class PartesController extends Controller
 
     public function getCourseUnit(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'Curso' => ['required', 'numeric', 'between:1,5000'],
+            'Unidad' => ['required', 'numeric', 'between:1,5000'],
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         // Obtener los valores de los parámetros curso y unidad de la solicitud
         $curso = $request->query('curso');
         $unidad = $request->query('unidad');
@@ -162,6 +170,24 @@ class PartesController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
+        foreach (request('Alumno') as $alumno) {
+            if (!($this->validarDNI($alumno))) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ["- DNI con formato incorrecto."]
+                ], 422);
+            }
+        }
+
+        foreach (request('ConductasNegativa') as $conducta) {
+            if (!is_numeric($conducta) || $conducta < 1 || $conducta > 5000) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ["- Problema al obtener los datos de conductas."]
+                ], 422);
+            }
+        }
+
         $fechaInput = request('Fecha');
 
 
@@ -227,21 +253,36 @@ class PartesController extends Controller
     public function editarParte(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'Profesor' => 'required',
-            'TramoHorario' => 'required',
-//            'Curso' => 'required',
-//            'Unidad' => 'required',
+            'Profesor' => ['required', 'string', 'size:9', 'regex:/^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i'],
+            'TramoHorario' => ['required', 'numeric', 'between:1,5000'],
             'Alumno' => 'required',
-            'Puntos' => 'required',
-//            'Colectivo' => 'required',
-            'Fecha' => 'required',
-            'Incidencia' => 'required',
+            'Puntos' => ['required', 'numeric', 'between:0,50'],
+            'Fecha' => ['required', 'date'],
+            'Incidencia' => ['required', 'numeric', 'between:1,5000'],
             'ConductasNegativa' => 'required',
-            'CorrecionesAplicadas' => 'required',
+            'CorrecionesAplicadas' => ['required', 'numeric', 'between:1,5000'],
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        foreach (request('Alumno') as $alumno) {
+            if (!($this->validarDNI($alumno))) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ["- DNI con formato incorrecto."]
+                ], 422);
+            }
+        }
+
+        foreach (request('ConductasNegativa') as $conducta) {
+            if (!is_numeric($conducta) || $conducta < 1 || $conducta > 5000) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ["- Problema al obtener los datos de conductas."]
+                ], 422);
+            }
         }
 
         // Obtén el parte basado en el id
@@ -382,6 +423,13 @@ class PartesController extends Controller
 
     public function eliminarParte($id)
     {
+        if (!is_numeric($id) || $id < 1 || $id > 5000) {
+            return response()->json([
+                'success' => false,
+                'errors' => ["- Problema al obtener los datos del parte."]
+            ], 422);
+        }
+        
         $parte = Parte::find($id);
 
         $alumnos = AlumnoParte::where('parte_id', $parte->id)->get();
@@ -406,6 +454,12 @@ class PartesController extends Controller
 
     public function getParte($id)
     {
+        if (!is_numeric($id) || $id < 1 || $id > 5000) {
+            return response()->json([
+                'success' => false,
+                'errors' => ["- Problema al obtener los datos del parte."]
+            ], 422);
+        }
         $parteId = $id;
         $parte = Parte::find($parteId);
         $profesorAll = Profesor::all()->where('habilitado', '=', true);
@@ -443,6 +497,12 @@ class PartesController extends Controller
     public function getCursos(Request $request)
     {
         $anoId = $request->selectedId;
+        if (!is_numeric($anoId) || $anoId < 1 || $anoId > 5000) {
+            return response()->json([
+                'success' => false,
+                'errors' => ["- Problema al obtener los datos del parte."]
+            ], 422);
+        }
         $cursos = Curso::where('id_anio_academico', $anoId)->get();
 
         $cursoData = [];
@@ -455,6 +515,12 @@ class PartesController extends Controller
 
     public function descargarPartePDF($id)
     {
+        if (!is_numeric($id) || $id < 1 || $id > 5000) {
+            return response()->json([
+                'success' => false,
+                'errors' => ["- Problema al obtener los datos del parte."]
+            ], 422);
+        }
         // Obtén el parte basado en el ID
         $parte = Parte::find($id);
 
@@ -498,7 +564,6 @@ class PartesController extends Controller
             $parte->descripcion_detallada = $dom->saveHTML();
         }
 
-        // Genera el PDF a partir de una vista (reemplaza 'pdf' con el nombre de tu vista)
         $pdf = PDF::loadView('users.partePDF', ['parte' => $parte]);
 
         // Devuelve el PDF como una respuesta
@@ -512,6 +577,12 @@ class PartesController extends Controller
     public function getUnidades(Request $request)
     {
         $cursoId = $request->selectedId;
+        if (!is_numeric($cursoId) || $cursoId < 1 || $cursoId > 5000) {
+            return response()->json([
+                'success' => false,
+                'errors' => ["- Problema al obtener los datos del curso."]
+            ], 422);
+        }
         $unidades = Unidad::where('id_curso', $cursoId)->get();
 
         $unidadData = [];
@@ -525,6 +596,12 @@ class PartesController extends Controller
     public function getAlumnos(Request $request)
     {
         $unidadId = $request->selectedId;
+        if (!is_numeric($unidadId) || $unidadId < 1 || $unidadId > 5000) {
+            return response()->json([
+                'success' => false,
+                'errors' => ["- Problema al obtener los datos de la unidad."]
+            ], 422);
+        }
         $alumnos = Alumno::where('id_unidad', $unidadId)->get();
 
         $alumnoData = [];
@@ -537,6 +614,9 @@ class PartesController extends Controller
 
     public function upload(Request $request)
     {
+        $request->validate([
+            'upload' => 'required|file|mimes:xlsx,xls|max:3000000'
+        ]);
         $file = $request->file('upload');
         $fileName = uniqid() . '_' . trim($file->getClientOriginalName());
 
@@ -562,7 +642,9 @@ class PartesController extends Controller
             return redirect()->route('users.import')
                 ->with('error', 'No se ha subido ningún archivo.');
         }
-
+        $request->validate([
+            'upload' => 'required|file|mimes:xlsx,xls|max:3000000'
+        ]);
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         Correo::truncate();
@@ -586,10 +668,30 @@ class PartesController extends Controller
         return view('users.import-excel');
     }
 
-
-    public function pruebaCorreo()
+    // Función importada de https://robertostory.com/blog/12/validacion-de-dni-nie-espanol-php
+    public function validarDNI($value)
     {
-        Mail::to('alejandrocbt@hotmail.com')->send(new CorreoTutoresParte());
-        return redirect()->route('user.correo');
+        $pattern = "/^[XYZ]?\d{5,8}[A-Z]$/";
+        $dni = strtoupper($value);
+        if(preg_match($pattern, $dni))
+        {
+            $number = substr($dni, 0, -1);
+            $number = str_replace('X', 0, $number);
+            $number = str_replace('Y', 1, $number);
+            $number = str_replace('Z', 2, $number);
+            $dni = substr($dni, -1, 1);
+            $start = $number % 23;
+            $letter = 'TRWAGMYFPDXBNJZSQVHLCKET';
+            $letter = substr('TRWAGMYFPDXBNJZSQVHLCKET', $start, 1);
+            if($letter != $dni)
+            {
+              return false;
+            } else {
+              return true;
+            }
+        }else{
+            return false;
+        }
     }
+
 }
