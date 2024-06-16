@@ -103,7 +103,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Crear nuevo parte</h1>
+                    <h1 class="modal-title fs-5" id="tituloModalParte">Crear nuevo parte</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -667,7 +667,7 @@
         });
         function crearParte() {
             document.getElementById('Fecha').value = getFecha();
-
+            $("#tituloModalParte").html('Crear nuevo parte');
             $.ajax({
                 url: '/getProfesores',
                 method: 'GET',
@@ -714,7 +714,7 @@
 
 
         function editarParte($id) {
-
+            $("#tituloModalParte").html('Editar parte');
             $.ajax({
                 url: '/getParte/' + $id,
                 method: 'GET',

@@ -237,6 +237,9 @@ class ApiController extends Controller
                 }
             // Correo jefatura
             Mail::to('sergioggbb02@gmail.com')->queue(new CorreoPuntosParte($alumnoEditar));
+            //Tutor
+            $mailTutor = $alumnoEditar->unidad->profesor;
+            if ($mailTutor != null) Mail::to($mailTutor->correo)->queue(new CorreoPuntosParte($alumnoEditar));
         }
 
         return response()->json([
