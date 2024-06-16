@@ -13,7 +13,8 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
 
-           '/api/gestion/v2/*'
+           '/api/gestion/v2/*',
+            '/informeExcel',
 
     ];
 }

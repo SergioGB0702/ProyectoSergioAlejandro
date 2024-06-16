@@ -169,7 +169,7 @@ use Illuminate\Support\Facades\Session;
                                     <input type="email" class="form-control col" name="email" id="inputNuevoCorreoCrear">
                                 </div>
                                 <div class="col-12 mt-2 mt-lg-0 col-lg-4">
-                                    <select class="form-control selectpicker col" id="selectTipoCorreo" name="tipo_correo">
+                                    <select class="form-control selectpicker col" id="selectTipoCorreoCrear" name="tipo_correo">
                                         <option value="personal">Personal</option>
                                         <option value="tutor">Tutor</option>
                                     </select>
@@ -820,7 +820,7 @@ use Illuminate\Support\Facades\Session;
 
         $('#aniadirCorreoAlumnoCrear').on('click', function() {
             let correoNuevo = $("#inputNuevoCorreoCrear").val().toLowerCase();
-            let tipoCorreoNuevo = $("#selectTipoCorreo").val();
+            let tipoCorreoNuevo = $("#selectTipoCorreoCrear").val();
             if (validateEmail(correoNuevo)) {
                 let datosCorreo = [correoNuevo, tipoCorreoNuevo];
                 correosAlumnoAniadir.push(datosCorreo);

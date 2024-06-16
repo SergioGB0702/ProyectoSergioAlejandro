@@ -11,30 +11,29 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class CorreoJefaturaParte extends Mailable
+class CorreoTutores extends Mailable
 {
     use Queueable, SerializesModels;
 
     protected $alumno;
     protected $parte;
+    protected bool $eliminado;
 
     protected bool $actualizado;
-    private bool $eliminado;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($parte, $eliminado = false, $actualizado = false)
+    public function __construct($alumno, $parte, $eliminado = false, $actualizado = false)
     {
+        $this->alumno = $alumno;
         $this->parte = $parte;
         $this->eliminado = $eliminado;
         $this->actualizado = $actualizado;
     }
 
-
     public function envelope(): Envelope
     {
-
         if ($this->eliminado) {
             $this->subject = 'Parte de incidencias eliminado';
         } else if ($this->actualizado) {
@@ -42,12 +41,12 @@ class CorreoJefaturaParte extends Mailable
         } else {
             $this->subject = 'Parte de incidencias';
         }
-
         return new Envelope(
             from: new Address('sergio_gb02@hotmail.com', 'Sergio'),
             replyTo: [
                 new Address('sergioggbb02@gmail.com', 'Sergio 2'),
             ],
+
             subject: 'Parte de incidencias',
 
 
@@ -57,10 +56,8 @@ class CorreoJefaturaParte extends Mailable
     /**
      * Get the message content definition.
      */
-    public function build(): CorreoJefaturaParte
+    public function build(): CorreoTutores
     {
-
-
         if (!empty($parte->descripcion_detallada)) {
 
             $dom = new \DOMDocument();
@@ -88,13 +85,14 @@ class CorreoJefaturaParte extends Mailable
             $this->parte->descripcion_detallada = $dom->saveHTML();
         }
 
-            return $this->view('parte.correotutor')
-                ->with([
-                    'parte' => $this->parte,
-                    'imagePaths' => $this->imagePaths ?? null,
-                    'eliminado' => $this->eliminado,
-                    'actualizado' => $this->actualizado,
-                ]);
+        return $this->view('parte.correotutores')
+            ->with([
+                'parte' => $this->parte,
+                'alumno' => $this->alumno,
+                'imagePaths' => $this->imagePaths ?? null,
+                'actualizado' => $this->actualizado,
+                'eliminado' => $this->eliminado,
+            ]);
 
     }
 

@@ -76,34 +76,34 @@ class DatabaseSeeder extends Seeder
         ];
         foreach ($correcionesAplicadas as $correcionAplicada) \App\Models\Correccionaplicada::factory()->create($correcionAplicada);
         
-        $cursos = [
-            ['nombre' => '1º de ESO','id_anio_academico' => 1],
-            ['nombre' => '2º de ESO','id_anio_academico' => 1],
-            ['nombre' => '3º de ESO','id_anio_academico' => 1],
-            ['nombre' => '4º de ESO','id_anio_academico' => 1],
-            ['nombre' => '1º de Bachillerato','id_anio_academico' => 1],
-            ['nombre' => '2º de Bachillerato','id_anio_academico' => 1],
-        ];
+        // $cursos = [
+        //     ['nombre' => '1º de ESO','id_anio_academico' => 1],
+        //     ['nombre' => '2º de ESO','id_anio_academico' => 1],
+        //     ['nombre' => '3º de ESO','id_anio_academico' => 1],
+        //     ['nombre' => '4º de ESO','id_anio_academico' => 1],
+        //     ['nombre' => '1º de Bachillerato','id_anio_academico' => 1],
+        //     ['nombre' => '2º de Bachillerato','id_anio_academico' => 1],
+        // ];
 
-        foreach ($cursos as $curso) \App\Models\Curso::factory()->create($curso);
+        // foreach ($cursos as $curso) \App\Models\Curso::factory()->create($curso);
 
-        $unidades = [
-            ['id_curso' => 1, 'nombre' => '1º de ESO A'],
-            ['id_curso' => 1, 'nombre' => '1º de ESO B'],
-            ['id_curso' => 2, 'nombre' => '2º de ESO A'],
-            ['id_curso' => 2, 'nombre' => '2º de ESO B'],
-            ['id_curso' => 3, 'nombre' => '3º de ESO A'],
-            ['id_curso' => 3, 'nombre' => '3º de ESO B'],
-            ['id_curso' => 4, 'nombre' => '4º de ESO A'],
-            ['id_curso' => 4, 'nombre' => '4º de ESO B'],
-            ['id_curso' => 5, 'nombre' => '1º de Bachillerato A'],
-            ['id_curso' => 5, 'nombre' => '1º de Bachillerato B'],
-            ['id_curso' => 6, 'nombre' => '2º de Bachillerato A'],
-            ['id_curso' => 6, 'nombre' => '2º de Bachillerato B'],
+        // $unidades = [
+        //     ['id_curso' => 1, 'nombre' => '1º de ESO A'],
+        //     ['id_curso' => 1, 'nombre' => '1º de ESO B'],
+        //     ['id_curso' => 2, 'nombre' => '2º de ESO A'],
+        //     ['id_curso' => 2, 'nombre' => '2º de ESO B'],
+        //     ['id_curso' => 3, 'nombre' => '3º de ESO A'],
+        //     ['id_curso' => 3, 'nombre' => '3º de ESO B'],
+        //     ['id_curso' => 4, 'nombre' => '4º de ESO A'],
+        //     ['id_curso' => 4, 'nombre' => '4º de ESO B'],
+        //     ['id_curso' => 5, 'nombre' => '1º de Bachillerato A'],
+        //     ['id_curso' => 5, 'nombre' => '1º de Bachillerato B'],
+        //     ['id_curso' => 6, 'nombre' => '2º de Bachillerato A'],
+        //     ['id_curso' => 6, 'nombre' => '2º de Bachillerato B'],
 
-        ];
+        // ];
 
-        foreach ($unidades as $unidad) \App\Models\Unidad::factory()->create($unidad);
+        // foreach ($unidades as $unidad) \App\Models\Unidad::factory()->create($unidad);
 
         
 
@@ -122,22 +122,22 @@ class DatabaseSeeder extends Seeder
         $jefatura->assignRole('jefatura');
         $profesor->assignRole('profesor');
         
-        foreach (range(0, 20) as $i) {
+        // foreach (range(0, 20) as $i) {
 
-            Alumno::factory()->create();
-            foreach (range(0, 2) as $o) {
-                Correo::factory()->create();
-            }
-            Profesor::factory()->create();
-            Parte::factory()->create();
-            foreach (range(0, 1) as $o) {
-                ParteConductanegativa::factory()->create();
-            }
-        }
+        //     Alumno::factory()->create();
+        //     foreach (range(0, 2) as $o) {
+        //         Correo::factory()->create();
+        //     }
+        //     Profesor::factory()->create();
+        //     Parte::factory()->create();
+        //     foreach (range(0, 1) as $o) {
+        //         ParteConductanegativa::factory()->create();
+        //     }
+        // }
 
-        foreach (range(0, 20) as $i) {
-            AlumnoParte::factory()->create();
-        }
+        // foreach (range(0, 20) as $i) {
+        //     AlumnoParte::factory()->create();
+        // }
         
     }
 }

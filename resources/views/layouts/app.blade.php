@@ -65,6 +65,11 @@
                     <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-balance-scale')}}"></use>
                 </svg>
                 <span data-coreui-i18n="dashboard">Resumen Incidencias</span></a></li>
+        <li class="nav-item"><a class="nav-link {{ request()->routeIs('parte.informe') ? 'active' : '' }}" href="{{route('parte.informe')}}">
+                <svg class="nav-icon">
+                    <use xlink:href="{{asset('/vendors/@coreui/icons/svg/free.svg#cil-file')}}"></use>
+                </svg>
+                <span data-coreui-i18n="dashboard">Informe Incidencias</span></a></li>
         <!-- Gestión para jefatura -->
         @role('jefatura')
             <li class="nav-title" data-coreui-i18n="theme">Gestión</li>

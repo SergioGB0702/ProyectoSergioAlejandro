@@ -11,29 +11,30 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class CorreoTutoresParte extends Mailable
+class CorreoTutoresCurso extends Mailable
 {
     use Queueable, SerializesModels;
 
     protected $alumno;
     protected $parte;
-    protected bool $eliminado;
 
     protected bool $actualizado;
+    private bool $eliminado;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($alumno, $parte, $eliminado = false, $actualizado = false)
+    public function __construct($parte, $eliminado = false, $actualizado = false)
     {
-        $this->alumno = $alumno;
         $this->parte = $parte;
         $this->eliminado = $eliminado;
         $this->actualizado = $actualizado;
     }
 
+
     public function envelope(): Envelope
     {
+
         if ($this->eliminado) {
             $this->subject = 'Parte de incidencias eliminado';
         } else if ($this->actualizado) {
@@ -41,12 +42,12 @@ class CorreoTutoresParte extends Mailable
         } else {
             $this->subject = 'Parte de incidencias';
         }
+
         return new Envelope(
             from: new Address('sergio_gb02@hotmail.com', 'Sergio'),
             replyTo: [
                 new Address('sergioggbb02@gmail.com', 'Sergio 2'),
             ],
-
             subject: 'Parte de incidencias',
 
 
@@ -56,8 +57,10 @@ class CorreoTutoresParte extends Mailable
     /**
      * Get the message content definition.
      */
-    public function build(): CorreoTutoresParte
+    public function build(): CorreoTutoresCurso
     {
+
+
         if (!empty($parte->descripcion_detallada)) {
 
             $dom = new \DOMDocument();
@@ -85,13 +88,12 @@ class CorreoTutoresParte extends Mailable
             $this->parte->descripcion_detallada = $dom->saveHTML();
         }
 
-        return $this->view('parte.correotutores')
+        return $this->view('parte.correojefatura')
             ->with([
                 'parte' => $this->parte,
-                'alumno' => $this->alumno,
                 'imagePaths' => $this->imagePaths ?? null,
-                'actualizado' => $this->actualizado,
                 'eliminado' => $this->eliminado,
+                'actualizado' => $this->actualizado,
             ]);
 
     }

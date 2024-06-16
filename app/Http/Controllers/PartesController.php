@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\DataTables\ResumenParteDataTable;
 
+use App\Exports\ParteExport;
 use App\Imports\AlumnosImport;
 use App\DataTables\ParteDataTable;
+use App\Imports\ParteImport;
 use App\Mail\CorreoJefaturaParte;
 use App\Mail\CorreoPuntosParte;
-use App\Mail\CorreoTutoresParte;
+use App\Mail\CorreoTutores;
+use App\Mail\CorreoTutoresCurso;
 use App\Models\Alumno;
 use App\Models\AlumnoParte;
 use App\Models\AnioAcademico;
@@ -33,23 +36,23 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
-class UsersController extends Controller
+class PartesController extends Controller
 {
 
     public function index(ParteDataTable $dataTable)
     {
         $anoAcademico = AnioAcademico::all();
-        $profesores = Profesor::all()->where('habilitado','=',true);
+        $profesores = Profesor::all()->where('habilitado', '=', true);
 
         $tramos = Tramohorario::all();
 
         $cursos = Curso::all();
 
-        $incidencias = Incidencia::all()->where('habilitado','=',true);
+        $incidencias = Incidencia::all()->where('habilitado', '=', true);
 
-        $conductasNegativas = Conductanegativa::all()->where('habilitado','=',true);
+        $conductasNegativas = Conductanegativa::all()->where('habilitado', '=', true);
 
-        $correcionesAplicadas = Correccionaplicada::all()->where('habilitado','=',true);
+        $correcionesAplicadas = Correccionaplicada::all()->where('habilitado', '=', true);
         return $dataTable->render('users.index', ['anoAcademico' => $anoAcademico, 'profesores' => $profesores, 'tramos' => $tramos, 'cursos' => $cursos, 'incidencias' => $incidencias, 'conductasNegativas' => $conductasNegativas, 'correcionesAplicadas' => $correcionesAplicadas]);
     }
 
@@ -79,17 +82,90 @@ class UsersController extends Controller
         return $dataTable->render('users.resumen', ['anoAcademico' => $anoAcademico]);
     }
 
+    public function informe()
+    {
+        $anoAcademico = AnioAcademico::all();
+        return view('parte.informe', ['anoAcademico' => $anoAcademico]);
+    }
+
+    public function informeExcel(Request $request)
+    {
+        // Obtén los valores seleccionados
+        // Obtén los valores seleccionados
+        $anoAcademico = $request->input('anoAcademico');
+        $curso = $request->input('curso');
+        $unidad = $request->input('unidad');
+
+        // Realiza la consulta
+        $query = Parte::
+            leftJoin('alumno_partes', 'partes.id', '=', 'alumno_partes.parte_id')
+            ->leftJoin('alumnos', 'alumno_partes.alumno_dni', '=', 'alumnos.dni')
+            ->leftJoin('unidades', 'alumnos.id_unidad', '=', 'unidades.id')
+            ->leftJoin('cursos', 'unidades.id_curso', '=', 'cursos.id')
+            ->leftJoin('profesors', 'partes.profesor_dni', '=', 'profesors.dni')
+            ->leftJoin('incidencias', 'partes.incidencia_id', '=', 'incidencias.id')
+            ->leftJoin('parte_conductanegativas', 'partes.id', '=', 'parte_conductanegativas.parte_id')
+            ->leftJoin('tramohorarios', 'partes.tramo_horario_id', '=', 'tramohorarios.id')
+            ->leftJoin('conductanegativas', 'parte_conductanegativas.conductanegativas_id', '=', 'conductanegativas.id')
+            ->leftJoin('correccionaplicadas', 'partes.correccionaplicadas_id', '=', 'correccionaplicadas.id')
+            ->when($anoAcademico, function ($query, $anoAcademico) {
+                return $query->where('cursos.id_anio_academico', $anoAcademico);
+            })
+            ->when($curso, function ($query, $curso) {
+                return $query->where('unidades.id_curso', $curso);
+            })
+            ->when($unidad, function ($query, $unidad) {
+                return $query->where('alumnos.id_unidad', $unidad);
+            })
+            ->select(
+                'partes.id',
+                'partes.created_at as fecha_incidencia',
+                'partes.colectivo as colectivo',
+                'profesors.nombre as profesor',
+                'tramohorarios.nombre as tramo_horario',
+                'alumnos.nombre as alumno_implicado',
+                'incidencias.descripcion as incidencia',
+                DB::raw('GROUP_CONCAT(DISTINCT conductanegativas.descripcion SEPARATOR ", ") as conducta_negativa'),
+                'correccionaplicadas.descripcion as correccion_aplicada',
+                'partes.puntos_penalizados as puntos',
+                'partes.descripcion_detallada as descripcion_detallada',
+
+            )
+
+            ->groupBy('partes.id');
+
+
+
+
+        // Exporta los datos a un archivo Excel
+        return Excel::download(new ParteExport($query), 'Some_Report.xlsx', null, [\Maatwebsite\Excel\Excel::XLSX]);
+
+
+    }
+
+    public function importInforme(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        Excel::import(new ParteImport, $request->file('file'));
+
+        return redirect()->route('users.index')
+            ->with('success', 'Datos importados correctamente.');
+    }
+
     public function crearParte(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'Profesor' => ['required', 'string', 'size:9', 'regex:/^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i'],
-            'TramoHorario' => ['required', 'numeric', 'between:1,5000'],
+            'Profesor' => 'required|in:' . implode(',', Profesor::all()->pluck('dni')->toArray()),
+            'TramoHorario' => 'required|in:' . implode(',', Tramohorario::all()->pluck('id')->toArray()),
             'Alumno' => 'required',
-            'Puntos' => ['required', 'numeric', 'between:0,50'],
-            'Fecha' => ['required', 'date'],
-            'Incidencia' => ['required', 'numeric', 'between:1,5000'],
+            'Puntos' => 'required|numeric',
+            'Fecha' => 'required|date',
+            'Incidencia' => 'required|in:' . implode(',', Incidencia::all()->pluck('id')->toArray()),
             'ConductasNegativa' => 'required',
-            'CorrecionesAplicadas' => ['required', 'numeric', 'between:1,5000'],
+            'CorrecionesAplicadas' => 'required|in:' . implode(',', Correccionaplicada::all()->pluck('id')->toArray()),
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
@@ -151,21 +227,24 @@ class UsersController extends Controller
             if ($alumnoModel->puntos <= $puntosARestar) {
                 $alumnoModel->puntos = 0;
                 foreach ($alumnoModel->correos as $correo) {
-                    Mail::to($correo->correo)->queue(new CorreoPuntosParte($alumnoModel));
+//                Mail::to($correo->correo)->queue(new CorreoPuntosParte($alumnoModel));
+                    Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoPuntosParte($alumnoModel));
                 }
-                // Correo jefatura
-                Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoPuntosParte($alumnoModel));
             } else {
                 $alumnoModel->decrement('puntos', $puntosARestar);
             }
 
             $alumnoModel->save();
             foreach ($alumnoModel->correos as $correo) {
-                Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
-                }
+//                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
+                Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutores($alumnoModel, $parte));
+            }
+
         }
-        // Correo jefatura
         Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoJefaturaParte($parte));
+        $mailTutor = $parte->alumnos->first()->unidad->profesor;
+        if ($mailTutor != null) Mail::to($mailTutor->correo)->queue(new CorreoTutoresCurso($parte));
+//        Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutoresCurso($parte));
 
         return redirect()->route('users.index')
             ->with('success', 'Parte creado correctamente.');
@@ -226,7 +305,8 @@ class UsersController extends Controller
                 $parte->alumnos()->detach($alumno->dni);
                 $parte->alumnos()->increment('puntos', $parte->puntos_penalizados);
                 foreach ($alumno->correos as $correo) {
-                    Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumno, $parte));
+//                Mail::to($correo->correo)->queue(new CorreoTutores($alumnoModel, $parte));
+                    Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutores($alumno, $parte, true));
                 }
 
             }
@@ -298,19 +378,19 @@ class UsersController extends Controller
                 $alumnoModel->increment('puntos', $parte->puntos_penalizados);
                 if ($alumnoModel->puntos <= $puntosARestar) {
                     $alumnoModel->puntos = 0;
-                    foreach ($alumnoModel->correos as $correo) {
-                        Mail::to($correo->correo)->queue(new CorreoPuntosParte($alumnoModel));
-                    }
-                    // Correo jefatura
+                    // Jefatura
                     Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoPuntosParte($alumnoModel));
+                    // Tutor
+                    Mail::to($alumnoModel->unidad->profesor->correo)->queue(new CorreoPuntosParte($alumnoModel));
                 } else {
                     $alumnoModel->decrement('puntos', $puntosARestar);
                 }
 
                 $alumnoModel->save();
                 foreach ($alumno->correos as $correo) {
-                    Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
-                    }
+//                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
+                    Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutores($alumno, $parte));
+                }
             } else {
 
                 $alumnoModel = Alumno::where('dni', $alumno)->first();
@@ -319,11 +399,10 @@ class UsersController extends Controller
                 $alumnoModel->increment('puntos', $parte->puntos_penalizados);
                 if ($alumnoModel->puntos <= $puntosARestar) {
                     $alumnoModel->puntos = 0;
-                    foreach ($alumnoModel->correos as $correo) {
-                        Mail::to($correo->correo)->queue(new CorreoPuntosParte($alumnoModel));
-                    }
-                    // Correo jefatura
+                    //Jefatura
                     Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoPuntosParte($alumnoModel));
+                    // Tutor de curso
+                    Mail::to($alumnoModel->unidad->profesor->correo)->queue(new CorreoPuntosParte($alumnoModel));
                 } else {
                     $alumnoModel->decrement('puntos', $puntosARestar);
                 }
@@ -331,15 +410,19 @@ class UsersController extends Controller
                 $alumnoModel->save();
 
                 foreach ($alumnoModel->correos as $correo) {
-                    Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
+//                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
+                    Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutores($alumnoModel, $parte, false, true));
                 }
             }
 
 
         }
 
-        Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoJefaturaParte($parte, false, true));
 
+        Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoJefaturaParte($parte, false, true));
+        $mailTutor = $parte->alumnos->first()->unidad->profesor;
+        if ($mailTutor != null) Mail::to($mailTutor->correo)->queue(new CorreoTutoresCurso($parte,false,true));
+//        Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutoresCurso($parte,false,true));
         return redirect()->route('users.index')
             ->with('success', 'Parte creado correctamente.');
     }
@@ -352,7 +435,7 @@ class UsersController extends Controller
                 'errors' => ["- Problema al obtener los datos del parte."]
             ], 422);
         }
-        
+
         $parte = Parte::find($id);
 
         $alumnos = AlumnoParte::where('parte_id', $parte->id)->get();
@@ -362,11 +445,14 @@ class UsersController extends Controller
             $alumnoModel->increment('puntos', $parte->puntos_penalizados);
             $alumnoModel->save();
             foreach ($alumnoModel->correos as $correo) {
-                Mail::to($correo->correo)->queue(new CorreoTutoresParte($alumnoModel, $parte));
+//                Mail::to($correo->correo)->queue(new CorreoTutoresCurso($alumnoModel, $parte));
+                Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoTutores($alumnoModel, $parte, true));
             }
 
         }
         Mail::to('alejandrocbt@hotmail.com')->queue(new CorreoJefaturaParte($parte, true));
+        $mailTutor = $parte->alumnos->first()->unidad->profesor;
+        if ($mailTutor != null) Mail::to($mailTutor->correo)->queue(new CorreoTutoresCurso($parte,true));
         $parte->delete();
 
         return redirect()->route('users.index')
@@ -384,6 +470,7 @@ class UsersController extends Controller
         $parteId = $id;
         $parte = Parte::find($parteId);
         $profesorAll = Profesor::all();
+        //$profesorAll->push($parte->profesors);
         $alumnos = AlumnoParte::where('parte_id', $parteId)->get();
         //$profesor = Profesor::where('dni', $parte->profesor_dni)->first()->get();
         $conductasNegativas = ParteConductanegativa::where('parte_id', $parteId)->get();
@@ -394,9 +481,9 @@ class UsersController extends Controller
             'alumnos' => $alumnos,
             'profesor' => $parte->profesor_dni,
             'profesorAll' => $profesorAll,
-            'incidencia' => $parte->incidencia_id,
+            'incidencia' => $parte->incidencias->first()->id,
             'conductasNegativas' => $conductasNegativas,
-            'correcionesAplicadas' => $parte->correccionaplicadas_id,
+            'correcionesAplicadas' => $parte->correccionesaplicadas->first()->id,
             'tramoHorario' => $parte->tramo_horario_id,
             'puntos' => $parte->puntos_penalizados,
             'descripcionDetallada' => $parte->descripcion_detallada,
@@ -406,7 +493,7 @@ class UsersController extends Controller
 
     function getProfesores()
     {
-        $profesoresAll = Profesor::all()->where('habilitado','=',true);
+        $profesoresAll = Profesor::all()->where('habilitado', '=', true);
         return response()->json([
             'profesoresAll' => $profesoresAll
 
@@ -550,7 +637,6 @@ class UsersController extends Controller
     }
 
 
-
     public function correo()
     {
         return view('users.correo');
@@ -563,9 +649,7 @@ class UsersController extends Controller
             return redirect()->route('users.import')
                 ->with('error', 'No se ha subido ningún archivo.');
         }
-        $request->validate([
-            'upload' => 'required|file|mimes:xlsx,xls|max:3000000'
-        ]);
+        
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         Correo::truncate();
